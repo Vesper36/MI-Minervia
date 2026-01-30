@@ -395,6 +395,104 @@ app/
 | PBT-09 | async | 重试边界 |
 | PBT-10 | audit | 日志不可变性 |
 | PBT-11 | audit | 时间戳单调性 |
+| PBT-12 | async | Kafka分区键一致性 |
+| PBT-13 | async | SimpleBroker无持久化 |
+| PBT-14 | auth | JWT无吊销验证 |
+| PBT-15 | rate-limit | 限流降级一致性 |
+
+## Additional Resolved Constraints (2026-01-30)
+
+### Kafka 配置
+
+**CONSTRAINT [KAFKA-PARTITION-KEY]**: 使用 `applicationId` 作为分区键。所有与同一申请相关的事件路由到同一分区，保证单申请事件有序性。
+
+**CONSTRAINT [KAFKA-TOPIC-CONFIG]**: 主题配置默认值:
+- partitions=6
+- replication_factor=3
+- retention.ms=604800000 (7天)
+
+**PBT [PBT-12]**: Kafka 分区键一致性 - 同一 applicationId 的事件始终使用相同分区键，映射到单一分区。
+
+### STOMP WebSocket 配置
+
+**CONSTRAINT [STOMP-SIMPLE-BROKER]**: 使用 Spring 内置 SimpleBroker (内存模式):
+- 无需外部消息中间件
+- 适合 <50/天 的规模
+- 认证通过 JWT Token 在 WebSocket 握手时验证
+- 无持久化：断开连接后消息丢失，需依赖轮询降级
+
+**PBT [PBT-13]**: SimpleBroker 无持久化 - 断开期间发送的消息不会在重连后送达，只有当前订阅者收到消息。
+
+### JWT 策略
+
+**CONSTRAINT [JWT-ADMIN-CONFIGURABLE]**: JWT TTL 由管理员配置，无强制上限。当前版本不实现主动吊销机制。token 仅依赖签名和 exp 验证。
+
+**PBT [PBT-14]**: JWT 无吊销 - 未过期 token 始终有效，不受后续 TTL 配置变更或密码重置影响。
+
+### Redis 降级策略
+
+**CONSTRAINT [RATE-LIMIT-MYSQL-FALLBACK]**: Redis 不可用时降级到 MySQL `rate_limits` 表:
+```sql
+CREATE TABLE rate_limits (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  limit_key VARCHAR(255) NOT NULL,
+  count INT NOT NULL DEFAULT 0,
+  window_start DATETIME NOT NULL,
+  window_seconds INT NOT NULL,
+  UNIQUE KEY uk_key_window (limit_key, window_start)
+);
+```
+- 定时任务每小时清理过期记录 (window_start + window_seconds < NOW())
+- Redis 恢复后优先使用 Redis，MySQL 数据作为备份
+
+**PBT [PBT-15]**: 限流降级一致性 - Redis/MySQL 切换不导致计数丢失或重复，决策与单源模型一致。
+
+### Outbox 轮询策略
+
+**CONSTRAINT [OUTBOX-POLLER-CONFIG]**: 事务性 Outbox 轮询配置:
+- 轮询间隔: 1秒
+- 批量大小: 500条
+- 重试策略: 指数退避 1s-60s，最多10次
+- 死信处理: 超过10次后移入 outbox_dead_letter 表，人工介入
+
+### AI 生成超时
+
+**CONSTRAINT [AI-GENERATION-TIMEOUT]**: AI 生成步骤超时配置:
+- LLM 调用: 60秒
+- 照片生成: 180秒
+- 单任务总时长上限: 300秒
+- 超时后标记为 FAILED，进入重试队列
+
+### 外部调用重试
+
+**CONSTRAINT [EXTERNAL-RETRY-POLICY]**: 外部服务调用重试策略:
+- 幂等调用: 最多3次重试
+- 退避策略: 指数退避 1s-8s + 随机抖动 (0-500ms)
+- 非幂等调用: 不自动重试，记录日志人工处理
+
+### 邮件退信处理
+
+**CONSTRAINT [EMAIL-BOUNCE-HANDLING]**: 邮件退信处理策略:
+- 硬退信 (5xx): 立即标记邮箱为 suppressed，不再发送
+- 软退信 (4xx): 72小时内最多重试5次
+- 投诉 (spam report): 立即标记为 suppressed
+- 管理员可手动解除 suppressed 状态
+
+### 数据保留策略
+
+**CONSTRAINT [MAILDIR-RETENTION]**: 邮件存储保留策略:
+- 在线保留: 30天
+- 备份: 每日增量 + 每周全量
+- 备份保留: 90天
+
+**CONSTRAINT [AUDIT-PARTITION-AUTOMATION]**: 审计日志分区��动化:
+- 分区粒度: 月
+- 自动创建: 未来3个月分区
+- 自动清理: 超过12个月的分区 (保留哈希摘要用于完整性验证)
+
+**CONSTRAINT [REDIS-AOF-POLICY]**: Redis 持久化策略:
+- appendfsync=everysec
+- RDB 快照: 每6小时
 
 ## Open Questions
 
