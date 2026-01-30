@@ -5,6 +5,16 @@
 ### Requirement: 规则引擎生成结构化字段
 系统必须使用规则引擎根据用户选择的国家和身份类型生成结构化的身份信息字段。
 
+**CONSTRAINT [ACADEMIC-YEAR-AUTO]**: 学年自动切换:
+- 当前日期 < 9月1日: 使用下一学年
+- 当前日期 >= 9月1日: 使用当前学年
+
+**CONSTRAINT [STUDENT-ID-ATOMIC]**: 学号通过 `SELECT ... FOR UPDATE` + 唯一索引生成
+
+**PBT [PBT-01]**: 学号全局唯一，格式{year}{faculty}{seq}
+**PBT [PBT-02]**: 入学时18-25岁，birthDate < admissionDate < enrollmentDate
+**PBT [PBT-03]**: LOCAL->PL+波兰姓名; INTERNATIONAL->国家匹配姓名
+
 #### Scenario: 生成符合国家文化的姓名
 - **WHEN** 系统为中国国际生生成姓名
 - **THEN** 系统从中文姓名库中随机选择姓氏和名字，格式为"姓+名"（如"张伟"）
@@ -66,6 +76,11 @@
 ### Requirement: 生成数据标记和可追溯性
 系统必须为所有生成的身份信息添加"模拟/测试"标记，并保留生成版本以支持审计。
 
+**PBT [PBT-DETERMINISM] 生成确定性**:
+- INVARIANT: 给定固定种子和配置(Country, Gender, Year)，生成器总是产生完全相同的身份
+- FALSIFICATION: 用相同种子运行两次，断言任何字段差异即为违规
+- BOUNDARY: Seed=0, Seed=MaxInt, 混合locale配置
+
 #### Scenario: 添加模拟标记
 - **WHEN** 系统生成身份信息
 - **THEN** 系统在数据库中添加 `is_simulated=true` 标记
@@ -126,6 +141,18 @@
 ### Requirement: 批量生成支持
 系统必须支持批量生成多个学生身份信息，用于测试或演示。
 
+**CONSTRAINT [BATCH-LIMIT]**: 单次批量生成最大100个。超过需分批次提交。
+
+**CONSTRAINT [BATCH-ISOLATION]**: 批量生成中单个任务失败不阻塞其他任务。返回结构化批量结果摘要:
+```json
+{
+  "total": 100,
+  "succeeded": 97,
+  "failed": 3,
+  "failures": [{"index": 23, "error": "..."}, ...]
+}
+```
+
 #### Scenario: 批量生成请求
 - **WHEN** 管理员请求批量生成 100 个学生身份
 - **THEN** 系统创建 100 个异步任务，并行生成身份信息
@@ -140,6 +167,8 @@
 
 ### Requirement: 生成数据导出
 系统必须支持将生成的身份信息导出为 JSON 或 CSV 格式，用于备份或分析。
+
+**CONSTRAINT [EXPORT-ACCESS-CONTROL]**: 导出功能仅限超级管理员。每次导出生成审计日志并使用短期签名URL（有效期1小时）。
 
 #### Scenario: 导出为 JSON
 - **WHEN** 管理员选择导出格式为 JSON

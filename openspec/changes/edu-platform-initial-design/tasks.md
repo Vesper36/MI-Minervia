@@ -124,8 +124,10 @@
 
 ## Phase 7: 异步任务系统
 - [ ] 配置 Kafka 消息队列
-- [ ] 实现身份生成异步任务
+- [ ] 实现事务性 Outbox 模式（批准事务+outbox表+轮询发送）
+- [ ] 实现身份生成异步任务（幂等处理，applicationId为去重键）
 - [ ] 实现 Spring WebSocket/STOMP 实时进度推送
+- [ ] 实现状态轮询降级端点 GET /api/applications/{id}/status
 - [ ] 实现任务状态管理 (PENDING/GENERATING_IDENTITY/GENERATING_PHOTOS/COMPLETED/FAILED)
 - [ ] 实现失败重试机制 (3次指数退避)
 

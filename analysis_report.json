@@ -1,0 +1,70 @@
+{
+  "analysis": {
+    "maintainability": {
+      "findings": [
+        {
+          "issue": "UI Component Cohesion vs. Coupling",
+          "details": "Using a single `shadcn/ui` library for both the high-fidelity marketing site and the dense data-heavy admin dashboard may lead to excessive style overrides or 'pollution' of base components.",
+          "assumption": "[ASSUMPTION]: The marketing site design will adhere strictly to the constrained system of `shadcn/ui` without requiring significant custom deviation that breaks component reusability.",
+          "constraint": "[EXPLICIT CONSTRAINT NEEDED]: Establish a `components/marketing` vs. `components/dashboard` split for complex compositions, keeping `components/ui` strictly for atomic primitives."
+        }
+      ]
+    },
+    "scalability": {
+      "findings": [
+        {
+          "issue": "Dynamic Content Translation",
+          "details": "The design specifies `next-intl` for static text but handles dynamic student profiles (AI generated) which may not have translations. Mixing static i18n with dynamic database content in a strict routing structure (`/en`, `/pl`) can result in 404s or mixed-language UI.",
+          "assumption": "[ASSUMPTION]: AI-generated content (bios, generated text) is either generated in the user's interface language only, or generated in English and not translated.",
+          "constraint": "[EXPLICIT CONSTRAINT NEEDED]: Define the 'Language Fallback Strategy' for database content—if a Student profile is generated in English, does it appear on the `/pl` route? (Recommendation: Show original content with a UI badge)."
+        }
+      ]
+    },
+    "integration_conflicts": {
+      "findings": [
+        {
+          "issue": "Real-time Protocol Mismatch",
+          "details": "Design Decision #7 specifies 'Spring WebSocket/STOMP', but the Migration Plan (Phase 3) and Spec requirements mention 'Socket.IO'. These are incompatible protocols. Spring Boot has native STOMP support; Socket.IO requires external dependencies/servers.",
+          "assumption": "[ASSUMPTION]: The backend team prefers the native Spring implementation (STOMP) to avoid adding a Node.js sidecar for Socket.IO.",
+          "constraint": "[EXPLICIT CONSTRAINT NEEDED]: Mandate the use of `@stomp/stompjs` on the frontend and remove all references to Socket.IO to ensure backend compatibility."
+        },
+        {
+          "issue": "Middleware Chaining Order",
+          "details": "`next-intl` relies on middleware for locale detection, while the 'Code Isolation' strategy relies on middleware for auth protection of `(portal)` and `(admin)`. Incorrect ordering will break either auth redirects or locale prefixes.",
+          "assumption": "[ASSUMPTION]: The Middleware chain will be able to determine 'Public' vs 'Protected' routes *before* stripping the locale prefix.",
+          "constraint": "[EXPLICIT CONSTRAINT NEEDED]: Define Middleware execution order: 1. Locale Resolution -> 2. Route Group Match/Auth Check. Ensure `matcher` config excludes API routes/static assets to prevent loops."
+        }
+      ]
+    },
+    "user_experience": {
+      "findings": [
+        {
+          "issue": "Disconnected Registration Feedback Loop",
+          "details": "The flow requires 'Manual Admin Approval' before 'Identity Generation'. The spec promises 'Real-time progress updates' to the user. If approval takes hours, the user will have left the page, making the WebSocket progress bar useless for them.",
+          "assumption": "[ASSUMPTION]: The 'Real-time progress' is intended for a 'Check Application Status' page that the user returns to later, OR it is actually intended for the Admin dashboard.",
+          "constraint": "[EXPLICIT CONSTRAINT NEEDED]: Clarify the user journey: Does the user receive an email to 'Check Status' which then opens a WebSocket connection? Or is the progress bar purely for the Admin?"
+        }
+      ]
+    },
+    "state_management": {
+      "findings": [
+        {
+          "issue": "Registration Wizard Persistence",
+          "details": "The spec requires 'System saves current state' if the browser is closed. Doing this purely client-side (localStorage) is insecure for PII; server-side drafts require a temporary 'Pre-Auth' session which contradicts the 'No Access without Approval' model.",
+          "assumption": "[ASSUMPTION]: A temporary 'Application Draft' ID is issued to the browser (cookie/local) to resume sessions without full account creation.",
+          "constraint": "[EXPLICIT CONSTRAINT NEEDED]: Define the 'Draft Retention Policy' (e.g., drafts expire in 24h) and the mechanism for resumption (e.g., magic link or browser cookie)."
+        }
+      ]
+    },
+    "error_handling": {
+      "findings": [
+        {
+          "issue": "AI Generation Latency & Failure",
+          "details": "Generation takes 10-60s. If the WebSocket connection drops or the browser tab is backgrounded/closed during this window, the frontend may miss the 'Completed' event.",
+          "assumption": "[ASSUMPTION]: The frontend will implement a 'Polling Fallback' or 'Reconnection Sync' logic on component mount to check if the status changed while disconnected.",
+          "constraint": "[EXPLICIT CONSTRAINT NEEDED]: Require a 'Hydrate Status' endpoint that the frontend calls on mount/reconnect to sync the current state, rather than relying 100% on ephemeral WebSocket events."
+        }
+      ]
+    }
+  }
+}

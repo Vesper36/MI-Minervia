@@ -148,31 +148,27 @@ app/
 
 ### 6. 邮件系统架构
 
-**决策**: 自建 Postfix + Dovecot + Rspamd
+**决策**: 自建 Postfix + Dovecot + Rspamd（收件）+ 托管SMTP外发
 
 **架构**:
 ```
-[学生客户端]
-    ↓ SMTP (587)
-[Postfix Submission] → [Rspamd 反垃圾] → [Postfix MTA]
-    ↓                                          ↓
-[Dovecot IMAP/POP3] ← [Maildir 存储] ← [邮件投递]
-    ↓
-[学生 Webmail 界面]
+[外发邮件] → [托管SMTP中继: SendGrid/Mailgun] → [收件方]
+[收件邮件] → [自建Postfix MTA] → [Rspamd 反垃圾] → [Dovecot IMAP/POP3] → [用户]
 ```
 
 **配置要点**:
-- SPF/DKIM/DMARC 配置防止邮件被拒
-- MTA-STS 和 TLS 报告提升安全性
+- 外发使用托管SMTP中继（解决IP信誉问题）
+- 收件保持自建（完全可控）
+- SPF/DKIM/DMARC 配置
 - Rspamd 集成 ClamAV 防病毒
 - Maildir 格式存储，支持备份到 S3
 
-**理由**:
-- 完全可控，支持深度定制
-- 可与内部系统紧密集成
-- 符合用户自建要求
+**CONSTRAINT [MAIL-OUTBOUND]**: 外发邮件使用托管SMTP中继服务（SendGrid或Mailgun），不自建外发。
 
-**风险**: 运维成本高，IP 信誉管理困难
+**理由**:
+- 收件完全可控，支持深度定制
+- 外发通过托管服务保证送达率
+- 降低IP信誉管理复杂度
 
 ### 7. AI 生成执行策略
 
@@ -181,7 +177,7 @@ app/
 **实现流程**:
 1. 用户提交注册申请
 2. 后端创建异步任务（Kafka 消息队列）
-3. 任务状态：`PENDING` → `GENERATING_IDENTITY` → `GENERATING_PHOTOS` → `COMPLETED`
+3. 任务状态：`PENDING` -> `GENERATING_IDENTITY` -> `GENERATING_PHOTOS` -> `COMPLETED`
 4. 前端通过 STOMP 客户端（`@stomp/stompjs`）订阅任务进度
 5. 实时更新进度条和状态提示
 6. 完成后通知用户（浏览器通知 + 邮件）
@@ -189,8 +185,18 @@ app/
 **技术参数**:
 - 消息队列：Kafka（高吞吐量、持久化、分布式）
 - 实时通信：Spring WebSocket/STOMP（原生支持，无需额外依赖）
-- 并发限制：同时处理 10 个 AI 生成任务
+- 并发限制：同时处理 5 个 AI 生成任务（小规模 <50/天）
 - 失败处理：阻塞式重试 3 次（指数退避），全部失败后标记 `FAILED`，管理员手动介入
+
+**CONSTRAINT [ASYNC-IDEMPOTENCY]**: 任务处理使用 applicationId 作为幂等键。Kafka重复投递不产生重复账户/邮件/身份记录。数据库使用唯一约束强制。
+
+**CONSTRAINT [ASYNC-OUTBOX]**: 批准操作使用事务性Outbox模式:
+1. 在同一事务中更新申请状态 + 插入outbox表
+2. 独立进程轮询outbox发送Kafka消息
+3. Kafka不可用时任务保留在outbox，不阻塞批准操作
+
+**PBT [PBT-07]**: 任务幂等性 - 重复投递/重试不创建重复记录
+**PBT [PBT-09]**: 重试边界 - 最多3次，指数退避后进入FAILED终态
 
 **理由**:
 - AI 生成耗时长（10-60 秒），同步等待体验差
@@ -205,7 +211,7 @@ app/
 
 ### 8. 数据库架构
 
-**决策**: MySQL 主库 + Redis 缓存 + Elasticsearch 审计
+**决策**: MySQL 主库 + Redis 缓存 + MySQL分区审计（MVP阶段不用ES）
 
 **架构**:
 ```
@@ -213,20 +219,27 @@ app/
     ↓
 [MySQL 主库] ← [读写分离] → [MySQL 从库]
     ↓
-[Redis 缓存] (会话/验证码/限流)
+[Redis 缓存] (会话/验证码/限流, AOF持久化)
     ↓
-[Elasticsearch] (审计日志检索)
+[MySQL 分区表] (审计日志按月分区)
 ```
 
 **表设计要点**:
-- 学生表：分区表（按入学年份）
-- 邮件表：冷热数据分离（30 天内热数据）
-- 审计日志表：仅保留不可识别主键
+- 学���表：按入学年份分区（注意唯一约束需包含分区键）
+- 审计日志表：按月分区，仅存假名标识（PII分离存储）
+- 全局唯一字段（email/student_number）使用独立查找表
+
+**CONSTRAINT [DB-AUDIT-PII-SEPARATION]**: 审计日志表仅存储假名标识(user_id_hash)，可识别信息(姓名/邮箱)存储在独立的`audit_pii`表，通过log_id关联。GDPR删除时只需清理audit_pii表。
+
+**CONSTRAINT [DB-ES-THRESHOLD]**: MVP阶段使用MySQL分区+索引。当审计查询量 >1000次/天 或 数据量 >500万行 时引入Elasticsearch。
+
+**PBT [PBT-10]**: 审计日志不可变 - UPDATE/DELETE或哈希篡改被完整性校验检测
+**PBT [PBT-11]**: 时间戳单调性 - (created_at, id) 排序反映追加顺序
 
 **理由**:
 - MySQL 为用户现有资源，节省成本
-- Redis 提升高频访问性能
-- Elasticsearch 支持复杂审计查询
+- Redis 提升高频访问性能（需开启AOF防止重启丢失计数器）
+- 延迟引入ES降低MVP复杂度
 
 ### 9. 安全参数
 
@@ -234,12 +247,14 @@ app/
 - 密码复杂度：最小 8 位，包含大小写字母 + 数字
 - 密码加密：bcrypt (cost=12)
 - 登录失败：5 次失败后锁定 30 分钟
-- JWT 过期：用户后台自定义选择（默认 1 小时）
+- JWT 过期：管理员可自定义（无强制上限）
+
+**CONSTRAINT [JWT-NO-REVOCATION]**: 当前版本不实现JWT主动吊销。角色/密码变更后旧token在过期前仍有效。后续版本可引入refresh token + 吊销列表。
 
 **理由**:
 - bcrypt cost=12 平衡安全性和性能
 - 5 次失败 + 30 分钟锁定防止暴力破解
-- JWT 自定义支持不同安全需求
+- 无上限JWT简化实现，适合小规模信任环境
 
 ### 10. 多语言支持
 
@@ -332,7 +347,7 @@ app/
 1. 构建公开官网（多语言）
 2. 开发隐藏学生门户
 3. 实现管理后台
-4. 集成 Socket.IO 实时进度
+4. 集成 STOMP/WebSocket 实时进度
 
 ### 阶段 4: 测试和优化（Week 11-12）
 1. 功能测试和集成测试
@@ -345,6 +360,41 @@ app/
 - 代码版本控制：Git 分支管理
 - 灰度发布：先在测试环境验证，再逐步上线
 - 监控告警：实时监控关键指标，异常自动回滚
+
+## Resolved Constraints Summary
+
+### 规模目标
+- 每天 <50 个注册
+- 同时 5 个 AI 生成任务
+- MVP 阶段无需水平扩展
+
+### 关键技术决策
+1. **实时协议**: STOMP/WebSocket (Spring原生)
+2. **消息队列**: Kafka + 事务性Outbox
+3. **审计存储**: MySQL分区 (MVP阶段)
+4. **外发邮件**: 托管SMTP中继 (SendGrid/Mailgun)
+5. **JWT策略**: 管理员可配置无上限，无主动吊销
+
+### 注册流程约束
+1. **注册码**: 验证即消费，一次性使用
+2. **草稿持久化**: 24h临时Draft + Magic Link恢复
+3. **状态机终态**: REJECTED, FAILED, COMPLETED + 允许重新申请
+4. **学年选择**: 自动切换 (9月1日前后)
+
+### PBT属性清单
+| ID | 领域 | 不变量 |
+|----|------|--------|
+| PBT-01 | identity | 学号全局唯一+格式匹配 |
+| PBT-02 | identity | 年龄/时间线一致性 |
+| PBT-03 | identity | 姓名/国籍匹配 |
+| PBT-04 | registration | 状态转换顺序性 |
+| PBT-05 | registration | 限流阈值验证 |
+| PBT-06 | registration | 注册码消费原子性 |
+| PBT-07 | async | 任务幂等性 |
+| PBT-08 | async | 进度单调性 |
+| PBT-09 | async | 重试边界 |
+| PBT-10 | audit | 日志不可变性 |
+| PBT-11 | audit | 时间戳单调性 |
 
 ## Open Questions
 
