@@ -1,0 +1,36 @@
+.ace-tool/
+
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+build/
+*.jar
+.gradle/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage/
+
+# Docker volumes (local)
+mysql_data/
+redis_data/
+elasticsearch_data/

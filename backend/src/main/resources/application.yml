@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: minervia-platform
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/minervia?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: minervia
+    password: ${DB_PASSWORD:minervia_dev}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ${REDIS_PASSWORD:}
+
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:25}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+
+server:
+  port: 8080
+
+logging:
+  level:
+    edu.minervia: DEBUG
+    org.springframework.security: DEBUG
+
+app:
+  jwt:
+    # SECURITY: JWT secret MUST be provided via environment variable in production
+    # The default value will cause application to fail in non-dev profiles
+    secret: ${JWT_SECRET:}
+    expiration: 3600000  # 1 hour in milliseconds
+    # Set to true to enforce JWT secret validation on startup (recommended for production)
+    require-secret: ${JWT_REQUIRE_SECRET:false}
+  registration:
+    code-expiration-days: 30
+    email-rate-limit: 5
+    ip-rate-limit: 3
