@@ -9,6 +9,19 @@ import org.springframework.stereotype.Service
 import java.util.*
 import javax.crypto.SecretKey
 
+enum class TokenType {
+    ACCESS, REFRESH
+}
+
+data class TokenPair(
+    val accessToken: String,
+    val refreshToken: String,
+    val accessTokenJti: String,
+    val refreshTokenJti: String,
+    val accessExpiresIn: Long,
+    val refreshExpiresIn: Long
+)
+
 @Service
 class JwtService(private val jwtProperties: JwtProperties) {
 
@@ -31,18 +44,69 @@ class JwtService(private val jwtProperties: JwtProperties) {
         }
     }
 
-    fun generateToken(username: String, role: String, adminId: Long): String {
+    /**
+     * CONSTRAINT [JWT-DUAL-TOKEN]: Generate both access and refresh tokens.
+     * Access Token TTL: 30 minutes
+     * Refresh Token TTL: 14 days
+     */
+    fun generateTokenPair(username: String, role: String, adminId: Long): TokenPair {
+        val accessJti = UUID.randomUUID().toString()
+        val refreshJti = UUID.randomUUID().toString()
+
+        val accessToken = generateToken(
+            username = username,
+            role = role,
+            adminId = adminId,
+            jti = accessJti,
+            tokenType = TokenType.ACCESS,
+            expiration = jwtProperties.accessTokenExpiration
+        )
+
+        val refreshToken = generateToken(
+            username = username,
+            role = role,
+            adminId = adminId,
+            jti = refreshJti,
+            tokenType = TokenType.REFRESH,
+            expiration = jwtProperties.refreshTokenExpiration
+        )
+
+        return TokenPair(
+            accessToken = accessToken,
+            refreshToken = refreshToken,
+            accessTokenJti = accessJti,
+            refreshTokenJti = refreshJti,
+            accessExpiresIn = jwtProperties.accessTokenExpiration,
+            refreshExpiresIn = jwtProperties.refreshTokenExpiration
+        )
+    }
+
+    private fun generateToken(
+        username: String,
+        role: String,
+        adminId: Long,
+        jti: String,
+        tokenType: TokenType,
+        expiration: Long
+    ): String {
         val now = Date()
-        val expiry = Date(now.time + jwtProperties.expiration)
+        val expiry = Date(now.time + expiration)
 
         return Jwts.builder()
+            .id(jti)
             .subject(username)
             .claim("role", role)
             .claim("adminId", adminId)
+            .claim("type", tokenType.name)
             .issuedAt(now)
             .expiration(expiry)
             .signWith(secretKey)
             .compact()
+    }
+
+    @Deprecated("Use generateTokenPair instead", ReplaceWith("generateTokenPair(username, role, adminId).accessToken"))
+    fun generateToken(username: String, role: String, adminId: Long): String {
+        return generateTokenPair(username, role, adminId).accessToken
     }
 
     fun validateToken(token: String): Boolean {
@@ -55,6 +119,23 @@ class JwtService(private val jwtProperties: JwtProperties) {
         } catch (e: IllegalArgumentException) {
             logger.debug("JWT token is empty: {}", e.message)
             false
+        }
+    }
+
+    fun getJtiFromToken(token: String): String? {
+        return try {
+            parseToken(token).payload.id
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun getTokenTypeFromToken(token: String): TokenType? {
+        return try {
+            val typeStr = parseToken(token).payload.get("type", String::class.java)
+            TokenType.valueOf(typeStr)
+        } catch (e: Exception) {
+            null
         }
     }
 

@@ -11,10 +11,30 @@ data class LoginRequest(
 )
 
 data class LoginResponse(
-    val token: String,
-    val expiresIn: Long,
+    val accessToken: String,
+    val refreshToken: String,
+    val accessExpiresIn: Long,
+    val refreshExpiresIn: Long,
     val username: String,
     val role: String
+) {
+    @Deprecated("Use accessToken instead")
+    val token: String get() = accessToken
+
+    @Deprecated("Use accessExpiresIn instead")
+    val expiresIn: Long get() = accessExpiresIn
+}
+
+data class RefreshTokenRequest(
+    @field:NotBlank(message = "Refresh token is required")
+    val refreshToken: String
+)
+
+data class RefreshTokenResponse(
+    val accessToken: String,
+    val refreshToken: String,
+    val accessExpiresIn: Long,
+    val refreshExpiresIn: Long
 )
 
 data class ApiResponse<T>(

@@ -47,7 +47,10 @@ app:
     # SECURITY: JWT secret MUST be provided via environment variable in production
     # The default value will cause application to fail in non-dev profiles
     secret: ${JWT_SECRET:}
-    expiration: 3600000  # 1 hour in milliseconds
+    # CONSTRAINT [JWT-DUAL-TOKEN]: Access Token TTL 30 minutes
+    access-token-expiration: ${JWT_ACCESS_EXPIRATION:1800000}
+    # CONSTRAINT [JWT-DUAL-TOKEN]: Refresh Token TTL 14 days
+    refresh-token-expiration: ${JWT_REFRESH_EXPIRATION:1209600000}
     # Set to true to enforce JWT secret validation on startup (recommended for production)
     require-secret: ${JWT_REQUIRE_SECRET:false}
   ai:

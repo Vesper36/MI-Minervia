@@ -1,5 +1,6 @@
 package edu.minervia.platform.service.identity.llm
 
+import edu.minervia.platform.domain.enums.IdentityType
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -16,23 +17,31 @@ class LlmPolishService(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    fun generateProfile(countryCode: String, majorCode: String): LlmPolishResult {
+    fun generateProfile(
+        countryCode: String,
+        majorCode: String,
+        identityType: IdentityType
+    ): LlmPolishResult {
         val countryName = fallbackService.resolveCountryName(countryCode)
         val majorName = fallbackService.resolveMajorName(majorCode)
+        val identityContext = when (identityType) {
+            IdentityType.LOCAL -> "a local student"
+            IdentityType.INTERNATIONAL -> "an international student"
+        }
 
         return LlmPolishResult(
             familyBackground = generate(
                 "familyBackground",
-                "Write 2-3 sentences describing a university student's family background influenced by $countryName culture. Keep it realistic and neutral. Output only the text."
-            ) { fallbackService.familyBackground(countryCode) },
+                "Write 2-3 sentences describing $identityContext's family background influenced by $countryName culture. Keep it realistic and neutral. Output only the text."
+            ) { fallbackService.familyBackground(countryCode, majorCode, identityType) },
             interests = generate(
                 "interests",
-                "Write 1-2 sentences about the student's personal interests related to $majorName. Keep it realistic. Output only the text."
-            ) { fallbackService.interests(majorCode) },
+                "Write 1-2 sentences about $identityContext's personal interests related to $majorName. Keep it realistic. Output only the text."
+            ) { fallbackService.interests(countryCode, majorCode, identityType) },
             academicGoals = generate(
                 "academicGoals",
-                "Write 1-2 sentences about the student's academic goals related to $majorName. Keep it realistic. Output only the text."
-            ) { fallbackService.academicGoals(majorCode) }
+                "Write 1-2 sentences about $identityContext's academic goals related to $majorName. Keep it realistic. Output only the text."
+            ) { fallbackService.academicGoals(countryCode, majorCode, identityType) }
         )
     }
 

@@ -12,7 +12,8 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class JwtAuthenticationFilter(
     private val jwtService: JwtService,
-    private val userDetailsService: AdminUserDetailsService
+    private val userDetailsService: AdminUserDetailsService,
+    private val tokenRevocationService: TokenRevocationService
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -32,8 +33,21 @@ class JwtAuthenticationFilter(
 
         if (username != null && SecurityContextHolder.getContext().authentication == null) {
             if (jwtService.validateToken(jwt)) {
+                // CONSTRAINT [JWT-REVOCATION-LIST]: Check revocation list after signature verification
+                val jti = jwtService.getJtiFromToken(jwt)
+                if (jti != null && tokenRevocationService.isRevoked(jti)) {
+                    filterChain.doFilter(request, response)
+                    return
+                }
+
+                // Only accept ACCESS tokens for API authentication
+                val tokenType = jwtService.getTokenTypeFromToken(jwt)
+                if (tokenType != TokenType.ACCESS) {
+                    filterChain.doFilter(request, response)
+                    return
+                }
+
                 val userDetails = userDetailsService.loadUserByUsername(username)
-                // Check if account is still active and not locked
                 if (userDetails.isEnabled && userDetails.isAccountNonLocked) {
                     val authToken = UsernamePasswordAuthenticationToken(
                         userDetails,

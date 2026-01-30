@@ -22,6 +22,9 @@
 - [x] 实现密码加密 (bcrypt cost=12)
 - [x] 实现登录失败锁定 (5次/30分钟)
 - [x] 实现 RBAC 权限控制 (超级管理员/普通管理员)
+- [x] 实现 JWT 双 Token 机制 (Access 30min + Refresh 14d) [NEW]
+- [x] 实现 Redis 吊销列表 (jti only) [NEW]
+- [x] 实现吊销触发器 (登出/密码重置/角色变更) [NEW]
 - [x] 实现 JWT Token 刷新机制
 - [x] 实现管理员会话超时 (1小时无操作)
 - [ ] 实现 TOTP 两步验证 (可选)
@@ -65,19 +68,21 @@
 - [x] 实现学号唯一性校验
 
 ### 4.3 LLM 润色
-- [ ] 实现 LLM 调用服务 (家庭背景/兴趣爱好/学术目标)
-- [ ] 实现 LLM 失败降级 (预设模板)
+- [x] 实现 LLM 调用服务 (家庭背景/兴趣爱好/学术目标)
+- [x] 实现 LLM 失败降级 (预设模板)
+- [x] 创建细粒度降级模板 (4国籍 x 4专业 x 2身份类型 = 32模板) [NEW]
+- [x] 模板目录: config/llm-templates/{nationality}/{major}/{identity_type}.yaml [NEW]
 
 ### 4.4 学习时间线生成
-- [ ] 实现学期生成 (秋季/春季)
-- [ ] 实现课程列表生成 (按专业)
-- [ ] 实现成绩生成 (2.0-5.0 波兰评分)
-- [ ] 实现 GPA 计算
+- [x] 实现学期生成 (秋季/春季)
+- [x] 实现课程列表生成 (按专业)
+- [x] 实现成绩生成 (2.0-5.0 波兰评分)
+- [x] 实现 GPA 计算
 
 ### 4.5 家庭信息生成
-- [ ] 实现父母姓名生成
-- [ ] 实现父母职业生成
-- [ ] 实现家庭地址生成
+- [x] 实现父母姓名生成
+- [x] 实现父母职业生成
+- [x] 实现家庭地址生成
 
 ### 4.6 安全机制
 - [x] 实现禁用姓名列表检查
@@ -85,33 +90,33 @@
 - [x] 实现生成种子和版本记录
 
 ### 4.7 批量和导出
-- [ ] 实现批量生成 API
-- [ ] 实现导出 JSON/CSV API
+- [x] 实现批量生成 API
+- [x] 实现导出 JSON/CSV API
 
 ## Phase 5: 管理后台 API (admin-backend)
 ### 5.1 学生管理
-- [ ] 实现学生列表查询 API (分页/搜索/筛选)
-- [ ] 实现学生详情查询 API
-- [ ] 实现手动创建学生 API
-- [ ] 实现修改学生信息 API
-- [ ] 实现封禁学生 API
-- [ ] 实现解封学生 API
+- [x] 实现学生列表查询 API (分页/搜索/筛选)
+- [x] 实现学生详情查询 API
+- [x] 实现手动创建学生 API
+- [x] 实现修改学生信息 API
+- [x] 实现封禁学生 API
+- [x] 实现解封学生 API
 
 ### 5.2 注册审批
-- [ ] 实现待审批列表查询 API
-- [ ] 实现审批详情查询 API
-- [ ] 实现批准注册 API
-- [ ] 实现拒绝注册 API
-- [ ] 实现批量批准 API
+- [x] 实现待审批列表查询 API
+- [x] 实现审批详情查询 API
+- [x] 实现批准注册 API
+- [x] 实现拒绝注册 API
+- [x] 实现批量批准 API
 
 ### 5.3 系统配置
-- [ ] 实现配置查询 API
-- [ ] 实现配置修改 API (邮件配额/注册码有效期/JWT过期时间等)
+- [x] 实现配置查询 API
+- [x] 实现配置修改 API (邮件配额/注册码有效期/JWT过期时间等)
 
 ### 5.4 数据可视化
-- [ ] 实现学生统计 API
-- [ ] 实现邮件统计 API
-- [ ] 实现注册统计 API
+- [x] 实现学生统计 API
+- [x] 实现邮件统计 API
+- [x] 实现注册统计 API
 
 ## Phase 6: 审计日志模块 (audit-logging)
 - [ ] 实现审计日志记录服务 (异步队列)
@@ -139,12 +144,17 @@
 - [ ] 实现 WebSocket JWT 握手认证
 - [ ] 实现进度订阅端点 /topic/applications/{id}/progress
 - [ ] 实现状态轮询降级端点 GET /api/applications/{id}/status
+- [ ] 创建 task_progress 表 (独立持久化) [NEW]
+- [ ] 实现 progress 事件同步写入 DB [NEW]
+- [ ] 实现版本/时间戳检查防止过时更新 [NEW]
 
 ### 7.4 任务执行
 - [ ] 实现身份生成异步任务 (幂等: applicationId去重)
 - [ ] 实现任务状态管理 (PENDING/GENERATING_IDENTITY/GENERATING_PHOTOS/COMPLETED/FAILED)
 - [ ] 实现 AI 生成超时控制 (LLM=60s, 照片=180s, 总时长=300s)
 - [ ] 实现失败重试机制 (3次指数退避1s-8s+抖动)
+- [ ] 实现每步独立事务 (IDENTITY_RULES/IDENTITY_LLM/PHOTO_GENERATION) [NEW]
+- [ ] 实现超时清理 + 重排机制 [NEW]
 
 ## Phase 8: 前端 - 管理后台
 - [ ] 实现管理员登录页面
@@ -161,6 +171,9 @@
 - [ ] 实现信息选择步骤 (专业/班级/身份类型/国家)
 - [ ] 实现注册进度追踪页面 (WebSocket)
 - [ ] 实现 Linux.do OAuth 登录按钮
+- [ ] 实现路由结构重构 app/[locale]/(marketing|portal|admin) [NEW]
+- [ ] 实现 localStorage 草稿优先 + 服务端备份 [NEW]
+- [ ] 实现 WS/轮询混合同步 + 版本检查 [NEW]
 
 ## Phase 10: 国际化和多语言
 - [ ] 配置 next-intl
@@ -191,6 +204,16 @@
 - [ ] PBT-13: SimpleBroker无持久化测试
 - [ ] PBT-14: JWT无吊销验证测试
 - [ ] PBT-15: 限流降级一致性测试
+- [ ] PBT-16: JWT Access Token 30min 边界测试 [NEW]
+- [ ] PBT-17: JWT Refresh Token 14d 边界测试 [NEW]
+- [ ] PBT-18: JWT 吊销列表隔离性测试 [NEW]
+- [ ] PBT-19: Progress 表独立性测试 [NEW]
+- [ ] PBT-20: 轮询间隔切换测试 [NEW]
+- [ ] PBT-21: AI 超时清理原子性测试 [NEW]
+- [ ] PBT-22: AI 步骤事务隔离测试 [NEW]
+- [ ] PBT-23: LLM 国籍模板覆盖测试 [NEW]
+- [ ] PBT-24: LLM 专业模板覆盖测试 [NEW]
+- [ ] PBT-25: LLM 身份类型隔离测试 [NEW]
 
 ### 11.3 前端测试
 - [ ] 编写前端组件测试 (Vitest)

@@ -5,8 +5,11 @@ import edu.minervia.platform.domain.entity.Admin
 import edu.minervia.platform.domain.repository.AdminRepository
 import edu.minervia.platform.domain.repository.SystemConfigRepository
 import edu.minervia.platform.security.JwtService
+import edu.minervia.platform.security.TokenRevocationService
+import edu.minervia.platform.security.TokenType
 import edu.minervia.platform.web.dto.LoginRequest
 import edu.minervia.platform.web.dto.LoginResponse
+import edu.minervia.platform.web.dto.RefreshTokenResponse
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -20,7 +23,8 @@ class AuthService(
     private val systemConfigRepository: SystemConfigRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
-    private val jwtProperties: JwtProperties
+    private val jwtProperties: JwtProperties,
+    private val tokenRevocationService: TokenRevocationService
 ) {
     @Transactional
     fun login(request: LoginRequest): LoginResponse {
@@ -42,18 +46,97 @@ class AuthService(
 
         resetFailedAttempts(admin)
 
-        val token = jwtService.generateToken(
+        val tokenPair = jwtService.generateTokenPair(
             username = admin.username,
             role = admin.role.name,
             adminId = admin.id
         )
 
         return LoginResponse(
-            token = token,
-            expiresIn = jwtProperties.expiration,
+            accessToken = tokenPair.accessToken,
+            refreshToken = tokenPair.refreshToken,
+            accessExpiresIn = tokenPair.accessExpiresIn,
+            refreshExpiresIn = tokenPair.refreshExpiresIn,
             username = admin.username,
             role = admin.role.name
         )
+    }
+
+    fun refreshToken(refreshToken: String): RefreshTokenResponse {
+        if (!jwtService.validateToken(refreshToken)) {
+            throw BadCredentialsException("Invalid refresh token")
+        }
+
+        val tokenType = jwtService.getTokenTypeFromToken(refreshToken)
+        if (tokenType != TokenType.REFRESH) {
+            throw BadCredentialsException("Token is not a refresh token")
+        }
+
+        val jti = jwtService.getJtiFromToken(refreshToken)
+        if (jti != null && tokenRevocationService.isRevoked(jti)) {
+            throw BadCredentialsException("Refresh token has been revoked")
+        }
+
+        val username = jwtService.getUsernameFromToken(refreshToken)
+            ?: throw BadCredentialsException("Invalid refresh token")
+
+        val admin = adminRepository.findByUsername(username)
+            .orElseThrow { BadCredentialsException("User not found") }
+
+        if (!admin.isActive) {
+            throw BadCredentialsException("Account is disabled")
+        }
+
+        // Revoke old refresh token (one-time use)
+        jti?.let { tokenRevocationService.revokeRefreshToken(it) }
+
+        val tokenPair = jwtService.generateTokenPair(
+            username = admin.username,
+            role = admin.role.name,
+            adminId = admin.id
+        )
+
+        return RefreshTokenResponse(
+            accessToken = tokenPair.accessToken,
+            refreshToken = tokenPair.refreshToken,
+            accessExpiresIn = tokenPair.accessExpiresIn,
+            refreshExpiresIn = tokenPair.refreshExpiresIn
+        )
+    }
+
+    /**
+     * CONSTRAINT [JWT-REVOCATION-TRIGGERS]: Logout triggers token revocation.
+     */
+    fun logout(accessToken: String, refreshToken: String?) {
+        jwtService.getJtiFromToken(accessToken)?.let {
+            tokenRevocationService.revokeAccessToken(it)
+        }
+        refreshToken?.let { rt ->
+            jwtService.getJtiFromToken(rt)?.let {
+                tokenRevocationService.revokeRefreshToken(it)
+            }
+        }
+    }
+
+    /**
+     * CONSTRAINT [JWT-REVOCATION-TRIGGERS]: Password reset triggers token revocation.
+     * Revokes both access and refresh tokens to force full re-login.
+     */
+    @Transactional
+    fun changePassword(adminId: Long, currentPassword: String, newPassword: String, currentAccessJti: String?, currentRefreshJti: String?) {
+        val admin = adminRepository.findById(adminId)
+            .orElseThrow { BadCredentialsException("Admin not found") }
+
+        if (!passwordEncoder.matches(currentPassword, admin.passwordHash)) {
+            throw BadCredentialsException("Current password is incorrect")
+        }
+
+        admin.passwordHash = passwordEncoder.encode(newPassword)
+        adminRepository.save(admin)
+
+        // Revoke both tokens to force full re-login
+        currentAccessJti?.let { tokenRevocationService.revokeAccessToken(it) }
+        currentRefreshJti?.let { tokenRevocationService.revokeRefreshToken(it) }
     }
 
     private fun handleFailedLogin(admin: Admin) {

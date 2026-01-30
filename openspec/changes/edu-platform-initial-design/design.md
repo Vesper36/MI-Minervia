@@ -397,8 +397,21 @@ app/
 | PBT-11 | audit | 时间戳单调性 |
 | PBT-12 | async | Kafka分区键一致性 |
 | PBT-13 | async | SimpleBroker无持久化 |
-| PBT-14 | auth | JWT无吊销验证 |
+| ~~PBT-14~~ | ~~auth~~ | ~~JWT无吊销验证~~ (已替换) |
 | PBT-15 | rate-limit | 限流降级一致性 |
+| PBT-16 | auth.jwt | Access Token 30min 边界 |
+| PBT-17 | auth.jwt | Refresh Token 14d 边界 |
+| PBT-18 | auth.jwt | 吊销列表 jti 隔离性 |
+| PBT-19 | progress | task_progress 表独立性 |
+| PBT-20 | progress | 轮询间隔切换 (5s->2s) |
+| PBT-21 | ai.timeout | 超时清理+重排原子性 |
+| PBT-22 | ai.timeout | 步骤事务隔离 |
+| PBT-23 | llm.fallback | 国籍模板覆盖 (PL/CN/US/DE) |
+| PBT-24 | llm.fallback | 专业模板覆盖 |
+| PBT-25 | llm.fallback | 身份类型隔离 |
+| PROP-FE-01 | frontend | 路由结构合规性 |
+| PROP-FE-02 | frontend | WS/轮询状态同步一致性 |
+| PROP-FE-03 | frontend | 草稿存储容错 |
 
 ## Additional Resolved Constraints (2026-01-30)
 
@@ -493,6 +506,105 @@ CREATE TABLE rate_limits (
 **CONSTRAINT [REDIS-AOF-POLICY]**: Redis 持久化策略:
 - appendfsync=everysec
 - RDB 快照: 每6小时
+
+## Additional Resolved Constraints (2026-01-30 Spec-Plan Session)
+
+### JWT Refresh Token 机制 (替代原 JWT-NO-REVOCATION)
+
+**CONSTRAINT [JWT-DUAL-TOKEN]**: 双 Token 机制:
+- Access Token TTL: 30 分钟
+- Refresh Token TTL: 14 天
+- Access Token 用于 API 认证
+- Refresh Token 仅用于获取新 Access Token
+
+**CONSTRAINT [JWT-REVOCATION-LIST]**: Redis 吊销列表:
+- 仅存储被吊销 token 的 jti (UUID)
+- Key 格式: `revoked:jwt:{jti}`
+- TTL: 与对应 token 过期时间一致 (自动清理)
+- 检查顺序: 签名验证 -> exp 验证 -> 吊销列表检查
+
+**CONSTRAINT [JWT-REVOCATION-TRIGGERS]**: 触发吊销的场景:
+- 用户主动登出
+- 密码重置
+- 角色变更
+- 管理员强制登出用户
+
+**PBT [PBT-16]**: Access Token 30分钟边界 - iat+30min 前接受，之后拒绝
+**PBT [PBT-17]**: Refresh Token 14天边界 - 超过14天无法刷新
+**PBT [PBT-18]**: 吊销列表隔离性 - 只有 jti 在列表中的 token 被拒绝
+
+### 前端路由结构
+
+**CONSTRAINT [FRONTEND-ROUTE-STRUCTURE]**: Next.js 路由结构:
+```
+app/
+├── [locale]/
+│   ├── (marketing)/    # 公开官网
+│   ├── (portal)/       # 学生门户
+│   └── (admin)/        # 管理后台
+├── api/                # API 路由 (无 locale)
+└── layout.tsx          # 根布局
+```
+- 所有页面必须在 `[locale]/(group)/` 下
+- API 路由不经过 locale 中间件
+- 中间件执行顺序: locale 检测 -> auth 检查
+
+**PBT [PROP-FE-01]**: 路由结构合规性 - 所有页面路径匹配 `app/[locale]/(marketing|portal|admin)/`
+
+### Progress 持久化与轮询降级
+
+**CONSTRAINT [PROGRESS-PERSISTENCE]**: Progress 存储:
+- 独立 `task_progress` 表
+- 字段: task_id, step, status, progress_pct, message, updated_at
+- 每个 WebSocket 进度事件同步写入 DB
+
+**CONSTRAINT [POLLING-FALLBACK]**: 轮询降级策略:
+- WebSocket 断开后自动切换到 REST 轮询
+- 正常轮询间隔: 5 秒
+- 超过预期完成时间后: 2 秒
+- 版本/时间戳检查防止过时更新覆盖
+
+**PBT [PBT-19]**: Progress ��独立性 - 其他表故障不影响 progress 读写
+**PBT [PBT-20]**: 轮询间隔切换 - 超时前 5s，超时后 2s
+**PBT [PROP-FE-02]**: 状态同步一致性 - WS/轮询竞争时高版本胜出
+
+### AI 超时与事务边界
+
+**CONSTRAINT [AI-STEP-TRANSACTION]**: 每个 AI 生成步骤独立事务:
+- 步骤: IDENTITY_RULES -> IDENTITY_LLM -> PHOTO_GENERATION
+- 每步成功后立即提交
+- 超时触发当前步骤回滚 + 清理 partial data
+
+**CONSTRAINT [AI-TIMEOUT-CLEANUP]**: 超时清理策略:
+- 立即清理当前步骤的 partial data
+- 任务重新排队 (计入重试次数)
+- 清理与重排在同一事务中
+
+**PBT [PBT-21]**: 超时清理原子性 - 清理 + 重排同时成功或同时失败
+**PBT [PBT-22]**: 步骤事务隔离 - 步骤失败只回滚当前步骤，不影响已完成步骤
+
+### LLM 降级模板
+
+**CONSTRAINT [LLM-FALLBACK-TEMPLATES]**: 细粒度降级模板:
+- 国籍覆盖: PL (波兰), CN (中国), US (美国), DE (德国)
+- 专业覆盖: Computer Science, Business, Engineering, Medicine
+- 身份类型: International / Local
+- 组合矩阵: 4 国籍 x 4 专业 x 2 身份类型 = 32 个模板
+- 存储位置: config/llm-templates/{nationality}/{major}/{identity_type}.yaml
+
+**PBT [PBT-23]**: 国籍模板覆盖 - PL/CN/US/DE 输入必有匹配模板
+**PBT [PBT-24]**: 专业模板覆盖 - CS/Business/Engineering/Medicine 必有匹配
+**PBT [PBT-25]**: 身份类型隔离 - International 不映射到 Local 模板
+
+### 前端草稿存储
+
+**CONSTRAINT [DRAFT-STORAGE-PRIORITY]**: 草稿存储优先级:
+- localStorage 作为主存储 (每次变更即存)
+- 服务端 24h draft 作为备份 (防抖同步)
+- 冲突解决: 取高精度时间戳较新者
+- localStorage 不可用时 (隐私模式): 仅使用服务端 draft
+
+**PBT [PROP-FE-03]**: 草稿持久化完整性 - localStorage 故障时服务端仍可恢复
 
 ## Open Questions
 

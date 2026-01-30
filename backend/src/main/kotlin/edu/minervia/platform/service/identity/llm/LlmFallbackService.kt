@@ -1,11 +1,12 @@
 package edu.minervia.platform.service.identity.llm
 
+import edu.minervia.platform.domain.enums.IdentityType
 import org.springframework.stereotype.Service
-import kotlin.random.Random
 
 @Service
-class LlmFallbackService {
-
+class LlmFallbackService(
+    private val templateLoader: LlmTemplateLoader
+) {
     private val countryNames = mapOf(
         "PL" to "Polish", "CN" to "Chinese", "US" to "American",
         "DE" to "German", "FR" to "French", "ES" to "Spanish",
@@ -18,35 +19,54 @@ class LlmFallbackService {
         "CS" to "Computer Science", "EE" to "Electrical Engineering",
         "ME" to "Mechanical Engineering", "CE" to "Civil Engineering",
         "BA" to "Business Administration", "EC" to "Economics",
-        "DS" to "Data Science", "IT" to "Information Technology"
+        "DS" to "Data Science", "IT" to "Information Technology",
+        "ENG" to "Engineering", "MED" to "Medicine"
     )
 
-    private val familyTemplates = listOf(
+    private val genericFamilyTemplates = listOf(
         "Raised in a %s household that values education and community. Parents encouraged curiosity and academic effort from an early age.",
         "Coming from a %s cultural background, learned the importance of responsibility and perseverance at home.",
         "Brought up in a %s family that emphasized both practical skills and academic growth."
     )
 
-    private val interestTemplates = listOf(
+    private val genericInterestTemplates = listOf(
         "Interest in %s began through hands-on projects and curiosity about how systems work.",
         "Drawn to %s topics that connect theory with real-world applications.",
         "Curiosity about %s motivates learning beyond coursework."
     )
 
-    private val goalTemplates = listOf(
+    private val genericGoalTemplates = listOf(
         "Aims to build a strong foundation in %s and apply it to meaningful challenges.",
         "Goal is to develop solid %s expertise and graduate with collaborative problem-solving experience.",
         "Plans to deepen %s knowledge and apply it to practical problems in industry or research."
     )
 
+    fun familyBackground(countryCode: String, majorCode: String, identityType: IdentityType): String {
+        return templateLoader.getFamilyBackground(countryCode, majorCode, identityType)
+            ?: genericFamilyTemplates.random().format(resolveCountryName(countryCode))
+    }
+
+    fun interests(countryCode: String, majorCode: String, identityType: IdentityType): String {
+        return templateLoader.getInterests(countryCode, majorCode, identityType)
+            ?: genericInterestTemplates.random().format(resolveMajorName(majorCode))
+    }
+
+    fun academicGoals(countryCode: String, majorCode: String, identityType: IdentityType): String {
+        return templateLoader.getAcademicGoals(countryCode, majorCode, identityType)
+            ?: genericGoalTemplates.random().format(resolveMajorName(majorCode))
+    }
+
+    @Deprecated("Use familyBackground with identityType parameter", ReplaceWith("familyBackground(countryCode, \"CS\", IdentityType.LOCAL)"))
     fun familyBackground(countryCode: String): String =
-        familyTemplates.random().format(resolveCountryName(countryCode))
+        genericFamilyTemplates.random().format(resolveCountryName(countryCode))
 
+    @Deprecated("Use interests with identityType parameter", ReplaceWith("interests(\"PL\", majorCode, IdentityType.LOCAL)"))
     fun interests(majorCode: String): String =
-        interestTemplates.random().format(resolveMajorName(majorCode))
+        genericInterestTemplates.random().format(resolveMajorName(majorCode))
 
+    @Deprecated("Use academicGoals with identityType parameter", ReplaceWith("academicGoals(\"PL\", majorCode, IdentityType.LOCAL)"))
     fun academicGoals(majorCode: String): String =
-        goalTemplates.random().format(resolveMajorName(majorCode))
+        genericGoalTemplates.random().format(resolveMajorName(majorCode))
 
     fun resolveCountryName(countryCode: String): String =
         countryNames[countryCode.uppercase()] ?: "their home country's"

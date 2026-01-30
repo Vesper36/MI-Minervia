@@ -1,6 +1,7 @@
 package edu.minervia.platform.domain.repository
 
 import edu.minervia.platform.domain.entity.Student
+import edu.minervia.platform.domain.enums.IdentityType
 import edu.minervia.platform.domain.enums.StudentStatus
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -24,4 +25,25 @@ interface StudentRepository : JpaRepository<Student, Long>, JpaSpecificationExec
 
     @Query("SELECT COUNT(s) FROM Student s WHERE s.status = :status")
     fun countByStatus(status: StudentStatus): Long
+
+    @Query("""
+        SELECT s FROM Student s
+        WHERE (:query IS NULL OR
+               LOWER(s.firstName) LIKE LOWER(CONCAT('%', :query, '%')) OR
+               LOWER(s.lastName) LIKE LOWER(CONCAT('%', :query, '%')) OR
+               LOWER(s.studentNumber) LIKE LOWER(CONCAT('%', :query, '%')) OR
+               LOWER(s.eduEmail) LIKE LOWER(CONCAT('%', :query, '%')))
+        AND (:status IS NULL OR s.status = :status)
+        AND (:identityType IS NULL OR s.identityType = :identityType)
+        AND (:enrollmentYear IS NULL OR s.enrollmentYear = :enrollmentYear)
+        AND (:countryCode IS NULL OR s.countryCode = :countryCode)
+    """)
+    fun searchStudents(
+        query: String?,
+        status: StudentStatus?,
+        identityType: IdentityType?,
+        enrollmentYear: Int?,
+        countryCode: String?,
+        pageable: Pageable
+    ): Page<Student>
 }

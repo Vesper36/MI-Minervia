@@ -10,14 +10,18 @@ import edu.minervia.platform.domain.repository.StudentFamilyInfoRepository
 import edu.minervia.platform.domain.repository.StudentRepository
 import edu.minervia.platform.service.identity.IdentityGenerationRequest
 import edu.minervia.platform.service.identity.IdentityGenerationService
+import edu.minervia.platform.web.dto.CreateStudentRequest
 import edu.minervia.platform.web.dto.StudentDto
 import edu.minervia.platform.web.dto.StudentListDto
+import edu.minervia.platform.web.dto.StudentSearchCriteria
+import edu.minervia.platform.web.dto.UpdateStudentRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.security.SecureRandom
+import java.time.LocalDate
 
 @Service
 class StudentService(
@@ -79,6 +83,62 @@ class StudentService(
         return savedStudent.toDto()
     }
 
+    @Transactional
+    fun createStudent(request: CreateStudentRequest): StudentDto {
+        val enrollmentYear = request.enrollmentYear ?: LocalDate.now().year
+        val majorCode = getMajorCode(request.majorId)
+
+        val identityRequest = IdentityGenerationRequest(
+            identityType = request.identityType,
+            countryCode = request.countryCode,
+            majorCode = majorCode,
+            enrollmentYear = enrollmentYear
+        )
+
+        val identity = identityGenerationService.generateIdentity(identityRequest)
+        val eduEmail = "${identity.studentNumber.lowercase()}@minervia.edu"
+        val tempPassword = generateTempPassword()
+
+        val student = Student(
+            studentNumber = identity.studentNumber,
+            eduEmail = eduEmail,
+            passwordHash = passwordEncoder.encode(tempPassword),
+            firstName = request.firstName,
+            lastName = request.lastName,
+            birthDate = LocalDate.parse(request.birthDate),
+            identityType = request.identityType,
+            countryCode = request.countryCode,
+            majorId = request.majorId,
+            classId = request.classId,
+            enrollmentYear = enrollmentYear,
+            enrollmentDate = identity.enrollmentDate,
+            admissionDate = identity.admissionDate,
+            dailyEmailLimit = request.dailyEmailLimit,
+            generationSeed = identity.generationSeed,
+            generationVersion = identity.generationVersion
+        )
+
+        return studentRepository.save(student).toDto()
+    }
+
+    @Transactional
+    fun updateStudent(id: Long, request: UpdateStudentRequest): StudentDto {
+        val student = studentRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Student not found") }
+
+        request.firstName?.let { student.firstName = it }
+        request.lastName?.let { student.lastName = it }
+        request.majorId?.let { student.majorId = it }
+        request.classId?.let { student.classId = it }
+        request.dailyEmailLimit?.let { student.dailyEmailLimit = it }
+        request.photoUrl?.let { student.photoUrl = it }
+        request.familyBackground?.let { student.familyBackground = it }
+        request.interests?.let { student.interests = it }
+        request.academicGoals?.let { student.academicGoals = it }
+
+        return studentRepository.save(student).toDto()
+    }
+
     fun getStudentById(id: Long): StudentDto {
         return studentRepository.findById(id)
             .orElseThrow { NoSuchElementException("Student not found") }
@@ -97,6 +157,17 @@ class StudentService(
 
     fun getStudentsByStatus(status: StudentStatus, pageable: Pageable): Page<StudentListDto> {
         return studentRepository.findAllByStatus(status, pageable).map { it.toListDto() }
+    }
+
+    fun searchStudents(criteria: StudentSearchCriteria, pageable: Pageable): Page<StudentListDto> {
+        return studentRepository.searchStudents(
+            query = criteria.query,
+            status = criteria.status,
+            identityType = criteria.identityType,
+            enrollmentYear = criteria.enrollmentYear,
+            countryCode = criteria.countryCode,
+            pageable = pageable
+        ).map { it.toListDto() }
     }
 
     @Transactional
