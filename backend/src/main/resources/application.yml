@@ -50,6 +50,13 @@ app:
     expiration: 3600000  # 1 hour in milliseconds
     # Set to true to enforce JWT secret validation on startup (recommended for production)
     require-secret: ${JWT_REQUIRE_SECRET:false}
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com}
+      model: ${OPENAI_MODEL:gpt-4o-mini}
+      temperature: ${OPENAI_TEMPERATURE:0.7}
+      max-tokens: ${OPENAI_MAX_TOKENS:220}
   registration:
     code-expiration-days: 30
     email-rate-limit: 5
