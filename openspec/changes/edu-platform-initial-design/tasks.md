@@ -6,7 +6,7 @@
 - [x] 配置 MySQL 数据库连接和基础表结构
 - [x] 配置 Redis 缓存连接
 - [x] 搭建 Docker Compose 开发环境
-- [ ] 配置 CI/CD 基础流程 (lint/test/build)
+- [x] 配置 CI/CD 基础流程 (lint/test/build)
 
 ## Phase 1: 核心实体和数据模型
 - [x] 设计并实现学生(Student)实体和表结构
@@ -123,13 +123,28 @@
 - [ ] 实现告警机制 (批量封禁/异常登录/配置修改)
 
 ## Phase 7: 异步任务系统
-- [ ] 配置 Kafka 消息队列
-- [ ] 实现事务性 Outbox 模式（批准事务+outbox表+轮询发送）
-- [ ] 实现身份生成异步任务（幂等处理，applicationId为去重键）
-- [ ] 实现 Spring WebSocket/STOMP 实时进度推送
+### 7.1 Kafka 配置 (CONSTRAINT: KAFKA-PARTITION-KEY, KAFKA-TOPIC-CONFIG)
+- [ ] 配置 Kafka broker 连接 (partitions=6, replication=3, retention=7天)
+- [ ] 实现 applicationId 分区键策略
+- [ ] 创建主题: registration-tasks, progress-events
+
+### 7.2 Outbox 模式 (CONSTRAINT: OUTBOX-POLLER-CONFIG)
+- [ ] 创建 outbox 表和 outbox_dead_letter 表
+- [ ] 实现事务性 Outbox 插入 (批准事务内)
+- [ ] 实现轮询服务 (间隔1s, 批量500, 指数退避1s-60s)
+- [ ] 实现死信处理 (>10次移入 dead_letter)
+
+### 7.3 STOMP WebSocket (CONSTRAINT: STOMP-SIMPLE-BROKER)
+- [ ] 配置 Spring SimpleBroker (内存模式)
+- [ ] 实现 WebSocket JWT 握手认证
+- [ ] 实现进度订阅端点 /topic/applications/{id}/progress
 - [ ] 实现状态轮询降级端点 GET /api/applications/{id}/status
+
+### 7.4 任务执行
+- [ ] 实现身份生成异步任务 (幂等: applicationId去重)
 - [ ] 实现任务状态管理 (PENDING/GENERATING_IDENTITY/GENERATING_PHOTOS/COMPLETED/FAILED)
-- [ ] 实现失败重试机制 (3次指数退避)
+- [ ] 实现 AI 生成超时控制 (LLM=60s, 照片=180s, 总时长=300s)
+- [ ] 实现失败重试机制 (3次指数退避1s-8s+抖动)
 
 ## Phase 8: 前端 - 管理后台
 - [ ] 实现管理员登录页面
@@ -154,8 +169,44 @@
 - [ ] 翻译注册流程文案
 
 ## Phase 11: 测试和文档
+### 11.1 后端测试
 - [ ] 编写后端单元测试 (JUnit 5)
 - [ ] 编写后端集成测试
-- [ ] 编写前端组件测试 (Vitest)
 - [ ] 编写 API 文档 (OpenAPI/Swagger)
 - [ ] 编写部署文档
+
+### 11.2 PBT 测试 (Property-Based Testing)
+- [ ] PBT-01: 学号唯一性和格式测试
+- [ ] PBT-02: 年龄/时间线一致性测试
+- [ ] PBT-03: 姓名/国籍匹配测试
+- [ ] PBT-04: 状态转换顺序性测试
+- [ ] PBT-05: 限流阈值边界测试
+- [ ] PBT-06: 注册码消费原子性测试 (并发声明)
+- [ ] PBT-07: 任务幂等性测试 (重复投递)
+- [ ] PBT-08: 进度单调性测试
+- [ ] PBT-09: 重试边界测试
+- [ ] PBT-10: 审计日志不可变性测试
+- [ ] PBT-11: 时间戳单调性测试
+- [ ] PBT-12: Kafka分区键一致性测试
+- [ ] PBT-13: SimpleBroker无持久化测试
+- [ ] PBT-14: JWT无吊销验证测试
+- [ ] PBT-15: 限流降级一致性测试
+
+### 11.3 前端测试
+- [ ] 编写前端组件测试 (Vitest)
+
+## Phase 12: 限流降级模块 (CONSTRAINT: RATE-LIMIT-MYSQL-FALLBACK)
+- [ ] 创建 rate_limits 表 (limit_key, count, window_start, window_seconds)
+- [ ] 实现 RateLimitService 抽象接口
+- [ ] 实现 RedisRateLimitService (主实现)
+- [ ] 实现 MySQLRateLimitService (降级实现)
+- [ ] 实现健康检查和自动切换逻辑
+- [ ] 实现定时清理过期记录任务 (每小时)
+
+## Phase 13: 邮件退信处理 (CONSTRAINT: EMAIL-BOUNCE-HANDLING)
+- [ ] 创建 email_suppression 表
+- [ ] 实现 SMTP Webhook 处理 (SendGrid/Mailgun bounce callback)
+- [ ] 实现硬退信处理 (立即 suppress)
+- [ ] 实现软退信重试逻辑 (72h/5次)
+- [ ] 实现投诉处理 (spam report -> suppress)
+- [ ] 管理员手动解除 suppress API
