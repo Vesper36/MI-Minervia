@@ -119,41 +119,41 @@
 - [x] 实现注册统计 API
 
 ## Phase 6: 审计日志模块 (audit-logging)
-- [ ] 实现审计日志记录服务 (异步队列)
-- [ ] 实现审计日志查询 API (时间/类型/操作人/对象)
-- [ ] 实现审计日志导出 API (CSV/JSON)
-- [ ] 实现审计日志完整性校验 (哈希)
+- [x] 实现审计日志记录服务 (异步队列)
+- [x] 实现审计日志查询 API (时间/类型/操作人/对象)
+- [x] 实现审计日志导出 API (CSV/JSON)
+- [x] 实现审计日志完整性校验 (哈希)
 - [ ] 实现审计日志保留策略 (5年)
 - [ ] 实现 Elasticsearch 同步
-- [ ] 实现告警机制 (批量封禁/异常登录/配置修改)
+- [x] 实现告警机制 (批量封禁/异常登录/配置修改)
 
 ## Phase 7: 异步任务系统
 ### 7.1 Kafka 配置 (CONSTRAINT: KAFKA-PARTITION-KEY, KAFKA-TOPIC-CONFIG)
-- [ ] 配置 Kafka broker 连接 (partitions=6, replication=3, retention=7天)
-- [ ] 实现 applicationId 分区键策略
-- [ ] 创建主题: registration-tasks, progress-events
+- [x] 配置 Kafka broker 连接 (partitions=6, replication=3, retention=7天)
+- [x] 实现 applicationId 分区键策略
+- [x] 创建主题: registration-tasks, progress-events
 
 ### 7.2 Outbox 模式 (CONSTRAINT: OUTBOX-POLLER-CONFIG)
-- [ ] 创建 outbox 表和 outbox_dead_letter 表
-- [ ] 实现事务性 Outbox 插入 (批准事务内)
-- [ ] 实现轮询服务 (间隔1s, 批量500, 指数退避1s-60s)
-- [ ] 实现死信处理 (>10次移入 dead_letter)
+- [x] 创建 outbox 表和 outbox_dead_letter 表
+- [x] 实现事务性 Outbox 插入 (批准事务内)
+- [x] 实现轮询服务 (间隔1s, 批量500, 指数退避1s-60s)
+- [x] 实现死信处理 (>10次移入 dead_letter)
 
 ### 7.3 STOMP WebSocket (CONSTRAINT: STOMP-SIMPLE-BROKER)
-- [ ] 配置 Spring SimpleBroker (内存模式)
-- [ ] 实现 WebSocket JWT 握手认证
-- [ ] 实现进度订阅端点 /topic/applications/{id}/progress
-- [ ] 实现状态轮询降级端点 GET /api/applications/{id}/status
-- [ ] 创建 task_progress 表 (独立持久化) [NEW]
-- [ ] 实现 progress 事件同步写入 DB [NEW]
-- [ ] 实现版本/时间戳检查防止过时更新 [NEW]
+- [x] 配置 Spring SimpleBroker (内存模式)
+- [x] 实现 WebSocket JWT 握手认证
+- [x] 实现进度订阅端点 /topic/applications/{id}/progress
+- [x] 实现状态轮询降级端点 GET /api/applications/{id}/status
+- [x] 创建 task_progress 表 (独立持久化) [NEW]
+- [x] 实现 progress 事件同步写入 DB [NEW]
+- [x] 实现版本/时间戳检查防止过时更新 [NEW]
 
 ### 7.4 任务执行
-- [ ] 实现身份生成异步任务 (幂等: applicationId去重)
-- [ ] 实现任务状态管理 (PENDING/GENERATING_IDENTITY/GENERATING_PHOTOS/COMPLETED/FAILED)
-- [ ] 实现 AI 生成超时控制 (LLM=60s, 照片=180s, 总时长=300s)
-- [ ] 实现失败重试机制 (3次指数退避1s-8s+抖动)
-- [ ] 实现每步独立事务 (IDENTITY_RULES/IDENTITY_LLM/PHOTO_GENERATION) [NEW]
+- [x] 实现身份生成异步任务 (幂等: applicationId去重)
+- [x] 实现任务状态管理 (PENDING/GENERATING_IDENTITY/GENERATING_PHOTOS/COMPLETED/FAILED)
+- [x] 实现 AI 生成超时控制 (LLM=60s, 照片=180s, 总时长=300s)
+- [x] 实现失败重试机制 (3次指数退避1s-8s+抖动)
+- [x] 实现每步独立事务 (IDENTITY_RULES/IDENTITY_LLM/PHOTO_GENERATION) [NEW]
 - [ ] 实现超时清理 + 重排机制 [NEW]
 
 ## Phase 8: 前端 - 管理后台

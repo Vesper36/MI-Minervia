@@ -1,0 +1,60 @@
+{
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "backend/src/main/kotlin/edu/minervia/platform/service/audit/AuditLogQueryService.kt",
+      "line": 86,
+      "issue": "Memory exhaustion risk in statistics calculation. The method `getStatsSummary` loads all `AuditLog` entities into memory to perform grouping and counting.",
+      "recommendation": "Replace in-memory aggregation with JPQL/SQL projections (e.g., `SELECT eventType, COUNT(a) FROM AuditLog a GROUP BY eventType`). Never load full entity lists for aggregation."
+    },
+    {
+      "severity": "critical",
+      "file": "backend/src/main/kotlin/edu/minervia/platform/service/audit/AuditIntegrityService.kt",
+      "line": 49,
+      "issue": "Memory exhaustion risk in scheduled integrity check. `findAllByCreatedAtBetween` loads 24 hours of logs into memory at once.",
+      "recommendation": "Implement pagination or streaming (e.g., `Slice` or `Stream`) to process logs in chunks (e.g., batches of 1000) to keep memory usage constant regardless of log volume."
+    },
+    {
+      "severity": "high",
+      "file": "backend/src/main/kotlin/edu/minervia/platform/service/audit/AuditAlertService.kt",
+      "line": 40,
+      "issue": "Inefficient data access in alert checks. `checkBulkBanOperations` loads all ban entities to count them.",
+      "recommendation": "Use `countBy...` repository methods or JPQL queries to check if the threshold is met without fetching the actual entities."
+    },
+    {
+      "severity": "high",
+      "file": "backend/src/main/kotlin/edu/minervia/platform/web/controller/AuditLogController.kt",
+      "line": 86,
+      "issue": "Memory hazard in export endpoint. `exportLogs` loads the full dataset into a List before serialization.",
+      "recommendation": "Refactor to write to the `HttpServletResponse` output stream incrementally using a `Stream<AuditLog>` or pagination, avoiding holding the full list in memory."
+    },
+    {
+      "severity": "medium",
+      "file": "backend/src/main/kotlin/edu/minervia/platform/service/audit/AuditLogService.kt",
+      "line": 68,
+      "issue": "Redundant asynchronous wrapping. The method is annotated with `@Async` but also wraps logic in `CompletableFuture.supplyAsync`. This causes unnecessary thread pool hopping.",
+      "recommendation": "Remove `CompletableFuture.supplyAsync`. The `@Async` annotation already ensures execution in a separate thread. Return `CompletableFuture.completedFuture(...)` inside the body."
+    },
+    {
+      "severity": "medium",
+      "file": "backend/src/main/kotlin/edu/minervia/platform/service/audit/AuditLogService.kt",
+      "line": 95,
+      "issue": "Double-write pattern (Save -> Calculate Hash with ID -> Save again). This doubles the DB write IO for every log.",
+      "recommendation": "Consider generating the ID (e.g., TSID or UUID) in the application layer before the first save, allowing a single save operation with the hash pre-calculated."
+    },
+    {
+      "severity": "low",
+      "file": "backend/src/main/kotlin/edu/minervia/platform/service/audit/AuditLogQueryService.kt",
+      "line": 63,
+      "issue": "Manual CSV generation is fragile.",
+      "recommendation": "Use a robust CSV library (e.g., Apache Commons CSV) to handle edge cases in escaping and delimiters reliably."
+    },
+    {
+      "severity": "low",
+      "file": "backend/src/main/kotlin/edu/minervia/platform/service/async/RegistrationTaskConsumer.kt",
+      "line": 159,
+      "issue": "Blocking retry logic (`Thread.sleep`) in Kafka consumer.",
+      "recommendation": "For longer backoffs, this blocks the consumer thread partition. If backoffs exceed a few seconds, consider rescheduling via a 'retry topic' or using Spring Retry's stateful backoff."
+    }
+  ]
+}

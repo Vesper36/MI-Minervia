@@ -163,6 +163,19 @@ class JwtService(private val jwtProperties: JwtProperties) {
         }
     }
 
+    /**
+     * Validate access token and return claims for WebSocket authentication.
+     * @throws JwtException if token is invalid
+     */
+    fun validateAccessToken(token: String): Claims {
+        val jws = parseToken(token)
+        val tokenType = jws.payload.get("type", String::class.java)
+        if (tokenType != TokenType.ACCESS.name) {
+            throw JwtException("Not an access token")
+        }
+        return jws.payload
+    }
+
     private fun parseToken(token: String): Jws<Claims> {
         return Jwts.parser()
             .verifyWith(secretKey)
