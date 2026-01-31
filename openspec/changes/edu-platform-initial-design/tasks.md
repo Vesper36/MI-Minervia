@@ -200,23 +200,23 @@
 - [x] PBT-09: 重试边界测试
 - [x] PBT-10: 审计日志不可变性测试
 - [x] PBT-11: 时间戳单调性测试
-- [ ] PBT-12: Kafka分区键一致性测试
-- [ ] PBT-13: SimpleBroker无持久化测试
-- [ ] PBT-14: JWT无吊销验证测试
+- [x] PBT-12: Kafka分区键一致性测试
+- [x] PBT-13: SimpleBroker无持久化测试
+- [x] PBT-14: JWT无吊销验证测试
 - [x] PBT-15: 限流降级一致性测试
 - [x] PBT-16: JWT Access Token 30min 边界测试 [NEW]
 - [x] PBT-17: JWT Refresh Token 14d 边界测试 [NEW]
-- [ ] PBT-18: JWT 吊销列表隔离性测试 [NEW]
-- [ ] PBT-19: Progress 表独立性测试 [NEW]
-- [ ] PBT-20: 轮询间隔切换测试 [NEW]
-- [ ] PBT-21: AI 超时清理原子性测试 [NEW]
-- [ ] PBT-22: AI 步骤事务隔离测试 [NEW]
-- [ ] PBT-23: LLM 国籍模板覆盖测试 [NEW]
-- [ ] PBT-24: LLM 专业模板覆盖测试 [NEW]
-- [ ] PBT-25: LLM 身份类型隔离测试 [NEW]
+- [x] PBT-18: JWT 吊销列表隔离性测试 [NEW]
+- [x] PBT-19: Progress 表独立性测试 [NEW]
+- [x] PBT-20: 轮询间隔切换测试 [NEW]
+- [x] PBT-21: AI 超时清理原子性测试 [NEW]
+- [x] PBT-22: AI 步骤事务隔离测试 [NEW]
+- [x] PBT-23: LLM 国籍模板覆盖测试 [NEW]
+- [x] PBT-24: LLM 专业模板覆盖测试 [NEW]
+- [x] PBT-25: LLM 身份类型隔离测试 [NEW]
 
 ### 11.3 前端测试
-- [ ] 编写前端组件测试 (Vitest)
+- [x] 编写前端组件测试 (Vitest)
 
 ## Phase 12: 限流降级模块 (CONSTRAINT: RATE-LIMIT-MYSQL-FALLBACK)
 - [x] 创建 rate_limits 表 (limit_key, count, window_start, window_seconds)
