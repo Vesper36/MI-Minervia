@@ -10,11 +10,13 @@ import edu.minervia.platform.domain.repository.StudentFamilyInfoRepository
 import edu.minervia.platform.domain.repository.StudentRepository
 import edu.minervia.platform.service.identity.IdentityGenerationRequest
 import edu.minervia.platform.service.identity.IdentityGenerationService
+import edu.minervia.platform.service.email.EmailService
 import edu.minervia.platform.web.dto.CreateStudentRequest
 import edu.minervia.platform.web.dto.StudentDto
 import edu.minervia.platform.web.dto.StudentListDto
 import edu.minervia.platform.web.dto.StudentSearchCriteria
 import edu.minervia.platform.web.dto.UpdateStudentRequest
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -29,8 +31,11 @@ class StudentService(
     private val studentFamilyInfoRepository: StudentFamilyInfoRepository,
     private val registrationApplicationRepository: RegistrationApplicationRepository,
     private val identityGenerationService: IdentityGenerationService,
+    private val majorService: MajorService,
+    private val emailService: EmailService,
     private val passwordEncoder: PasswordEncoder
 ) {
+    private val log = LoggerFactory.getLogger(StudentService::class.java)
     private val random = SecureRandom()
 
     @Transactional
@@ -78,7 +83,7 @@ class StudentService(
         application.status = ApplicationStatus.COMPLETED
         registrationApplicationRepository.save(application)
 
-        // TODO: Send welcome email with temp password
+        sendWelcomeEmailIfNeeded(savedStudent, application.externalEmail, tempPassword)
 
         return savedStudent.toDto()
     }
@@ -202,13 +207,42 @@ class StudentService(
     }
 
     private fun getMajorCode(majorId: Long?): String {
-        // TODO: Lookup from major table
-        return "CS"
+        return majorId?.let { majorService.getCodeById(it) } ?: MajorService.DEFAULT_MAJOR_CODE
     }
 
     private fun generateTempPassword(): String {
         val chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#"
         return (1..12).map { chars[random.nextInt(chars.length)] }.joinToString("")
+    }
+
+    private fun sendWelcomeEmailIfNeeded(student: Student, externalEmail: String, tempPassword: String) {
+        if (student.welcomeEmailSentAt != null) {
+            log.info("Welcome email already sent for student {}", student.studentNumber)
+            return
+        }
+
+        val locale = mapCountryToLocale(student.countryCode)
+        val result = emailService.sendWelcomeEmail(
+            to = externalEmail,
+            studentName = student.fullName,
+            eduEmail = student.eduEmail,
+            tempPassword = tempPassword,
+            locale = locale
+        )
+
+        if (result.success) {
+            student.welcomeEmailSentAt = java.time.Instant.now()
+            studentRepository.save(student)
+            log.info("Welcome email sent for student {}", student.studentNumber)
+        } else {
+            log.warn("Failed to send welcome email for student {}: {}", student.studentNumber, result.errorMessage)
+        }
+    }
+
+    private fun mapCountryToLocale(countryCode: String): String = when (countryCode.uppercase()) {
+        "PL" -> "pl"
+        "CN" -> "zh-CN"
+        else -> "en"
     }
 
     private fun Student.toDto() = StudentDto(

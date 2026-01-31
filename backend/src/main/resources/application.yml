@@ -85,3 +85,9 @@ app:
       mailgun-signing-key: ${MAILGUN_WEBHOOK_SIGNING_KEY:}
       sendgrid-public-key: ${SENDGRID_WEBHOOK_PUBLIC_KEY:}
       signature-tolerance-seconds: ${EMAIL_WEBHOOK_SIGNATURE_TOLERANCE_SECONDS:600}
+  websocket:
+    allowed-origins:
+      - "http://localhost:*"
+      - "https://localhost:*"
+    endpoint: /ws
+    enable-sock-js: true

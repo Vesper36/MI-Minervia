@@ -1,4 +1,72 @@
 {
+  "Marketing": {
+    "nav": {
+      "home": "Strona Główna",
+      "about": "O Nas",
+      "programs": "Kierunki",
+      "admissions": "Rekrutacja",
+      "login": "Logowanie Studenta",
+      "admin": "Portal Administratora"
+    },
+    "footer": {
+      "contact": "Kontakt",
+      "address": "ul. Edukacyjna 123, Miasto Wiedzy",
+      "email": "kontakt@minervia.edu",
+      "phone": "+48 123 456 789",
+      "copyright": "© {year} Minervia Institute. Wszelkie prawa zastrzeżone."
+    },
+    "home": {
+      "title": "Witamy w Minervia Institute",
+      "description": "Wspieranie kolejnego pokolenia liderów poprzez doskonałość w edukacji.",
+      "heroTitle": "Kształtuj Swoją Przyszłość z Minervia",
+      "heroDescription": "Edukacja światowej klasy dla globalnej społeczności.",
+      "cta": "Aplikuj Teraz",
+      "features": {
+        "title": "Dlaczego Minervia?",
+        "1": {
+          "title": "Ekspercka Kadra",
+          "description": "Ucz się od liderów branży i wybitnych profesorów."
+        },
+        "2": {
+          "title": "Globalna Społeczność",
+          "description": "Nawiąż kontakt ze studentami z ponad 50 krajów."
+        },
+        "3": {
+          "title": "Nowoczesny Kampus",
+          "description": "Najnowocześniejsze udogodnienia do nauki i innowacji."
+        }
+      }
+    },
+    "about": {
+      "title": "O Nas",
+      "description": "Poznaj naszą historię, misję i wartości.",
+      "mission": "Nasza Misja",
+      "missionText": "Zapewnienie dostępnej, wysokiej jakości edukacji studentom na całym świecie.",
+      "vision": "Nasza Wizja",
+      "visionText": "Być globalnym liderem w innowacjach edukacyjnych i sukcesach studentów."
+    },
+    "programs": {
+      "title": "Programy Akademickie",
+      "description": "Poznaj naszą różnorodną ofertę studiów licencjackich i magisterskich.",
+      "cs": "Informatyka",
+      "csAbbrev": "INF",
+      "business": "Administracja Biznesu",
+      "businessAbbrev": "AB",
+      "engineering": "Inżynieria",
+      "engineeringAbbrev": "INZ",
+      "medicine": "Medycyna",
+      "medicineAbbrev": "MED"
+    },
+    "admissions": {
+      "title": "Rekrutacja",
+      "description": "Rozpocznij swoją podróż w Minervia Institute.",
+      "apply": "Jak Aplikować",
+      "step1": "Uzyskaj Kod Rejestracyjny",
+      "step2": "Wypełnij Aplikację Online",
+      "step3": "Prześlij Dokumenty",
+      "cta": "Rozpocznij Aplikację"
+    }
+  },
   "Register": {
     "pageTitle": "Rejestracja Studenta",
     "pageDescription": "Wypelnij proces rejestracji, aby dolaczyc do Minervia Institute.",
@@ -117,6 +185,57 @@
       "loading": "Ladowanie...",
       "noData": "Brak danych",
       "error": "Wystapil blad"
+    }
+  },
+  "Portal": {
+    "sidebar": {
+      "title": "Portal Studenta",
+      "dashboard": "Panel",
+      "profile": "Profil",
+      "courses": "Kursy",
+      "logout": "Wyloguj"
+    },
+    "login": {
+      "title": "Logowanie Studenta",
+      "description": "Zaloguj sie, aby uzyskac dostep do portalu studenta.",
+      "email": "Email",
+      "emailPlaceholder": "twoj.email@minervia.edu",
+      "password": "Haslo",
+      "passwordPlaceholder": "Wprowadz haslo",
+      "submit": "Zaloguj",
+      "loading": "Logowanie...",
+      "error": "Nieprawidlowy email lub haslo",
+      "registerLink": "Nie masz konta? Zarejestruj sie tutaj"
+    },
+    "dashboard": {
+      "welcome": "Witaj, {name}!",
+      "subtitle": "Oto przeglad Twojego konta studenckiego.",
+      "cards": {
+        "profile": "Profil",
+        "studentId": "Numer Studenta",
+        "courses": "Kursy",
+        "enrolled": "Zapisane",
+        "status": "Status",
+        "active": "Aktywny",
+        "enrollment": "Status Zapisu"
+      }
+    },
+    "profile": {
+      "title": "Moj Profil",
+      "subtitle": "Zobacz swoje dane osobowe.",
+      "personalInfo": "Dane Osobowe",
+      "fields": {
+        "studentId": "Numer Studenta",
+        "firstName": "Imie",
+        "lastName": "Nazwisko",
+        "email": "Email"
+      }
+    },
+    "courses": {
+      "title": "Moje Kursy",
+      "subtitle": "Zobacz zapisane kursy i oceny.",
+      "enrolled": "Zapisane Kursy",
+      "noCourses": "Nie jestes jeszcze zapisany na zadne kursy."
     }
   },
   "Common": {

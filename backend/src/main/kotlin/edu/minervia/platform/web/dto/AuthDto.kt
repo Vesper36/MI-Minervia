@@ -60,3 +60,33 @@ data class ApiResponse<T>(
         )
     }
 }
+
+data class StudentLoginRequest(
+    @field:NotBlank(message = "Email or student number is required")
+    val email: String,
+
+    @field:NotBlank(message = "Password is required")
+    val password: String
+)
+
+data class StudentLoginResponse(
+    val accessToken: String,
+    val refreshToken: String,
+    val accessExpiresIn: Long,
+    val refreshExpiresIn: Long,
+    val studentNumber: String,
+    val fullName: String,
+    val eduEmail: String
+)
+
+data class StudentRefreshTokenRequest(
+    @field:NotBlank(message = "Refresh token is required")
+    val refreshToken: String
+)
+
+data class StudentRefreshTokenResponse(
+    val accessToken: String,
+    val refreshToken: String,
+    val accessExpiresIn: Long,
+    val refreshExpiresIn: Long
+)

@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+  jpa:
+    show-sql: false
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
+
+logging:
+  level:
+    edu.minervia: INFO
+    org.springframework.security: WARN
+
+app:
+  jwt:
+    require-secret: true
+  websocket:
+    allowed-origins:
+      - "https://minervia.edu.pl"
+      - "https://www.minervia.edu.pl"
+      - "https://admin.minervia.edu.pl"
+      - "https://portal.minervia.edu.pl"
+    endpoint: /ws
+    enable-sock-js: true

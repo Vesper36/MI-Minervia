@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Minervia Institute</title>
+</head>
+<body style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9fafb;">
+    <div style="background: white; border-radius: 8px; padding: 32px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <div style="text-align: center; margin-bottom: 24px;">
+            <h1 style="color: #1e40af; margin: 0;">Minervia Institute</h1>
+            <p style="color: #6b7280; margin-top: 4px;">Educational Excellence Since 1892</p>
+        </div>
+
+        <h2 style="color: #111827; margin-bottom: 16px;">Welcome, {{studentName}}!</h2>
+
+        <p style="color: #374151; line-height: 1.6;">
+            Congratulations! Your student account has been successfully created at Minervia Institute.
+        </p>
+
+        <div style="background: #f0fdf4; border: 1px solid #22c55e; border-radius: 8px; padding: 20px; margin: 24px 0;">
+            <h3 style="color: #166534; margin: 0 0 12px 0;">Your Account Details</h3>
+            <p style="margin: 8px 0; color: #374151;">
+                <strong>EDU Email:</strong> {{eduEmail}}
+            </p>
+            <p style="margin: 8px 0; color: #374151;">
+                <strong>Temporary Password:</strong>
+                <code style="background: #fef3c7; padding: 4px 8px; border-radius: 4px; font-family: monospace;">{{tempPassword}}</code>
+            </p>
+        </div>
+
+        <div style="background: #fef3c7; border-radius: 8px; padding: 16px; margin: 24px 0;">
+            <p style="color: #92400e; margin: 0; font-size: 14px;">
+                <strong>Important:</strong> Please change your password immediately after your first login for security purposes.
+            </p>
+        </div>
+
+        <p style="color: #374151; line-height: 1.6;">
+            You can now access the student portal to view your profile, courses, and academic information.
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+
+        <p style="color: #9ca3af; font-size: 12px; text-align: center;">
+            This is a simulated educational platform for testing and demonstration purposes only.
+            <br>Do not use for official academic credentials.
+        </p>
+    </div>
+</body>
+</html>

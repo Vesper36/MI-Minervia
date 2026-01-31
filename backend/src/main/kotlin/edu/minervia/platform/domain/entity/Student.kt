@@ -80,6 +80,9 @@ class Student(
     @Column(name = "generation_version", length = 20)
     val generationVersion: String? = null,
 
+    @Column(name = "welcome_email_sent_at")
+    var welcomeEmailSentAt: Instant? = null,
+
     @Column(name = "photo_url", length = 500)
     var photoUrl: String? = null,
 

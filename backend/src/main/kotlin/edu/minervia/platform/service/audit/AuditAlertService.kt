@@ -17,7 +17,8 @@ import java.time.Instant
  */
 @Service
 class AuditAlertService(
-    private val auditLogRepository: AuditLogRepository
+    private val auditLogRepository: AuditLogRepository,
+    private val alertNotificationService: AlertNotificationService
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -83,12 +84,12 @@ class AuditAlertService(
         log.error("ALERT: Bulk ban detected - Admin {} ({}) banned {} students in {} hour(s)",
             actorUsername, actorId, banCount, BULK_BAN_WINDOW_HOURS)
 
-        // In production, would send email/Slack notification to super admins
-        // For now, just log as error
         notifySuperAdmins(
             alertType = AlertType.BULK_BAN,
             message = "Admin $actorUsername banned $banCount students in the last $BULK_BAN_WINDOW_HOURS hour(s)",
-            severity = AlertSeverity.HIGH
+            severity = AlertSeverity.HIGH,
+            actorId = actorId,
+            actorUsername = actorUsername
         )
     }
 
@@ -102,7 +103,9 @@ class AuditAlertService(
         notifySuperAdmins(
             alertType = AlertType.ANOMALOUS_LOGIN,
             message = "Admin $actorUsername logged in from ${uniqueIps.size} different IPs: ${uniqueIps.joinToString()}",
-            severity = AlertSeverity.MEDIUM
+            severity = AlertSeverity.MEDIUM,
+            actorId = actorId,
+            actorUsername = actorUsername
         )
     }
 
@@ -138,20 +141,26 @@ class AuditAlertService(
      * Placeholder for notification mechanism.
      * In production, would send to email/Slack/PagerDuty.
      */
-    private fun notifySuperAdmins(alertType: AlertType, message: String, severity: AlertSeverity) {
-        // TODO: Implement actual notification
-        // - Email to super admin list
-        // - Slack webhook
-        // - PagerDuty for CRITICAL alerts
+    private fun notifySuperAdmins(
+        alertType: AlertType,
+        message: String,
+        severity: AlertSeverity,
+        actorId: Long? = null,
+        actorUsername: String? = null
+    ) {
+        val result = alertNotificationService.sendAlert(
+            alertType = alertType,
+            severity = severity,
+            message = message,
+            actorId = actorId,
+            actorUsername = actorUsername
+        )
 
-        val logLevel = when (severity) {
-            AlertSeverity.CRITICAL -> "CRITICAL"
-            AlertSeverity.HIGH -> "HIGH"
-            AlertSeverity.MEDIUM -> "MEDIUM"
-            AlertSeverity.LOW -> "LOW"
+        if (result.deduplicated) {
+            log.debug("Alert {} deduplicated for actor {}", alertType, actorId)
+        } else if (!result.success) {
+            log.error("Failed to send alert {}: {}", alertType, result.errorMessage)
         }
-
-        log.warn("[{}] [{}] {}", logLevel, alertType, message)
     }
 }
 

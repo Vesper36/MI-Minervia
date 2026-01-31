@@ -42,6 +42,9 @@ class RegistrationApplication(
     @Column(name = "rejection_reason", columnDefinition = "TEXT")
     var rejectionReason: String? = null,
 
+    @Column(name = "rejection_email_sent_at")
+    var rejectionEmailSentAt: Instant? = null,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approved_by")
     var approvedBy: Admin? = null,

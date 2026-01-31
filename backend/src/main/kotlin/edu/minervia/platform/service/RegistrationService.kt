@@ -8,9 +8,12 @@ import edu.minervia.platform.domain.repository.AdminRepository
 import edu.minervia.platform.domain.repository.RegistrationApplicationRepository
 import edu.minervia.platform.domain.repository.RegistrationCodeRepository
 import edu.minervia.platform.domain.repository.SystemConfigRepository
+import edu.minervia.platform.service.async.RegistrationTaskPublisher
+import edu.minervia.platform.service.email.EmailService
 import edu.minervia.platform.web.dto.RegistrationApplicationDto
 import edu.minervia.platform.web.dto.StartRegistrationRequest
 import edu.minervia.platform.web.dto.UpdateRegistrationInfoRequest
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -24,8 +27,11 @@ class RegistrationService(
     private val registrationCodeRepository: RegistrationCodeRepository,
     private val registrationCodeService: RegistrationCodeService,
     private val adminRepository: AdminRepository,
-    private val systemConfigRepository: SystemConfigRepository
+    private val systemConfigRepository: SystemConfigRepository,
+    private val emailService: EmailService,
+    private val taskPublisher: RegistrationTaskPublisher
 ) {
+    private val log = LoggerFactory.getLogger(RegistrationService::class.java)
 
     @Transactional
     fun startRegistration(
@@ -145,10 +151,12 @@ class RegistrationService(
         application.approvedBy = admin
         application.approvedAt = Instant.now()
 
-        // TODO: Trigger async identity generation task
         application.status = ApplicationStatus.GENERATING
+        val savedApplication = registrationApplicationRepository.save(application)
 
-        return registrationApplicationRepository.save(application).toDto()
+        taskPublisher.publishRegistrationTask(savedApplication)
+
+        return savedApplication.toDto()
     }
 
     @Transactional
@@ -168,9 +176,11 @@ class RegistrationService(
         application.approvedAt = Instant.now()
         application.rejectionReason = reason
 
-        // TODO: Send rejection email
+        val savedApplication = registrationApplicationRepository.save(application)
 
-        return registrationApplicationRepository.save(application).toDto()
+        sendRejectionEmailIfNeeded(savedApplication, reason)
+
+        return savedApplication.toDto()
     }
 
     @Transactional
@@ -182,6 +192,35 @@ class RegistrationService(
         return systemConfigRepository.findByConfigKey(key)
             .map { it.configValue.toIntOrNull() ?: default }
             .orElse(default)
+    }
+
+    private fun sendRejectionEmailIfNeeded(application: RegistrationApplication, reason: String) {
+        if (application.rejectionEmailSentAt != null) {
+            log.info("Rejection email already sent for application {}", application.id)
+            return
+        }
+
+        val locale = application.countryCode?.let { mapCountryToLocale(it) } ?: "en"
+        val result = emailService.sendRejectionEmail(
+            to = application.externalEmail,
+            applicantName = "Applicant",
+            reason = reason,
+            locale = locale
+        )
+
+        if (result.success) {
+            application.rejectionEmailSentAt = Instant.now()
+            registrationApplicationRepository.save(application)
+            log.info("Rejection email sent for application {}", application.id)
+        } else {
+            log.warn("Failed to send rejection email for application {}: {}", application.id, result.errorMessage)
+        }
+    }
+
+    private fun mapCountryToLocale(countryCode: String): String = when (countryCode.uppercase()) {
+        "PL" -> "pl"
+        "CN" -> "zh-CN"
+        else -> "en"
     }
 
     private fun RegistrationApplication.toDto() = RegistrationApplicationDto(

@@ -6,6 +6,7 @@ import edu.minervia.platform.domain.enums.ApplicationStatus
 import edu.minervia.platform.domain.repository.EmailVerificationCodeRepository
 import edu.minervia.platform.domain.repository.RegistrationApplicationRepository
 import edu.minervia.platform.domain.repository.SystemConfigRepository
+import edu.minervia.platform.service.email.EmailService
 import edu.minervia.platform.web.dto.VerifyEmailResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -18,7 +19,8 @@ import java.time.temporal.ChronoUnit
 class EmailVerificationService(
     private val emailVerificationCodeRepository: EmailVerificationCodeRepository,
     private val registrationApplicationRepository: RegistrationApplicationRepository,
-    private val systemConfigRepository: SystemConfigRepository
+    private val systemConfigRepository: SystemConfigRepository,
+    private val emailService: EmailService
 ) {
     private val logger = LoggerFactory.getLogger(EmailVerificationService::class.java)
     private val random = SecureRandom()
@@ -51,8 +53,14 @@ class EmailVerificationService(
 
         emailVerificationCodeRepository.save(verificationCode)
 
-        // TODO: Send email via mail service
-        logger.info("Verification code {} sent to {}", code, application.externalEmail)
+        val locale = application.countryCode?.let { mapCountryToLocale(it) } ?: "en"
+        val result = emailService.sendVerificationCode(application.externalEmail, code, locale)
+
+        if (result.success) {
+            logger.info("Verification code sent to {}", maskEmail(application.externalEmail))
+        } else {
+            logger.warn("Failed to send verification code: {}", result.errorMessage)
+        }
 
         return true
     }
@@ -101,5 +109,20 @@ class EmailVerificationService(
         return systemConfigRepository.findByConfigKey(key)
             .map { it.configValue.toIntOrNull() ?: default }
             .orElse(default)
+    }
+
+    private fun mapCountryToLocale(countryCode: String): String = when (countryCode.uppercase()) {
+        "PL" -> "pl"
+        "CN" -> "zh-CN"
+        else -> "en"
+    }
+
+    private fun maskEmail(email: String): String {
+        val parts = email.split("@")
+        if (parts.size != 2) return "***"
+        val local = parts[0]
+        val domain = parts[1]
+        val maskedLocal = if (local.length > 2) "${local.take(2)}***" else "***"
+        return "$maskedLocal@$domain"
     }
 }

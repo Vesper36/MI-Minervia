@@ -17,6 +17,8 @@ interface StudentRepository : JpaRepository<Student, Long>, JpaSpecificationExec
     fun findByEduEmail(eduEmail: String): Optional<Student>
     fun existsByStudentNumber(studentNumber: String): Boolean
     fun existsByEduEmail(eduEmail: String): Boolean
+    fun existsByApplicationId(applicationId: Long): Boolean
+    fun findByApplicationId(applicationId: Long): Student?
     fun findAllByStatus(status: StudentStatus, pageable: Pageable): Page<Student>
     fun findAllByEnrollmentYear(year: Int, pageable: Pageable): Page<Student>
 

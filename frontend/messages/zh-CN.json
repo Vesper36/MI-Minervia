@@ -1,4 +1,72 @@
 {
+  "Marketing": {
+    "nav": {
+      "home": "首页",
+      "about": "关于我们",
+      "programs": "专业设置",
+      "admissions": "招生信息",
+      "login": "学生登录",
+      "admin": "管理员入口"
+    },
+    "footer": {
+      "contact": "联系我们",
+      "address": "知识城教育路123号",
+      "email": "contact@minervia.edu",
+      "phone": "+86 123 4567 8900",
+      "copyright": "(c) {year} Minervia Institute. 保留所有权利。"
+    },
+    "home": {
+      "title": "欢迎来到 Minervia Institute",
+      "description": "通过卓越的教育培养下一代领导者。",
+      "heroTitle": "与 Minervia 共塑未来",
+      "heroDescription": "面向全球社区的世界级教育。",
+      "cta": "立即申请",
+      "features": {
+        "title": "为什么选择 Minervia？",
+        "1": {
+          "title": "专家师资",
+          "description": "向行业领袖和杰出教授学习。"
+        },
+        "2": {
+          "title": "全球社区",
+          "description": "与来自50多个国家的学生建立联系。"
+        },
+        "3": {
+          "title": "现代化校园",
+          "description": "先进的学习和创新设施。"
+        }
+      }
+    },
+    "about": {
+      "title": "关于我们",
+      "description": "了解我们的历史、使命和价值观。",
+      "mission": "我们的使命",
+      "missionText": "为全球学生提供优质、可及的教育。",
+      "vision": "我们的愿景",
+      "visionText": "成为教育创新和学生成功的全球领导者。"
+    },
+    "programs": {
+      "title": "学术专业",
+      "description": "探索我们多样化的本科和研究生专业。",
+      "cs": "计算机科学",
+      "csAbbrev": "CS",
+      "business": "工商管理",
+      "businessAbbrev": "BA",
+      "engineering": "工程学",
+      "engineeringAbbrev": "ENG",
+      "medicine": "医学",
+      "medicineAbbrev": "MED"
+    },
+    "admissions": {
+      "title": "招生信息",
+      "description": "开启您在 Minervia Institute 的旅程。",
+      "apply": "如何申请",
+      "step1": "获取注册码",
+      "step2": "完成在线申请",
+      "step3": "提交申请材料",
+      "cta": "开始申请"
+    }
+  },
   "Register": {
     "pageTitle": "学生注册",
     "pageDescription": "完成注册流程以加入 Minervia Institute。",
@@ -83,7 +151,7 @@
     },
     "majors": {
       "1": "计算机科学",
-      "2": "工���管理",
+      "2": "工商管理",
       "3": "工程学",
       "4": "医学"
     },
@@ -117,6 +185,57 @@
       "loading": "加载中...",
       "noData": "暂无数据",
       "error": "发生错误"
+    }
+  },
+  "Portal": {
+    "sidebar": {
+      "title": "学生门户",
+      "dashboard": "仪表盘",
+      "profile": "个人资料",
+      "courses": "课程",
+      "logout": "退出登录"
+    },
+    "login": {
+      "title": "学生登录",
+      "description": "登录以访问学生门户。",
+      "email": "邮箱",
+      "emailPlaceholder": "your.email@minervia.edu",
+      "password": "密码",
+      "passwordPlaceholder": "请输入密码",
+      "submit": "登录",
+      "loading": "登录中...",
+      "error": "邮箱或密码错误",
+      "registerLink": "没有账户？点击这里注册"
+    },
+    "dashboard": {
+      "welcome": "欢迎，{name}！",
+      "subtitle": "这是您学生账户的概览。",
+      "cards": {
+        "profile": "个人资料",
+        "studentId": "学号",
+        "courses": "课程",
+        "enrolled": "已选课程",
+        "status": "状态",
+        "active": "在读",
+        "enrollment": "注册状态"
+      }
+    },
+    "profile": {
+      "title": "我的资料",
+      "subtitle": "查看您的个人信息。",
+      "personalInfo": "个人信息",
+      "fields": {
+        "studentId": "学号",
+        "firstName": "名",
+        "lastName": "姓",
+        "email": "邮箱"
+      }
+    },
+    "courses": {
+      "title": "我的课程",
+      "subtitle": "查看已选课程和成绩。",
+      "enrolled": "已选课程",
+      "noCourses": "您尚未选修任何课程。"
     }
   },
   "Common": {

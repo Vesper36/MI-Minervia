@@ -29,7 +29,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 class WebSocketConfig(
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val webSocketProperties: WebSocketProperties
 ) : WebSocketMessageBrokerConfigurer {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -42,23 +43,17 @@ class WebSocketConfig(
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        // WebSocket endpoint with SockJS fallback
-        // TODO: Restrict origins in production
-        registry.addEndpoint("/ws")
-            .setAllowedOriginPatterns(
-                "http://localhost:*",
-                "https://localhost:*",
-                "https://*.minervia.edu.pl"
-            )
-            .withSockJS()
+        val origins = webSocketProperties.allowedOrigins.toTypedArray()
+        val endpoint = webSocketProperties.endpoint
 
-        // Plain WebSocket endpoint
-        registry.addEndpoint("/ws")
-            .setAllowedOriginPatterns(
-                "http://localhost:*",
-                "https://localhost:*",
-                "https://*.minervia.edu.pl"
-            )
+        if (webSocketProperties.enableSockJs) {
+            registry.addEndpoint(endpoint)
+                .setAllowedOriginPatterns(*origins)
+                .withSockJS()
+        }
+
+        registry.addEndpoint(endpoint)
+            .setAllowedOriginPatterns(*origins)
     }
 
     override fun configureClientInboundChannel(registration: ChannelRegistration) {

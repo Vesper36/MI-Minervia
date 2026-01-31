@@ -1,4 +1,72 @@
 {
+  "Marketing": {
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "programs": "Programs",
+      "admissions": "Admissions",
+      "login": "Student Login",
+      "admin": "Admin Portal"
+    },
+    "footer": {
+      "contact": "Contact Us",
+      "address": "123 Education Lane, Knowledge City",
+      "email": "contact@minervia.edu",
+      "phone": "+1 (555) 123-4567",
+      "copyright": "© {year} Minervia Institute. All rights reserved."
+    },
+    "home": {
+      "title": "Welcome to Minervia Institute",
+      "description": "Empowering the next generation of leaders through excellence in education.",
+      "heroTitle": "Shape Your Future with Minervia",
+      "heroDescription": "World-class education for a global community.",
+      "cta": "Apply Now",
+      "features": {
+        "title": "Why Choose Minervia?",
+        "1": {
+          "title": "Expert Faculty",
+          "description": "Learn from industry leaders and distinguished professors."
+        },
+        "2": {
+          "title": "Global Community",
+          "description": "Connect with students from over 50 countries."
+        },
+        "3": {
+          "title": "Modern Campus",
+          "description": "State-of-the-art facilities for learning and innovation."
+        }
+      }
+    },
+    "about": {
+      "title": "About Us",
+      "description": "Learn about our history, mission, and values.",
+      "mission": "Our Mission",
+      "missionText": "To provide accessible, high-quality education to students worldwide.",
+      "vision": "Our Vision",
+      "visionText": "To be a global leader in educational innovation and student success."
+    },
+    "programs": {
+      "title": "Academic Programs",
+      "description": "Explore our diverse range of undergraduate and graduate programs.",
+      "cs": "Computer Science",
+      "csAbbrev": "CS",
+      "business": "Business Administration",
+      "businessAbbrev": "BA",
+      "engineering": "Engineering",
+      "engineeringAbbrev": "ENG",
+      "medicine": "Medicine",
+      "medicineAbbrev": "MED"
+    },
+    "admissions": {
+      "title": "Admissions",
+      "description": "Start your journey at Minervia Institute.",
+      "apply": "How to Apply",
+      "step1": "Get a Registration Code",
+      "step2": "Complete Online Application",
+      "step3": "Submit Documents",
+      "cta": "Start Application"
+    }
+  },
   "Register": {
     "pageTitle": "Student Registration",
     "pageDescription": "Complete the registration process to join Minervia Institute.",
@@ -117,6 +185,57 @@
       "loading": "Loading...",
       "noData": "No data available",
       "error": "An error occurred"
+    }
+  },
+  "Portal": {
+    "sidebar": {
+      "title": "Student Portal",
+      "dashboard": "Dashboard",
+      "profile": "Profile",
+      "courses": "Courses",
+      "logout": "Sign Out"
+    },
+    "login": {
+      "title": "Student Login",
+      "description": "Sign in to access your student portal.",
+      "email": "Email",
+      "emailPlaceholder": "your.email@minervia.edu",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Sign In",
+      "loading": "Signing in...",
+      "error": "Invalid email or password",
+      "registerLink": "Don't have an account? Register here"
+    },
+    "dashboard": {
+      "welcome": "Welcome, {name}!",
+      "subtitle": "Here's an overview of your student account.",
+      "cards": {
+        "profile": "Profile",
+        "studentId": "Student ID",
+        "courses": "Courses",
+        "enrolled": "Enrolled",
+        "status": "Status",
+        "active": "Active",
+        "enrollment": "Enrollment Status"
+      }
+    },
+    "profile": {
+      "title": "My Profile",
+      "subtitle": "View your personal information.",
+      "personalInfo": "Personal Information",
+      "fields": {
+        "studentId": "Student ID",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email"
+      }
+    },
+    "courses": {
+      "title": "My Courses",
+      "subtitle": "View your enrolled courses and grades.",
+      "enrolled": "Enrolled Courses",
+      "noCourses": "You are not enrolled in any courses yet."
     }
   },
   "Common": {
