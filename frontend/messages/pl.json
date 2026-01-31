@@ -1,0 +1,126 @@
+{
+  "Register": {
+    "pageTitle": "Rejestracja Studenta",
+    "pageDescription": "Wypelnij proces rejestracji, aby dolaczyc do Minervia Institute.",
+    "steps": {
+      "code": "Kod",
+      "info": "Info",
+      "email": "Email",
+      "details": "Szczegoly",
+      "status": "Status"
+    },
+    "titles": {
+      "verifyCode": "Wprowadz Kod Rejestracyjny",
+      "basicInfo": "Podstawowe Informacje",
+      "verifyEmail": "Zweryfikuj Email",
+      "selectInfo": "Szczegoly Akademickie",
+      "progress": "Status Aplikacji"
+    },
+    "descriptions": {
+      "verifyCode": "Wprowadz kod rejestracyjny otrzymany od administratora.",
+      "basicInfo": "Opowiedz nam o sobie, aby kontynuowac.",
+      "verifyEmail": "Wyslalismy 6-cyfrowy kod na adres {email}.",
+      "selectInfo": "Wybierz kierunek i preferencje klasy.",
+      "progress": "Twoja aplikacja jest przetwarzana."
+    },
+    "labels": {
+      "code": "Kod Rejestracyjny",
+      "email": "Adres Email",
+      "identityType": "Typ Tozsamosci",
+      "country": "Kraj",
+      "verificationCode": "Kod Weryfikacyjny",
+      "major": "Kierunek",
+      "classPreference": "Preferencja Klasy",
+      "progress": "Postep"
+    },
+    "placeholders": {
+      "code": "Wprowadz kod rejestracyjny",
+      "email": "ty@przyklad.com",
+      "identityType": "Wybierz typ tozsamosci",
+      "country": "Wybierz kraj",
+      "verificationCode": "000000",
+      "major": "Wybierz kierunek",
+      "classPreference": "Wybierz klase"
+    },
+    "options": {
+      "local": "Student Lokalny",
+      "international": "Student Miedzynarodowy"
+    },
+    "buttons": {
+      "verifyCode": "Zweryfikuj Kod",
+      "continue": "Kontynuuj",
+      "resend": "Wyslij ponownie",
+      "linkAccount": "Polacz konto Linux.do (Opcjonalne)",
+      "submit": "Zlos Aplikacje",
+      "startNew": "Rozpocznij Nowa Rejestracje",
+      "tryAgain": "Sprobuj Ponownie"
+    },
+    "text": {
+      "didntReceiveCode": "Nie otrzymales kodu?",
+      "applicationId": "ID Aplikacji: {id}",
+      "pollingMode": "Tryb odpytywania"
+    },
+    "status": {
+      "initializing": "Inicjalizacja...",
+      "pending": "Oczekiwanie na start...",
+      "generatingIdentity": "Generowanie informacji o tozsamosci...",
+      "generatingPhotos": "Generowanie zdjec...",
+      "completed": "Rejestracja zakonczona!",
+      "failed": "Rejestracja nie powiodla sie",
+      "processing": "Przetwarzanie..."
+    }
+  },
+  "Data": {
+    "countries": {
+      "PL": "Polska",
+      "CN": "Chiny",
+      "US": "Stany Zjednoczone",
+      "DE": "Niemcy",
+      "FR": "Francja",
+      "GB": "Wielka Brytania",
+      "JP": "Japonia",
+      "KR": "Korea Poludniowa"
+    },
+    "majors": {
+      "1": "Informatyka",
+      "2": "Administracja Biznesu",
+      "3": "Inzynieria",
+      "4": "Medycyna"
+    },
+    "classes": {
+      "1": "Klasa A (Rano)",
+      "2": "Klasa B (Popoludnie)",
+      "3": "Klasa C (Wieczor)"
+    }
+  },
+  "Admin": {
+    "sidebar": {
+      "dashboard": "Panel",
+      "students": "Studenci",
+      "applications": "Aplikacje",
+      "codes": "Kody Rejestracyjne",
+      "audit": "Logi Audytu",
+      "settings": "Ustawienia"
+    },
+    "actions": {
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "delete": "Usun",
+      "edit": "Edytuj",
+      "approve": "Zatwierdz",
+      "reject": "Odrzuc",
+      "search": "Szukaj",
+      "filter": "Filtruj",
+      "export": "Eksportuj"
+    },
+    "common": {
+      "loading": "Ladowanie...",
+      "noData": "Brak danych",
+      "error": "Wystapil blad"
+    }
+  },
+  "Common": {
+    "siteName": "Minervia Institute",
+    "footer": "Minervia Institute Platforma Edukacyjna"
+  }
+}

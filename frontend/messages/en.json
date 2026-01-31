@@ -1,0 +1,126 @@
+{
+  "Register": {
+    "pageTitle": "Student Registration",
+    "pageDescription": "Complete the registration process to join Minervia Institute.",
+    "steps": {
+      "code": "Code",
+      "info": "Info",
+      "email": "Email",
+      "details": "Details",
+      "status": "Status"
+    },
+    "titles": {
+      "verifyCode": "Enter Registration Code",
+      "basicInfo": "Basic Information",
+      "verifyEmail": "Verify Your Email",
+      "selectInfo": "Academic Details",
+      "progress": "Application Status"
+    },
+    "descriptions": {
+      "verifyCode": "Enter the registration code provided by your administrator.",
+      "basicInfo": "Tell us about yourself to continue.",
+      "verifyEmail": "We sent a 6-digit code to {email}.",
+      "selectInfo": "Select your major and class preference.",
+      "progress": "Your application is being processed."
+    },
+    "labels": {
+      "code": "Registration Code",
+      "email": "Email Address",
+      "identityType": "Identity Type",
+      "country": "Country",
+      "verificationCode": "Verification Code",
+      "major": "Major",
+      "classPreference": "Class Preference",
+      "progress": "Progress"
+    },
+    "placeholders": {
+      "code": "Enter your registration code",
+      "email": "you@example.com",
+      "identityType": "Select identity type",
+      "country": "Select country",
+      "verificationCode": "000000",
+      "major": "Select your major",
+      "classPreference": "Select your class"
+    },
+    "options": {
+      "local": "Local Student",
+      "international": "International Student"
+    },
+    "buttons": {
+      "verifyCode": "Verify Code",
+      "continue": "Continue",
+      "resend": "Resend",
+      "linkAccount": "Link Linux.do Account (Optional)",
+      "submit": "Submit Application",
+      "startNew": "Start New Registration",
+      "tryAgain": "Try Again"
+    },
+    "text": {
+      "didntReceiveCode": "Didn't receive the code?",
+      "applicationId": "Application ID: {id}",
+      "pollingMode": "Using polling mode"
+    },
+    "status": {
+      "initializing": "Initializing...",
+      "pending": "Waiting to start...",
+      "generatingIdentity": "Generating identity information...",
+      "generatingPhotos": "Generating photos...",
+      "completed": "Registration complete!",
+      "failed": "Registration failed",
+      "processing": "Processing..."
+    }
+  },
+  "Data": {
+    "countries": {
+      "PL": "Poland",
+      "CN": "China",
+      "US": "United States",
+      "DE": "Germany",
+      "FR": "France",
+      "GB": "United Kingdom",
+      "JP": "Japan",
+      "KR": "South Korea"
+    },
+    "majors": {
+      "1": "Computer Science",
+      "2": "Business Administration",
+      "3": "Engineering",
+      "4": "Medicine"
+    },
+    "classes": {
+      "1": "Class A (Morning)",
+      "2": "Class B (Afternoon)",
+      "3": "Class C (Evening)"
+    }
+  },
+  "Admin": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "students": "Students",
+      "applications": "Applications",
+      "codes": "Registration Codes",
+      "audit": "Audit Logs",
+      "settings": "Settings"
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "approve": "Approve",
+      "reject": "Reject",
+      "search": "Search",
+      "filter": "Filter",
+      "export": "Export"
+    },
+    "common": {
+      "loading": "Loading...",
+      "noData": "No data available",
+      "error": "An error occurred"
+    }
+  },
+  "Common": {
+    "siteName": "Minervia Institute",
+    "footer": "Minervia Institute Educational Platform"
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "Register": {
+    "pageTitle": "学生注册",
+    "pageDescription": "完成注册流程以加入 Minervia Institute。",
+    "steps": {
+      "code": "验证码",
+      "info": "信息",
+      "email": "邮箱",
+      "details": "详情",
+      "status": "状态"
+    },
+    "titles": {
+      "verifyCode": "输入注册码",
+      "basicInfo": "基本信息",
+      "verifyEmail": "验证邮箱",
+      "selectInfo": "学术详情",
+      "progress": "申请状态"
+    },
+    "descriptions": {
+      "verifyCode": "请输入管理员提供的注册码。",
+      "basicInfo": "请告诉我们关于您的信息以继续。",
+      "verifyEmail": "我们已向 {email} 发送了6位验证码。",
+      "selectInfo": "选择您的专业和班级偏好。",
+      "progress": "您的申请正在处理中。"
+    },
+    "labels": {
+      "code": "注册码",
+      "email": "邮箱地址",
+      "identityType": "身份类型",
+      "country": "国家",
+      "verificationCode": "验证码",
+      "major": "专业",
+      "classPreference": "班级偏好",
+      "progress": "进度"
+    },
+    "placeholders": {
+      "code": "请输入注册码",
+      "email": "you@example.com",
+      "identityType": "选择身份类型",
+      "country": "选择国家",
+      "verificationCode": "000000",
+      "major": "选择专业",
+      "classPreference": "选择班级"
+    },
+    "options": {
+      "local": "本地学生",
+      "international": "国际学生"
+    },
+    "buttons": {
+      "verifyCode": "验证码",
+      "continue": "继续",
+      "resend": "重新发送",
+      "linkAccount": "关联 Linux.do 账户（可选）",
+      "submit": "提交申请",
+      "startNew": "开始新注册",
+      "tryAgain": "重试"
+    },
+    "text": {
+      "didntReceiveCode": "没有收到验证码？",
+      "applicationId": "申请 ID：{id}",
+      "pollingMode": "使用轮询模式"
+    },
+    "status": {
+      "initializing": "初始化中...",
+      "pending": "等待开始...",
+      "generatingIdentity": "正在生成身份信息...",
+      "generatingPhotos": "正在生成照片...",
+      "completed": "注册完成！",
+      "failed": "注册失败",
+      "processing": "处理中..."
+    }
+  },
+  "Data": {
+    "countries": {
+      "PL": "波兰",
+      "CN": "中国",
+      "US": "美国",
+      "DE": "德国",
+      "FR": "法国",
+      "GB": "英国",
+      "JP": "日本",
+      "KR": "韩国"
+    },
+    "majors": {
+      "1": "计算机科学",
+      "2": "工���管理",
+      "3": "工程学",
+      "4": "医学"
+    },
+    "classes": {
+      "1": "A班（上午）",
+      "2": "B班（下午）",
+      "3": "C班（晚上）"
+    }
+  },
+  "Admin": {
+    "sidebar": {
+      "dashboard": "仪表盘",
+      "students": "学生",
+      "applications": "申请",
+      "codes": "注册码",
+      "audit": "审计日志",
+      "settings": "设置"
+    },
+    "actions": {
+      "save": "保存",
+      "cancel": "取消",
+      "delete": "删除",
+      "edit": "编辑",
+      "approve": "批准",
+      "reject": "拒绝",
+      "search": "搜索",
+      "filter": "筛选",
+      "export": "导出"
+    },
+    "common": {
+      "loading": "加载中...",
+      "noData": "暂无数据",
+      "error": "发生错误"
+    }
+  },
+  "Common": {
+    "siteName": "Minervia Institute",
+    "footer": "Minervia Institute 教育平台"
+  }
+}
