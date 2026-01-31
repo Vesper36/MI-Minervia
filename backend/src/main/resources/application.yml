@@ -79,3 +79,8 @@ app:
     code-expiration-days: 30
     email-rate-limit: 5
     ip-rate-limit: 3
+  email:
+    webhook:
+      signing-key: ${EMAIL_WEBHOOK_SIGNING_KEY:}
+      mailgun-signing-key: ${MAILGUN_WEBHOOK_SIGNING_KEY:}
+      signature-tolerance-seconds: ${EMAIL_WEBHOOK_SIGNATURE_TOLERANCE_SECONDS:600}

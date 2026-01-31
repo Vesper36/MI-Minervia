@@ -37,6 +37,7 @@ class SecurityConfig(
                 auth
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/public/**").permitAll()
+                    .requestMatchers("/api/webhooks/**").permitAll()
                     .requestMatchers("/actuator/health").permitAll()
                     .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
                     .requestMatchers("/api/super-admin/**").hasRole("SUPER_ADMIN")

@@ -56,6 +56,8 @@ class AuditLogService(
         const val EVENT_IDENTITY_GENERATED = "IDENTITY_GENERATED"
         const val EVENT_CODE_GENERATED = "CODE_GENERATED"
         const val EVENT_CODE_REVOKED = "CODE_REVOKED"
+        const val EVENT_EMAIL_BOUNCE = "EMAIL_BOUNCE"
+        const val EVENT_EMAIL_UNSUPPRESSED = "EMAIL_UNSUPPRESSED"
 
         // Target types
         const val TARGET_STUDENT = "STUDENT"
@@ -63,6 +65,7 @@ class AuditLogService(
         const val TARGET_CONFIG = "CONFIG"
         const val TARGET_CODE = "REGISTRATION_CODE"
         const val TARGET_ADMIN = "ADMIN"
+        const val TARGET_EMAIL = "EMAIL"
     }
 
     @Async
