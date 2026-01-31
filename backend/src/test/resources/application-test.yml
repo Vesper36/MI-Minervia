@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -20,7 +20,35 @@ spring:
       host: localhost
       port: 6379
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+
+  mail:
+    host: localhost
+    port: 25
+
+logging:
+  level:
+    edu.minervia: DEBUG
+    org.springframework.security: WARN
+
 app:
   jwt:
-    secret: test-secret-key-for-testing-only-256-bits
-    expiration: 3600000
+    secret: test-secret-key-for-testing-only-256-bits-minimum-length-required
+    access-token-expiration: 1800000
+    refresh-token-expiration: 86400000
+  ai:
+    openai:
+      api-key: test-api-key
+  registration:
+    code-expiration-days: 30
+    email-rate-limit: 5
+    ip-rate-limit: 3
+  email:
+    webhook:
+      signing-key: test-signing-key
+      mailgun-signing-key: test-mailgun-key
+      sendgrid-public-key: ""
+      signature-tolerance-seconds: 600

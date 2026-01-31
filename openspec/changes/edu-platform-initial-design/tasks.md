@@ -184,9 +184,9 @@
 ## Phase 11: 测试和文档
 ### 11.1 后端测试
 - [x] 编写后端单元测试 (JUnit 5)
-- [ ] 编写后端集成测试
-- [ ] 编写 API 文档 (OpenAPI/Swagger)
-- [ ] 编写部署文档
+- [x] 编写后端集成测试
+- [x] 编写 API 文档 (OpenAPI/Swagger)
+- [x] 编写部署文档
 
 ### 11.2 PBT 测试 (Property-Based Testing)
 - [x] PBT-01: 学号唯一性和格式测试
