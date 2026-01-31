@@ -219,17 +219,17 @@
 - [ ] 编写前端组件测试 (Vitest)
 
 ## Phase 12: 限流降级模块 (CONSTRAINT: RATE-LIMIT-MYSQL-FALLBACK)
-- [ ] 创建 rate_limits 表 (limit_key, count, window_start, window_seconds)
-- [ ] 实现 RateLimitService 抽象接口
-- [ ] 实现 RedisRateLimitService (主实现)
-- [ ] 实现 MySQLRateLimitService (降级实现)
-- [ ] 实现健康检查和自动切换逻辑
-- [ ] 实现定时清理过期记录任务 (每小时)
+- [x] 创建 rate_limits 表 (limit_key, count, window_start, window_seconds)
+- [x] 实现 RateLimitService 抽象接口
+- [x] 实现 RedisRateLimitService (主实现)
+- [x] 实现 MySQLRateLimitService (降级实现)
+- [x] 实现健康检查和自动切换逻辑
+- [x] 实现定时清理过期记录任务 (每小时)
 
 ## Phase 13: 邮件退信处理 (CONSTRAINT: EMAIL-BOUNCE-HANDLING)
-- [ ] 创建 email_suppression 表
-- [ ] 实现 SMTP Webhook 处理 (SendGrid/Mailgun bounce callback)
-- [ ] 实现硬退信处理 (立即 suppress)
-- [ ] 实现软退信重试逻辑 (72h/5次)
-- [ ] 实现投诉处理 (spam report -> suppress)
-- [ ] 管理员手动解除 suppress API
+- [x] 创建 email_suppression 表
+- [x] 实现 SMTP Webhook 处理 (SendGrid/Mailgun bounce callback)
+- [x] 实现硬退信处理 (立即 suppress)
+- [x] 实现软退信重试逻辑 (72h/5次)
+- [x] 实现投诉处理 (spam report -> suppress)
+- [x] 管理员手动解除 suppress API
