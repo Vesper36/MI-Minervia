@@ -7,6 +7,7 @@ import edu.minervia.platform.domain.repository.SystemConfigRepository
 import edu.minervia.platform.security.JwtService
 import edu.minervia.platform.security.TokenRevocationService
 import edu.minervia.platform.security.TokenType
+import edu.minervia.platform.service.auth.TotpService
 import edu.minervia.platform.web.dto.LoginRequest
 import edu.minervia.platform.web.dto.LoginResponse
 import edu.minervia.platform.web.dto.RefreshTokenResponse
@@ -24,7 +25,8 @@ class AuthService(
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
     private val jwtProperties: JwtProperties,
-    private val tokenRevocationService: TokenRevocationService
+    private val tokenRevocationService: TokenRevocationService,
+    private val totpService: TotpService
 ) {
     @Transactional
     fun login(request: LoginRequest): LoginResponse {
@@ -44,6 +46,25 @@ class AuthService(
             throw BadCredentialsException("Invalid username or password")
         }
 
+        if (admin.totpEnabled) {
+            if (request.totpCode.isNullOrBlank()) {
+                return LoginResponse(
+                    accessToken = "",
+                    refreshToken = "",
+                    accessExpiresIn = 0,
+                    refreshExpiresIn = 0,
+                    username = admin.username,
+                    role = admin.role.name,
+                    requiresTotp = true
+                )
+            }
+
+            if (!totpService.verifyCode(admin.id, request.totpCode)) {
+                handleFailedLogin(admin)
+                throw BadCredentialsException("Invalid TOTP code")
+            }
+        }
+
         resetFailedAttempts(admin)
 
         val tokenPair = jwtService.generateTokenPair(
@@ -58,7 +79,8 @@ class AuthService(
             accessExpiresIn = tokenPair.accessExpiresIn,
             refreshExpiresIn = tokenPair.refreshExpiresIn,
             username = admin.username,
-            role = admin.role.name
+            role = admin.role.name,
+            requiresTotp = false
         )
     }
 

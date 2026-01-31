@@ -7,7 +7,9 @@ data class LoginRequest(
     val username: String,
 
     @field:NotBlank(message = "Password is required")
-    val password: String
+    val password: String,
+
+    val totpCode: String? = null
 )
 
 data class LoginResponse(
@@ -16,7 +18,8 @@ data class LoginResponse(
     val accessExpiresIn: Long,
     val refreshExpiresIn: Long,
     val username: String,
-    val role: String
+    val role: String,
+    val requiresTotp: Boolean = false
 ) {
     @Deprecated("Use accessToken instead")
     val token: String get() = accessToken
