@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.nio.charset.StandardCharsets
+import java.security.KeyFactory
 import java.security.MessageDigest
+import java.security.Signature
+import java.security.spec.X509EncodedKeySpec
+import java.util.Base64
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
@@ -153,6 +157,9 @@ class BounceWebhookController(
         params: Map<String, String>,
         jsonNode: JsonNode?
     ): Boolean {
+        val sendGridVerified = verifySendGridSignature(request, body)
+        if (sendGridVerified) return true
+
         val mailgunVerified = verifyMailgunSignature(request, params, jsonNode)
         if (mailgunVerified) return true
 
@@ -169,6 +176,35 @@ class BounceWebhookController(
 
         val expected = hmacSha256Hex(signingKey, body)
         return constantTimeEquals(expected, genericHeader)
+    }
+
+    private fun verifySendGridSignature(request: HttpServletRequest, body: String?): Boolean {
+        val signature = request.getHeader("X-Twilio-Email-Event-Webhook-Signature")
+        val timestamp = request.getHeader("X-Twilio-Email-Event-Webhook-Timestamp")
+        if (signature.isNullOrBlank() || timestamp.isNullOrBlank()) {
+            return false
+        }
+
+        val publicKeyPem = emailWebhookProperties.sendgridPublicKey
+        if (publicKeyPem.isBlank() || body.isNullOrBlank()) {
+            return false
+        }
+
+        if (!isTimestampFresh(timestamp)) {
+            return false
+        }
+
+        return try {
+            val publicKey = parsePublicKey(publicKeyPem)
+            val verifier = Signature.getInstance("SHA256withECDSA")
+            verifier.initVerify(publicKey)
+            verifier.update((timestamp + body).toByteArray(StandardCharsets.UTF_8))
+            val signatureBytes = Base64.getDecoder().decode(signature)
+            verifier.verify(signatureBytes)
+        } catch (ex: Exception) {
+            logger.warn("Failed to verify SendGrid signature", ex)
+            false
+        }
     }
 
     private fun verifyMailgunSignature(
@@ -221,6 +257,18 @@ class BounceWebhookController(
         val digest = mac.doFinal(data.toByteArray(StandardCharsets.UTF_8))
         return digest.joinToString("") { byte -> "%02x".format(byte) }
     }
+
+    private fun parsePublicKey(publicKeyPem: String) =
+        KeyFactory.getInstance("EC").generatePublic(
+            X509EncodedKeySpec(
+                Base64.getDecoder().decode(
+                    publicKeyPem
+                        .replace("-----BEGIN PUBLIC KEY-----", "")
+                        .replace("-----END PUBLIC KEY-----", "")
+                        .replace("\\s+".toRegex(), "")
+                )
+            )
+        )
 
     private fun constantTimeEquals(expected: String, actual: String): Boolean {
         val expectedBytes = expected.lowercase().toByteArray(StandardCharsets.UTF_8)

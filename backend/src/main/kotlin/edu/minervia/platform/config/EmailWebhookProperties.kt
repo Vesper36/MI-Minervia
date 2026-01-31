@@ -8,5 +8,6 @@ import org.springframework.stereotype.Component
 class EmailWebhookProperties {
     var signingKey: String = ""
     var mailgunSigningKey: String = ""
+    var sendgridPublicKey: String = ""
     var signatureToleranceSeconds: Long = 600
 }
