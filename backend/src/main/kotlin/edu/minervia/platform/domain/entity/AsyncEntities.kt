@@ -89,6 +89,9 @@ class TaskProgress(
     @Column(length = 500)
     var message: String? = null,
 
+    @Column(name = "retry_count", nullable = false)
+    var retryCount: Int = 0,
+
     @Version
     @Column(nullable = false)
     var version: Long = 1,

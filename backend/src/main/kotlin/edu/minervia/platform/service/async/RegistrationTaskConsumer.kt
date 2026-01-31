@@ -128,7 +128,8 @@ class RegistrationTaskConsumer(
                 step = TaskStep.IDENTITY_RULES,
                 status = TaskStatus.GENERATING_IDENTITY,
                 progressPercent = 10,
-                message = "Generating identity information..."
+                message = "Generating identity information...",
+                retryCount = currentRetryCount
             )
 
             checkTimeout(startTime, TOTAL_TIMEOUT_MS, "Identity rules generation")
@@ -139,7 +140,8 @@ class RegistrationTaskConsumer(
                 step = TaskStep.IDENTITY_RULES,
                 status = TaskStatus.GENERATING_IDENTITY,
                 progressPercent = 30,
-                message = "Basic identity generated"
+                message = "Basic identity generated",
+                retryCount = currentRetryCount
             )
 
             // Step 2: LLM polish
@@ -148,7 +150,8 @@ class RegistrationTaskConsumer(
                 step = TaskStep.IDENTITY_LLM,
                 status = TaskStatus.GENERATING_IDENTITY,
                 progressPercent = 40,
-                message = "Enhancing profile with AI..."
+                message = "Enhancing profile with AI...",
+                retryCount = currentRetryCount
             )
 
             checkTimeout(startTime, TOTAL_TIMEOUT_MS, "LLM polish")
@@ -159,7 +162,8 @@ class RegistrationTaskConsumer(
                 step = TaskStep.IDENTITY_LLM,
                 status = TaskStatus.GENERATING_IDENTITY,
                 progressPercent = 70,
-                message = "Profile enhanced"
+                message = "Profile enhanced",
+                retryCount = currentRetryCount
             )
 
             // Step 3: Photo generation
@@ -168,7 +172,8 @@ class RegistrationTaskConsumer(
                 step = TaskStep.PHOTO_GENERATION,
                 status = TaskStatus.GENERATING_PHOTOS,
                 progressPercent = 80,
-                message = "Generating photos..."
+                message = "Generating photos...",
+                retryCount = currentRetryCount
             )
 
             checkTimeout(startTime, TOTAL_TIMEOUT_MS, "Photo generation")
@@ -182,7 +187,8 @@ class RegistrationTaskConsumer(
                 step = TaskStep.PHOTO_GENERATION,
                 status = TaskStatus.COMPLETED,
                 progressPercent = 100,
-                message = "Registration completed"
+                message = "Registration completed",
+                retryCount = currentRetryCount
             )
 
         } catch (e: TimeoutException) {

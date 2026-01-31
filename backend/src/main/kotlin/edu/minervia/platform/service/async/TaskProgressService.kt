@@ -33,7 +33,8 @@ class TaskProgressService(
         step: TaskStep,
         status: TaskStatus,
         progressPercent: Int,
-        message: String? = null
+        message: String? = null,
+        retryCount: Int = 0
     ) {
         val now = Instant.now()
         val existing = taskProgressRepository.findByApplicationId(applicationId)
@@ -45,6 +46,7 @@ class TaskProgressService(
             existing.status = status.name
             existing.progressPercent = progressPercent
             existing.message = message
+            existing.retryCount = retryCount
             existing.version = newVersion
             existing.updatedAt = now
             taskProgressRepository.save(existing)
@@ -55,6 +57,7 @@ class TaskProgressService(
                 status = status.name,
                 progressPercent = progressPercent,
                 message = message,
+                retryCount = retryCount,
                 version = newVersion,
                 updatedAt = now
             )

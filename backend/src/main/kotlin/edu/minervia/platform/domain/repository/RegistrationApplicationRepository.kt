@@ -21,4 +21,7 @@ interface RegistrationApplicationRepository : JpaRepository<RegistrationApplicat
 
     @Query("SELECT COUNT(a) FROM RegistrationApplication a WHERE a.ipAddress = :ip AND a.createdAt > :after")
     fun countByIpAddressSince(ip: String, after: Instant): Long
+
+    @Query("SELECT a FROM RegistrationApplication a WHERE a.status = :status AND a.updatedAt < :cutoff")
+    fun findByStatusAndUpdatedAtBefore(status: ApplicationStatus, cutoff: Instant): List<RegistrationApplication>
 }

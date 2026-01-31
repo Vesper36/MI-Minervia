@@ -41,6 +41,13 @@ interface TaskProgressRepository : JpaRepository<TaskProgress, Long> {
         newVersion: Long,
         now: Instant
     ): Int
+
+    @Query("SELECT t FROM TaskProgress t WHERE t.status IN :statuses AND t.updatedAt < :cutoff")
+    fun findStuckTasks(statuses: List<String>, cutoff: Instant): List<TaskProgress>
+
+    @Modifying
+    @Query("DELETE FROM TaskProgress t WHERE t.applicationId = :applicationId")
+    fun deleteByApplicationId(applicationId: Long): Int
 }
 
 @Repository
