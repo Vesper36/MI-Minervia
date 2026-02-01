@@ -95,13 +95,13 @@
 
 ## 10. 测试
 
-- [ ] 10.1 编写 EmailService 单元测试
-- [ ] 10.2 编写 StudentAuthController 集成测试
-- [ ] 10.3 编写 RegistrationStepExecutor 集成测试
-- [ ] 10.4 编写 PBT-EMAIL-01 邮件幂等性测试
-- [ ] 10.5 编写 PBT-PORTAL-01 学生会话隔离测试
-- [ ] 10.6 编写 PBT-ASYNC-01 步骤完成顺序测试
-- [ ] 10.7 编写 PBT-MARKETING-02 i18n 完整性测试
-- [ ] 10.8 编写前端 Marketing 页面组件测试
-- [ ] 10.9 编写前端 Portal 页面组件测试
-- [ ] 10.10 运行完整测试套件验证
+- [x] 10.1 编写 EmailService 单元测试
+- [x] 10.2 编写 StudentAuthController 集成测试
+- [x] 10.3 编写 RegistrationStepExecutor 集成测试
+- [x] 10.4 编写 PBT-EMAIL-01 邮件幂等性测试
+- [x] 10.5 编写 PBT-PORTAL-01 学生会话隔离测试
+- [x] 10.6 编写 PBT-ASYNC-01 步骤完成顺序测试
+- [x] 10.7 编写 PBT-MARKETING-02 i18n 完整性测试
+- [x] 10.8 编写前端 Marketing 页面组件测试
+- [x] 10.9 编写前端 Portal 页面组件测试
+- [x] 10.10 运行完整测试套件验证
