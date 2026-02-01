@@ -5,66 +5,376 @@
       "about": "About",
       "programs": "Programs",
       "admissions": "Admissions",
+      "campus": "Campus",
+      "news": "News",
       "login": "Student Login",
       "admin": "Admin Portal"
     },
     "footer": {
       "contact": "Contact Us",
-      "address": "123 Education Lane, Knowledge City",
-      "email": "contact@minervia.edu",
-      "phone": "+1 (555) 123-4567",
-      "copyright": "© {year} Minervia Institute. All rights reserved."
+      "address": "ul. Akademicka 15, 30-059 Krakow, Poland",
+      "email": "admissions@minervia.edu.pl",
+      "phone": "+48 12 345 67 89",
+      "copyright": "{year} Minervia Institute. All rights reserved.",
+      "quickLinks": "Quick Links",
+      "resources": "Resources",
+      "legal": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "accessibility": "Accessibility",
+      "sitemap": "Sitemap",
+      "careers": "Careers",
+      "library": "Library",
+      "research": "Research",
+      "partnerships": "Partnerships"
     },
     "home": {
-      "title": "Welcome to Minervia Institute",
-      "description": "Empowering the next generation of leaders through excellence in education.",
-      "heroTitle": "Shape Your Future with Minervia",
-      "heroDescription": "World-class education for a global community.",
+      "title": "Minervia Institute - Excellence in Education",
+      "description": "A distinguished Polish institution offering world-class education to students from around the globe.",
+      "heroTitle": "Discover Your Potential at Minervia Institute",
+      "heroDescription": "Founded in 1998, Minervia Institute has been nurturing academic excellence and fostering global perspectives in the heart of Poland.",
       "cta": "Apply Now",
+      "learnMore": "Learn More",
       "features": {
         "title": "Why Choose Minervia?",
         "1": {
-          "title": "Expert Faculty",
-          "description": "Learn from industry leaders and distinguished professors."
+          "title": "Distinguished Faculty",
+          "description": "Learn from over 200 professors and researchers with international recognition in their fields."
         },
         "2": {
           "title": "Global Community",
-          "description": "Connect with students from over 50 countries."
+          "description": "Join a diverse student body representing more than 50 countries across 6 continents."
         },
         "3": {
-          "title": "Modern Campus",
-          "description": "State-of-the-art facilities for learning and innovation."
+          "title": "Modern Facilities",
+          "description": "Study in our state-of-the-art campus featuring advanced laboratories and research centers."
+        },
+        "4": {
+          "title": "Career Success",
+          "description": "92% of our graduates secure employment within 6 months of graduation."
         }
+      },
+      "stats": {
+        "students": "Students",
+        "studentsCount": "8,500+",
+        "faculty": "Faculty Members",
+        "facultyCount": "450+",
+        "programs": "Academic Programs",
+        "programsCount": "65+",
+        "countries": "Countries Represented",
+        "countriesCount": "50+"
+      },
+      "accreditation": {
+        "title": "Accreditation & Recognition",
+        "description": "Minervia Institute is fully accredited by the Polish Accreditation Committee (PKA) and recognized by the Ministry of Science and Higher Education.",
+        "pka": "Polish Accreditation Committee",
+        "ministry": "Ministry of Science and Higher Education",
+        "erasmus": "Erasmus+ Programme Partner"
       }
     },
     "about": {
-      "title": "About Us",
-      "description": "Learn about our history, mission, and values.",
+      "title": "About Minervia Institute",
+      "description": "A legacy of academic excellence since 1998.",
       "mission": "Our Mission",
-      "missionText": "To provide accessible, high-quality education to students worldwide.",
+      "missionText": "To provide accessible, high-quality education that prepares students for global challenges while fostering innovation, critical thinking, and ethical leadership.",
       "vision": "Our Vision",
-      "visionText": "To be a global leader in educational innovation and student success."
+      "visionText": "To be recognized as a leading European institution for academic excellence, research innovation, and international collaboration.",
+      "values": "Our Values",
+      "valuesText": "Excellence, Integrity, Diversity, Innovation, and Community.",
+      "history": {
+        "title": "Our History",
+        "description": "From humble beginnings to international recognition",
+        "1998": {
+          "title": "Foundation",
+          "description": "Minervia Institute was established in Krakow by a group of visionary educators committed to creating an internationally-focused institution."
+        },
+        "2003": {
+          "title": "First International Students",
+          "description": "Welcomed our first cohort of international students from 12 countries, marking the beginning of our global community."
+        },
+        "2008": {
+          "title": "Research Center Opening",
+          "description": "Inaugurated the Advanced Research Center, expanding our capabilities in science and technology research."
+        },
+        "2012": {
+          "title": "Erasmus+ Partnership",
+          "description": "Became a full partner in the Erasmus+ programme, enabling student and faculty exchanges across Europe."
+        },
+        "2018": {
+          "title": "20th Anniversary",
+          "description": "Celebrated two decades of excellence with the opening of our new modern campus facilities."
+        },
+        "2024": {
+          "title": "Digital Innovation",
+          "description": "Launched comprehensive digital learning platforms and expanded online program offerings."
+        }
+      },
+      "leadership": {
+        "title": "Leadership",
+        "rector": {
+          "name": "Prof. Dr. Andrzej Kowalski",
+          "title": "Rector",
+          "bio": "Professor Kowalski has led Minervia Institute since 2019, bringing over 30 years of experience in higher education administration and research in applied mathematics."
+        },
+        "viceRector": {
+          "name": "Prof. Dr. Maria Nowak",
+          "title": "Vice-Rector for Academic Affairs",
+          "bio": "Professor Nowak oversees academic programs and curriculum development, with expertise in educational innovation and quality assurance."
+        },
+        "dean": {
+          "name": "Prof. Dr. Piotr Wisniewski",
+          "title": "Dean of Students",
+          "bio": "Professor Wisniewski is dedicated to student success and welfare, managing student services and campus life initiatives."
+        }
+      }
     },
     "programs": {
       "title": "Academic Programs",
-      "description": "Explore our diverse range of undergraduate and graduate programs.",
+      "description": "Comprehensive undergraduate and graduate programs designed for the modern world.",
+      "undergraduate": "Undergraduate Programs",
+      "graduate": "Graduate Programs",
+      "doctoral": "Doctoral Programs",
       "cs": "Computer Science",
       "csAbbrev": "CS",
+      "csDescription": "Comprehensive program covering software engineering, artificial intelligence, data science, and cybersecurity.",
       "business": "Business Administration",
       "businessAbbrev": "BA",
+      "businessDescription": "Develop leadership skills in management, finance, marketing, and international business.",
       "engineering": "Engineering",
       "engineeringAbbrev": "ENG",
+      "engineeringDescription": "Hands-on training in mechanical, electrical, and civil engineering with modern laboratory facilities.",
       "medicine": "Medicine",
-      "medicineAbbrev": "MED"
+      "medicineAbbrev": "MED",
+      "medicineDescription": "Six-year medical program with clinical rotations at partner hospitals across Poland.",
+      "law": "Law",
+      "lawAbbrev": "LAW",
+      "lawDescription": "Comprehensive legal education with focus on European and international law.",
+      "arts": "Arts & Humanities",
+      "artsAbbrev": "AH",
+      "artsDescription": "Explore literature, philosophy, history, and cultural studies in an international context.",
+      "duration": "Duration",
+      "credits": "ECTS Credits",
+      "language": "Language of Instruction",
+      "tuition": "Annual Tuition",
+      "years": "years",
+      "viewDetails": "View Program Details",
+      "applyNow": "Apply Now"
     },
     "admissions": {
       "title": "Admissions",
-      "description": "Start your journey at Minervia Institute.",
+      "description": "Begin your academic journey at Minervia Institute.",
       "apply": "How to Apply",
-      "step1": "Get a Registration Code",
+      "step1": "Obtain Registration Code",
+      "step1Desc": "Contact our admissions office or authorized representative to receive your unique registration code.",
       "step2": "Complete Online Application",
+      "step2Desc": "Fill out the online application form with your personal and academic information.",
       "step3": "Submit Documents",
-      "cta": "Start Application"
+      "step3Desc": "Upload required documents including transcripts, identification, and language certificates.",
+      "step4": "Application Review",
+      "step4Desc": "Our admissions committee will review your application within 2-4 weeks.",
+      "step5": "Receive Decision",
+      "step5Desc": "You will be notified of the admission decision via email.",
+      "cta": "Start Application",
+      "requirements": {
+        "title": "Admission Requirements",
+        "academic": "Academic Requirements",
+        "academicDesc": "High school diploma or equivalent with minimum GPA of 3.0 (or equivalent).",
+        "language": "Language Requirements",
+        "languageDesc": "English proficiency: IELTS 6.0, TOEFL 80, or equivalent. Polish programs require B2 Polish certificate.",
+        "documents": "Required Documents",
+        "documentsList": "Passport copy, Academic transcripts, Language certificate, Motivation letter, CV/Resume"
+      },
+      "deadlines": {
+        "title": "Application Deadlines",
+        "fall": "Fall Semester",
+        "fallDate": "June 30",
+        "spring": "Spring Semester",
+        "springDate": "November 30",
+        "note": "Late applications may be considered on a case-by-case basis."
+      },
+      "tuition": {
+        "title": "Tuition & Fees",
+        "undergraduate": "Undergraduate Programs",
+        "undergraduateFee": "4,500 - 8,000 EUR/year",
+        "graduate": "Graduate Programs",
+        "graduateFee": "5,500 - 12,000 EUR/year",
+        "note": "Scholarships and financial aid available for qualified students."
+      }
+    },
+    "campus": {
+      "title": "Campus Life",
+      "description": "Experience vibrant student life in the heart of Krakow.",
+      "location": {
+        "title": "Location",
+        "description": "Our campus is located in Krakow, one of Europe's most beautiful and historic cities, offering a perfect blend of academic excellence and cultural richness."
+      },
+      "facilities": {
+        "title": "Facilities",
+        "library": {
+          "title": "University Library",
+          "description": "Over 500,000 volumes, digital resources, and 24/7 study spaces."
+        },
+        "labs": {
+          "title": "Research Laboratories",
+          "description": "State-of-the-art facilities for science, engineering, and medical research."
+        },
+        "sports": {
+          "title": "Sports Complex",
+          "description": "Gymnasium, swimming pool, tennis courts, and fitness center."
+        },
+        "dining": {
+          "title": "Dining Services",
+          "description": "Multiple cafeterias and restaurants offering diverse cuisine options."
+        }
+      },
+      "housing": {
+        "title": "Student Housing",
+        "description": "Modern dormitories with single and shared room options, located within walking distance of academic buildings.",
+        "features": "High-speed internet, Study rooms, Laundry facilities, 24/7 security"
+      },
+      "organizations": {
+        "title": "Student Organizations",
+        "description": "Join over 50 student clubs and organizations covering academic, cultural, sports, and social interests.",
+        "academic": "Academic Clubs",
+        "cultural": "Cultural Groups",
+        "sports": "Sports Teams",
+        "volunteer": "Volunteer Organizations"
+      }
+    },
+    "news": {
+      "title": "News & Events",
+      "description": "Stay updated with the latest happenings at Minervia Institute.",
+      "latest": "Latest News",
+      "events": "Upcoming Events",
+      "announcements": "Announcements",
+      "readMore": "Read More",
+      "viewAll": "View All News",
+      "categories": {
+        "academic": "Academic",
+        "research": "Research",
+        "campus": "Campus Life",
+        "alumni": "Alumni"
+      },
+      "items": {
+        "1": {
+          "title": "Spring Semester Registration Now Open",
+          "date": "January 15, 2026",
+          "summary": "Registration for the Spring 2026 semester is now open. Early registration deadline is February 15."
+        },
+        "2": {
+          "title": "Research Grant Awarded to Engineering Department",
+          "date": "January 10, 2026",
+          "summary": "The Engineering Department has received a 2 million EUR grant for renewable energy research."
+        },
+        "3": {
+          "title": "International Week Celebration",
+          "date": "January 5, 2026",
+          "summary": "Join us for International Week featuring cultural performances, food festivals, and academic presentations."
+        },
+        "4": {
+          "title": "New Partnership with Tech Industry Leaders",
+          "date": "December 20, 2025",
+          "summary": "Minervia Institute announces new internship partnerships with leading technology companies."
+        }
+      }
+    },
+    "calendar": {
+      "title": "Academic Calendar",
+      "description": "Important dates for the academic year 2025-2026.",
+      "fallSemester": "Fall Semester 2025",
+      "springSemester": "Spring Semester 2026",
+      "summerSession": "Summer Session 2026",
+      "events": {
+        "fallStart": {
+          "date": "October 1, 2025",
+          "title": "Fall Semester Begins"
+        },
+        "fallBreak": {
+          "date": "November 1-3, 2025",
+          "title": "Fall Break (All Saints' Day)"
+        },
+        "winterBreak": {
+          "date": "December 23, 2025 - January 6, 2026",
+          "title": "Winter Break"
+        },
+        "fallExams": {
+          "date": "January 20 - February 7, 2026",
+          "title": "Fall Semester Examinations"
+        },
+        "springStart": {
+          "date": "February 17, 2026",
+          "title": "Spring Semester Begins"
+        },
+        "easterBreak": {
+          "date": "April 2-7, 2026",
+          "title": "Easter Break"
+        },
+        "springExams": {
+          "date": "June 8-26, 2026",
+          "title": "Spring Semester Examinations"
+        },
+        "summerStart": {
+          "date": "July 1, 2026",
+          "title": "Summer Session Begins"
+        },
+        "summerEnd": {
+          "date": "August 31, 2026",
+          "title": "Summer Session Ends"
+        }
+      },
+      "holidays": "Public Holidays",
+      "examPeriods": "Examination Periods",
+      "registration": "Registration Periods"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "description": "Find answers to common questions about Minervia Institute.",
+      "categories": {
+        "admissions": "Admissions",
+        "academics": "Academics",
+        "campus": "Campus Life",
+        "financial": "Financial"
+      },
+      "questions": {
+        "1": {
+          "question": "What are the admission requirements?",
+          "answer": "Admission requirements include a high school diploma (or equivalent), language proficiency certificate, and completed application form. Specific programs may have additional requirements."
+        },
+        "2": {
+          "question": "Is the instruction in English or Polish?",
+          "answer": "We offer programs in both English and Polish. Most international programs are conducted entirely in English. Check individual program pages for language details."
+        },
+        "3": {
+          "question": "What scholarships are available?",
+          "answer": "We offer merit-based scholarships, need-based financial aid, and special scholarships for international students. Contact our financial aid office for details."
+        },
+        "4": {
+          "question": "Is on-campus housing available?",
+          "answer": "Yes, we have modern dormitories with single and shared room options. Housing applications should be submitted along with your admission application."
+        },
+        "5": {
+          "question": "Can I work while studying?",
+          "answer": "International students can work up to 20 hours per week during the semester. The Career Services office can help you find part-time opportunities."
+        },
+        "6": {
+          "question": "What is the student-to-faculty ratio?",
+          "answer": "Our student-to-faculty ratio is approximately 15:1, ensuring personalized attention and mentorship opportunities."
+        },
+        "7": {
+          "question": "Are there exchange programs available?",
+          "answer": "Yes, as an Erasmus+ partner, we offer exchange opportunities with over 100 universities across Europe and beyond."
+        },
+        "8": {
+          "question": "How do I apply for a student visa?",
+          "answer": "After receiving your acceptance letter, our International Office will provide guidance and documentation for your visa application."
+        }
+      },
+      "contact": {
+        "title": "Still have questions?",
+        "description": "Contact our admissions team for personalized assistance.",
+        "email": "admissions@minervia.edu.pl",
+        "phone": "+48 12 345 67 89"
+      }
     }
   },
   "Register": {
@@ -147,13 +457,22 @@
       "FR": "France",
       "GB": "United Kingdom",
       "JP": "Japan",
-      "KR": "South Korea"
+      "KR": "South Korea",
+      "UA": "Ukraine",
+      "IN": "India",
+      "BR": "Brazil",
+      "ES": "Spain",
+      "IT": "Italy",
+      "NL": "Netherlands",
+      "SE": "Sweden"
     },
     "majors": {
       "1": "Computer Science",
       "2": "Business Administration",
       "3": "Engineering",
-      "4": "Medicine"
+      "4": "Medicine",
+      "5": "Law",
+      "6": "Arts & Humanities"
     },
     "classes": {
       "1": "Class A (Morning)",
@@ -199,7 +518,7 @@
       "title": "Student Login",
       "description": "Sign in to access your student portal.",
       "email": "Email",
-      "emailPlaceholder": "your.email@minervia.edu",
+      "emailPlaceholder": "your.email@minervia.edu.pl",
       "password": "Password",
       "passwordPlaceholder": "Enter your password",
       "submit": "Sign In",
@@ -240,6 +559,18 @@
   },
   "Common": {
     "siteName": "Minervia Institute",
-    "footer": "Minervia Institute Educational Platform"
+    "footer": "Minervia Institute Educational Platform",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "notFound": {
+      "title": "Page Not Found",
+      "description": "The page you are looking for does not exist or has been moved.",
+      "backHome": "Back to Home"
+    },
+    "serverError": {
+      "title": "Server Error",
+      "description": "Something went wrong on our end. Please try again later.",
+      "retry": "Try Again"
+    }
   }
 }

@@ -1,349 +1,462 @@
-# Minervia Institute Education Platform - Deployment Guide
+# Minervia Institute - Deployment Guide
 
-## Prerequisites
+Complete guide for deploying the Minervia Institute Education Platform.
 
-- Docker 24.0+
-- Docker Compose 2.20+
-- Kubernetes 1.28+ (for production)
-- Helm 3.12+ (for Kubernetes deployment)
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [System Requirements](#system-requirements)
+- [Dependencies](#dependencies)
+- [Port Configuration](#port-configuration)
+- [Deployment Methods](#deployment-methods)
+- [Environment Variables](#environment-variables)
+- [Pre-deployment Checklist](#pre-deployment-checklist)
+- [Post-deployment Verification](#post-deployment-verification)
+- [Troubleshooting](#troubleshooting)
+- [Backup and Recovery](#backup-and-recovery)
+- [Security Checklist](#security-checklist)
+
+---
+
+## Quick Start
+
+For a quick deployment using Docker:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/your-org/minervia-platform.git
+cd minervia-platform
+
+# 2. Run the deployment script
+./scripts/deploy.sh docker
+
+# 3. Access the application
+# Frontend: http://localhost:3000
+# Backend:  http://localhost:8080
+```
+
+For detailed instructions, see [QUICKSTART.md](./QUICKSTART.md).
+
+---
+
+## System Requirements
+
+### Minimum Requirements
+
+| Resource | Minimum | Recommended | Notes |
+|----------|---------|-------------|-------|
+| CPU | 2 cores | 4+ cores | More cores improve concurrent request handling |
+| RAM | 4 GB | 8+ GB | Backend JVM requires ~1GB, MySQL ~1GB |
+| Disk | 20 GB | 50+ GB SSD | SSD recommended for database performance |
+| Network | 10 Mbps | 100+ Mbps | Higher bandwidth for file uploads |
+
+### Supported Operating Systems
+
+| OS | Version | Support Level |
+|----|---------|---------------|
+| Debian | 11, 12 | Full (recommended) |
+| Ubuntu | 22.04, 24.04 | Full |
+| CentOS/RHEL | 8, 9 | Partial |
+| macOS | 13+ | Development only |
+| Windows | WSL2 | Development only |
+
+---
+
+## Dependencies
+
+### Docker Deployment
+
+| Dependency | Version | Required | Installation |
+|------------|---------|----------|--------------|
+| Docker | 24.0+ | Yes | `curl -fsSL https://get.docker.com \| sh` |
+| Docker Compose | 2.20+ | Yes | Included with Docker Desktop |
+| Git | 2.30+ | Yes | `apt install git` |
+
+### Manual Deployment
+
+| Dependency | Version | Required | Installation |
+|------------|---------|----------|--------------|
+| Java (OpenJDK) | 21+ | Yes | `apt install openjdk-21-jdk` |
+| Node.js | 20+ | Yes | Via NodeSource or nvm |
+| MySQL | 8.0+ | Yes | `apt install mysql-server` |
+| Redis | 7+ | Yes | `apt install redis-server` |
+| Kafka | 3.5+ | Optional | For async processing |
+| Nginx | 1.24+ | Optional | For reverse proxy/SSL |
+
+### Potential Dependency Conflicts
+
+| Conflict | Symptom | Resolution |
+|----------|---------|------------|
+| Java version | `UnsupportedClassVersionError` | Ensure Java 21+ is installed and `JAVA_HOME` is set |
+| Node.js version | Build failures | Use nvm to install Node.js 20 |
+| MySQL auth | `Access denied` | Use `mysql_native_password` plugin |
+| Port conflicts | `Address already in use` | Change ports in `.env` or stop conflicting services |
+
+---
+
+## Port Configuration
+
+### Default Ports
+
+| Port | Service | Protocol | Exposure | Description |
+|------|---------|----------|----------|-------------|
+| 3000 | Frontend | HTTP | Public | Next.js web application |
+| 8080 | Backend | HTTP | Public | Spring Boot REST API |
+| 3306 | MySQL | TCP | Internal | Database server |
+| 6379 | Redis | TCP | Internal | Cache and rate limiting |
+| 9092 | Kafka | TCP | Internal | Message queue (optional) |
+| 9200 | Elasticsearch | TCP | Internal | Search engine (optional) |
+
+### Firewall Configuration
+
+For production servers, open only necessary ports:
+
+```bash
+# UFW (Ubuntu/Debian)
+sudo ufw allow 22/tcp    # SSH
+sudo ufw allow 80/tcp    # HTTP
+sudo ufw allow 443/tcp   # HTTPS
+sudo ufw enable
+
+# firewalld (CentOS/RHEL)
+sudo firewall-cmd --permanent --add-service=ssh
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload
+```
+
+### Changing Ports
+
+Edit `.env` file or use the management script:
+
+```bash
+# View current ports
+./scripts/minervia.sh ports
+
+# Change a port
+./scripts/minervia.sh ports set frontend 3001
+
+# Restart to apply
+./scripts/minervia.sh restart
+```
+
+---
+
+## Deployment Methods
+
+### Method 1: Docker Deployment (Recommended)
+
+Best for: Production servers, quick setup, isolated environments.
+
+```bash
+# Interactive deployment
+./scripts/deploy.sh docker
+
+# Or manually:
+cp .env.example .env
+# Edit .env with your configuration
+docker compose -f docker-compose.prod.yml up -d
+```
+
+### Method 2: Manual Installation
+
+Best for: Custom configurations, existing infrastructure, learning.
+
+```bash
+# Run the manual installation
+./scripts/deploy.sh manual
+
+# This will:
+# 1. Install Java 21, Node.js 20, MySQL 8, Redis 7
+# 2. Configure the database
+# 3. Build backend and frontend
+# 4. Create systemd services
+```
+
+### Method 3: Development Setup
+
+Best for: Local development, testing.
+
+```bash
+# Start infrastructure only
+docker compose up -d mysql redis
+
+# Run backend (in backend/ directory)
+./gradlew bootRun
+
+# Run frontend (in frontend/ directory)
+npm run dev
+```
+
+---
 
 ## Environment Variables
 
-### Backend
+### Required Variables
 
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `DB_PASSWORD` | MySQL database password | Yes | - |
-| `REDIS_PASSWORD` | Redis password | No | - |
-| `JWT_SECRET` | JWT signing secret (min 256 bits) | Yes | - |
-| `JWT_ACCESS_EXPIRATION` | Access token TTL (ms) | No | 1800000 |
-| `JWT_REFRESH_EXPIRATION` | Refresh token TTL (ms) | No | 1209600000 |
-| `KAFKA_BOOTSTRAP_SERVERS` | Kafka broker addresses | No | localhost:9092 |
-| `MAIL_HOST` | SMTP server host | Yes | - |
-| `MAIL_PORT` | SMTP server port | No | 587 |
-| `MAIL_USERNAME` | SMTP username | Yes | - |
-| `MAIL_PASSWORD` | SMTP password | Yes | - |
-| `OPENAI_API_KEY` | OpenAI API key for LLM | No | - |
-| `OPENAI_BASE_URL` | OpenAI API base URL | No | https://api.openai.com |
-| `EMAIL_WEBHOOK_SIGNING_KEY` | Generic webhook signing key | No | - |
-| `MAILGUN_WEBHOOK_SIGNING_KEY` | Mailgun webhook key | No | - |
-| `SENDGRID_WEBHOOK_PUBLIC_KEY` | SendGrid webhook public key | No | - |
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `DB_PASSWORD` | MySQL password for minervia user | `SecureP@ssw0rd123` |
+| `JWT_SECRET` | JWT signing key (min 32 chars) | `openssl rand -base64 32` |
+| `MAIL_HOST` | SMTP server hostname | `smtp.sendgrid.net` |
+| `MAIL_USERNAME` | SMTP username | `apikey` |
+| `MAIL_PASSWORD` | SMTP password/API key | `SG.xxxxx` |
+| `NEXT_PUBLIC_API_URL` | Backend API URL | `https://api.minervia.edu` |
+| `NEXT_PUBLIC_WS_URL` | WebSocket URL | `wss://api.minervia.edu` |
 
-### Frontend
+### Optional Variables
 
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `NEXT_PUBLIC_API_URL` | Backend API URL | Yes | - |
-| `NEXT_PUBLIC_WS_URL` | WebSocket URL | Yes | - |
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `REDIS_PASSWORD` | Redis password | (none) |
+| `KAFKA_BOOTSTRAP_SERVERS` | Kafka brokers | `localhost:9092` |
+| `JWT_ACCESS_EXPIRATION` | Access token TTL (ms) | `1800000` (30 min) |
+| `JWT_REFRESH_EXPIRATION` | Refresh token TTL (ms) | `1209600000` (14 days) |
+| `OPENAI_API_KEY` | OpenAI API key for LLM | (none) |
+| `OPENAI_MODEL` | OpenAI model to use | `gpt-4o-mini` |
 
-## Docker Compose Deployment
-
-### Development
-
-```yaml
-# docker-compose.dev.yml
-version: '3.8'
-
-services:
-  mysql:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: minervia
-      MYSQL_USER: minervia
-      MYSQL_PASSWORD: minervia_dev
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-
-  kafka:
-    image: confluentinc/cp-kafka:7.5.0
-    environment:
-      KAFKA_NODE_ID: 1
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
-      KAFKA_PROCESS_ROLES: broker,controller
-      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
-    ports:
-      - "9092:9092"
-
-  backend:
-    build: ./backend
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      DB_PASSWORD: minervia_dev
-      JWT_SECRET: dev-secret-key-for-development-only-256-bits-minimum
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mysql
-      - redis
-      - kafka
-
-  frontend:
-    build: ./frontend
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8080
-      NEXT_PUBLIC_WS_URL: ws://localhost:8080
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-
-volumes:
-  mysql_data:
-```
-
-### Production
-
-```yaml
-# docker-compose.prod.yml
-version: '3.8'
-
-services:
-  backend:
-    image: minervia/backend:latest
-    environment:
-      SPRING_PROFILES_ACTIVE: prod
-      DB_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
-      MAIL_HOST: ${MAIL_HOST}
-      MAIL_USERNAME: ${MAIL_USERNAME}
-      MAIL_PASSWORD: ${MAIL_PASSWORD}
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-    ports:
-      - "8080:8080"
-    deploy:
-      replicas: 2
-      resources:
-        limits:
-          memory: 1G
-        reservations:
-          memory: 512M
-
-  frontend:
-    image: minervia/frontend:latest
-    environment:
-      NEXT_PUBLIC_API_URL: https://api.minervia.edu
-      NEXT_PUBLIC_WS_URL: wss://api.minervia.edu
-    ports:
-      - "3000:3000"
-    deploy:
-      replicas: 2
-```
-
-## Kubernetes Deployment
-
-### Namespace
-
-```yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: minervia
-```
-
-### ConfigMap
-
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: minervia-config
-  namespace: minervia
-data:
-  SPRING_PROFILES_ACTIVE: "prod"
-  KAFKA_BOOTSTRAP_SERVERS: "kafka.minervia.svc.cluster.local:9092"
-```
-
-### Secrets
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: minervia-secrets
-  namespace: minervia
-type: Opaque
-stringData:
-  DB_PASSWORD: "<your-db-password>"
-  JWT_SECRET: "<your-jwt-secret-min-256-bits>"
-  MAIL_PASSWORD: "<your-mail-password>"
-  OPENAI_API_KEY: "<your-openai-key>"
-```
-
-### Backend Deployment
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: minervia-backend
-  namespace: minervia
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: minervia-backend
-  template:
-    metadata:
-      labels:
-        app: minervia-backend
-    spec:
-      containers:
-        - name: backend
-          image: minervia/backend:latest
-          ports:
-            - containerPort: 8080
-          envFrom:
-            - configMapRef:
-                name: minervia-config
-            - secretRef:
-                name: minervia-secrets
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "250m"
-            limits:
-              memory: "1Gi"
-              cpu: "1000m"
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 5
-```
-
-### Service
-
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: minervia-backend
-  namespace: minervia
-spec:
-  selector:
-    app: minervia-backend
-  ports:
-    - port: 8080
-      targetPort: 8080
-  type: ClusterIP
-```
-
-### Ingress
-
-```yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: minervia-ingress
-  namespace: minervia
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-        - api.minervia.edu
-        - minervia.edu
-      secretName: minervia-tls
-  rules:
-    - host: api.minervia.edu
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: minervia-backend
-                port:
-                  number: 8080
-    - host: minervia.edu
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: minervia-frontend
-                port:
-                  number: 3000
-```
-
-## Database Migration
-
-Flyway migrations run automatically on application startup. For manual migration:
+### Generating Secure Values
 
 ```bash
-./gradlew flywayMigrate -Dflyway.url=jdbc:mysql://localhost:3306/minervia \
-  -Dflyway.user=minervia -Dflyway.password=<password>
+# Generate JWT secret (256 bits)
+openssl rand -base64 32
+
+# Generate database password
+openssl rand -base64 16
+
+# Generate webhook signing key
+openssl rand -hex 32
 ```
 
-## Health Checks
+---
 
-- Backend: `GET /actuator/health`
-- API Documentation: `GET /swagger-ui.html`
+## Pre-deployment Checklist
 
-## Monitoring
+### Server Preparation
 
-### Prometheus Metrics
+- [ ] Server meets minimum requirements (2 CPU, 4GB RAM, 20GB disk)
+- [ ] Operating system is updated (`apt update && apt upgrade`)
+- [ ] Firewall is configured (ports 80, 443 open)
+- [ ] SSH access is secured (key-based auth, no root login)
 
-Add to `application.yml`:
+### Domain and SSL
 
-```yaml
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,prometheus
-  metrics:
-    export:
-      prometheus:
-        enabled: true
-```
+- [ ] Domain name is registered and DNS configured
+- [ ] A record points to server IP
+- [ ] SSL certificate is ready (or use Let's Encrypt)
 
-### Logging
+### External Services
 
-Logs are output to stdout in JSON format for production. Configure log aggregation (ELK, Loki) as needed.
+- [ ] Email service account created (SendGrid, Mailgun, etc.)
+- [ ] SMTP credentials obtained
+- [ ] Webhook URLs configured (for email bounce handling)
 
-## Backup Strategy
+### Configuration
 
-### Database
+- [ ] `.env` file created from `.env.example`
+- [ ] All required variables are set
+- [ ] JWT_SECRET is at least 32 characters
+- [ ] Database password is strong and unique
+
+### Backup Plan
+
+- [ ] Backup storage location identified
+- [ ] Backup schedule planned
+- [ ] Recovery procedure documented
+
+---
+
+## Post-deployment Verification
+
+### Health Checks
 
 ```bash
-mysqldump -h <host> -u minervia -p minervia > backup_$(date +%Y%m%d).sql
+# Check service status
+./scripts/minervia.sh status
+
+# Check backend health
+curl http://localhost:8080/actuator/health
+
+# Check frontend
+curl http://localhost:3000
 ```
 
-### Redis
+### Functional Tests
 
-Redis is used for caching and rate limiting. Data loss is acceptable; no backup required.
+1. **Frontend loads**: Visit `http://your-domain.com`
+2. **API responds**: Visit `http://your-domain.com:8080/swagger-ui.html`
+3. **Database connected**: Check backend logs for connection success
+4. **Email works**: Test registration flow
+
+### Log Verification
+
+```bash
+# View all logs
+./scripts/minervia.sh logs
+
+# View specific service
+./scripts/minervia.sh logs backend -f
+
+# Check for errors
+./scripts/minervia.sh logs | grep -i error
+```
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+#### Backend won't start
+
+**Symptom**: Backend container exits immediately or shows errors.
+
+**Solutions**:
+1. Check database connection:
+   ```bash
+   docker exec minervia-mysql mysql -u minervia -p -e "SELECT 1"
+   ```
+2. Verify environment variables in `.env`
+3. Check logs: `./scripts/minervia.sh logs backend`
+
+#### Frontend shows "Cannot connect to API"
+
+**Symptom**: Frontend loads but API calls fail.
+
+**Solutions**:
+1. Verify `NEXT_PUBLIC_API_URL` is correct
+2. Check CORS configuration in backend
+3. Ensure backend is running: `curl http://localhost:8080/actuator/health`
+
+#### Database connection refused
+
+**Symptom**: `Connection refused` errors in backend logs.
+
+**Solutions**:
+1. Ensure MySQL is running: `docker ps | grep mysql`
+2. Check MySQL logs: `./scripts/minervia.sh logs mysql`
+3. Verify credentials in `.env` match MySQL configuration
+
+#### Port already in use
+
+**Symptom**: `Address already in use` error on startup.
+
+**Solutions**:
+1. Find conflicting process: `lsof -i :3000`
+2. Change port: `./scripts/minervia.sh ports set frontend 3001`
+3. Or stop conflicting service
+
+#### Out of memory
+
+**Symptom**: Services crash or become unresponsive.
+
+**Solutions**:
+1. Check memory usage: `free -h`
+2. Increase server RAM
+3. Reduce container memory limits in `docker-compose.prod.yml`
+
+### Getting Help
+
+1. Check logs: `./scripts/minervia.sh logs`
+2. Review this documentation
+3. Search existing issues on GitHub
+4. Open a new issue with:
+   - Error messages
+   - Steps to reproduce
+   - Environment details (OS, Docker version, etc.)
+
+---
+
+## Backup and Recovery
+
+### Automated Backup
+
+```bash
+# Create full backup
+./scripts/minervia.sh backup
+
+# Create database-only backup
+./scripts/minervia.sh backup --db-only
+
+# List available backups
+./scripts/minervia.sh backup list
+```
+
+### Manual Backup
+
+```bash
+# Database backup
+docker exec minervia-mysql mysqldump -u minervia -p minervia > backup.sql
+
+# Or for non-Docker:
+mysqldump -u minervia -p minervia > backup.sql
+```
+
+### Restore from Backup
+
+```bash
+# Using management script
+./scripts/minervia.sh restore backups/minervia_backup_20260131.tar.gz
+
+# Manual restore
+docker exec -i minervia-mysql mysql -u minervia -p minervia < backup.sql
+```
+
+### Backup Schedule Recommendation
+
+| Data | Frequency | Retention |
+|------|-----------|-----------|
+| Database | Daily | 30 days |
+| Full backup | Weekly | 12 weeks |
+| Configuration | On change | Indefinite |
+
+---
 
 ## Security Checklist
 
-- [ ] JWT_SECRET is at least 256 bits and randomly generated
-- [ ] Database passwords are strong and unique
+### Authentication & Authorization
+
+- [ ] JWT_SECRET is randomly generated and at least 256 bits
+- [ ] JWT_SECRET is not committed to version control
+- [ ] Access tokens expire in 30 minutes or less
+- [ ] Refresh tokens expire in 14 days or less
+- [ ] TOTP (2FA) is available for admin accounts
+
+### Network Security
+
 - [ ] HTTPS is enforced in production
-- [ ] Webhook signing keys are configured
-- [ ] Rate limiting is enabled
-- [ ] CORS is properly configured
+- [ ] SSL certificate is valid and not expired
+- [ ] Unnecessary ports are closed
+- [ ] Internal services (MySQL, Redis) are not exposed publicly
+- [ ] CORS is configured to allow only trusted origins
+
+### Data Security
+
+- [ ] Database passwords are strong and unique
+- [ ] Sensitive data is encrypted at rest
 - [ ] Audit logging is enabled
+- [ ] Backups are encrypted and stored securely
+
+### Application Security
+
+- [ ] Rate limiting is enabled
+- [ ] Input validation is in place
+- [ ] SQL injection protection (parameterized queries)
+- [ ] XSS protection (output encoding)
+- [ ] CSRF protection for state-changing operations
+
+### Operational Security
+
+- [ ] SSH uses key-based authentication
+- [ ] Root login is disabled
+- [ ] System packages are updated regularly
+- [ ] Logs are monitored for suspicious activity
+- [ ] Incident response plan is documented
+
+---
+
+## Additional Resources
+
+- [Quick Start Guide](./QUICKSTART.md)
+- [API Documentation](http://localhost:8080/swagger-ui.html)
+- [Development Guide](../DEV.md)
