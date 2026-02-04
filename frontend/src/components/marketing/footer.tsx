@@ -22,7 +22,7 @@ export function MarketingFooter() {
     { href: `/${locale}/news`, label: 'News' },
     { href: `/${locale}/calendar`, label: 'Calendar' },
     { href: `/${locale}/faq`, label: 'FAQ' },
-    { href: `/${locale}/portal/login`, label: 'Student Portal' },
+    { href: `/${locale}/student-portal`, label: 'Student Portal' },
   ];
 
   return (
@@ -94,12 +94,12 @@ export function MarketingFooter() {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm text-slate-400 hover:text-white transition-colors">
+                <Link href={`/${locale}/privacy`} className="text-sm text-slate-400 hover:text-white transition-colors">
                   {t('privacy')}
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-sm text-slate-400 hover:text-white transition-colors">
+                <Link href={`/${locale}/terms`} className="text-sm text-slate-400 hover:text-white transition-colors">
                   {t('terms')}
                 </Link>
               </li>
