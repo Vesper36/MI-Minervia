@@ -65,6 +65,101 @@
       "step2": "完成在线申请",
       "step3": "提交申请材料",
       "cta": "开始申请"
+    },
+    "campus": {
+      "title": "校园生活",
+      "description": "在克拉科夫市中心体验充满活力的学生生活。",
+      "location": {
+        "title": "地理位置",
+        "description": "我们的校园位于克拉科夫，欧洲最美丽、最具历史底蕴的城市之一。"
+      },
+      "facilities": {
+        "title": "校园设施",
+        "library": {
+          "title": "大学图书馆",
+          "description": "超过50万册藏书、数字资源和24小时自习空间。"
+        },
+        "labs": {
+          "title": "研究实验室",
+          "description": "先进的科学、工程和医学研究设施。"
+        },
+        "sports": {
+          "title": "体育中心",
+          "description": "健身房、游泳池、网球场和健身中心。"
+        },
+        "dining": {
+          "title": "餐饮服务",
+          "description": "多个食堂和餐厅，提供多样化的美食选择。"
+        }
+      },
+      "housing": {
+        "title": "学生宿舍",
+        "description": "现代化宿舍，提供单人间和多人间选择，步行即可到达教学楼。",
+        "features": "高速网络, 自习室, 洗衣设施, 24小时安保"
+      },
+      "organizations": {
+        "title": "学生组织",
+        "description": "加入50多个学生社团和组织，涵盖学术、文化、体育和社交领域。",
+        "academic": "学术社团",
+        "cultural": "文化团体",
+        "sports": "体育队伍",
+        "volunteer": "志愿者组织"
+      },
+      "services": {
+        "title": "学生服务",
+        "international": {
+          "title": "国际事务办公室",
+          "description": "签证协助、迎新活动和国际学生支持服务。"
+        },
+        "career": {
+          "title": "就业服务中心",
+          "description": "就业推荐、实习协调和职业咨询。"
+        },
+        "counseling": {
+          "title": "心理咨询中心",
+          "description": "心理健康支持、学业指导和个人咨询。"
+        },
+        "health": {
+          "title": "校医院",
+          "description": "校内医疗诊所，配备全科医生和专科医生。"
+        }
+      },
+      "events": {
+        "title": "年度活动",
+        "orientation": {
+          "title": "迎新周",
+          "date": "九月",
+          "description": "欢迎活动、校园参观和大学生活介绍。"
+        },
+        "international": {
+          "title": "国际文化周",
+          "date": "三月",
+          "description": "文化表演、美食节和学术展示。"
+        },
+        "career": {
+          "title": "招聘会",
+          "date": "四月",
+          "description": "与雇主见面、探索实习机会、与行业专业人士交流。"
+        },
+        "graduation": {
+          "title": "毕业典礼",
+          "date": "六月",
+          "description": "与家人和朋友一起庆祝学业成就。"
+        }
+      },
+      "safety": {
+        "title": "安全保障",
+        "description": "您的安全是我们的首要任务。我们的校园配备全面的安保措施。",
+        "security": "24小时安保",
+        "cctv": "监控系统",
+        "emergency": "应急响应",
+        "access": "门禁系统"
+      },
+      "tour": {
+        "title": "参观校园",
+        "description": "亲身体验 Minervia Institute。预约校园参观或参加开放日活动。",
+        "cta": "预约参观"
+      }
     }
   },
   "Register": {

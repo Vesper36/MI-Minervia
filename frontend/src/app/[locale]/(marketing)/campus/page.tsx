@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   params: { locale: string };
@@ -29,6 +31,20 @@ export default async function CampusPage({ params: { locale } }: Props) {
     { key: 'cultural', label: t('organizations.cultural') },
     { key: 'sports', label: t('organizations.sports') },
     { key: 'volunteer', label: t('organizations.volunteer') },
+  ];
+
+  const studentServices = [
+    { key: 'international', title: t('services.international.title'), description: t('services.international.description') },
+    { key: 'career', title: t('services.career.title'), description: t('services.career.description') },
+    { key: 'counseling', title: t('services.counseling.title'), description: t('services.counseling.description') },
+    { key: 'health', title: t('services.health.title'), description: t('services.health.description') },
+  ];
+
+  const events = [
+    { key: 'orientation', title: t('events.orientation.title'), date: t('events.orientation.date'), description: t('events.orientation.description') },
+    { key: 'international', title: t('events.international.title'), date: t('events.international.date'), description: t('events.international.description') },
+    { key: 'career', title: t('events.career.title'), date: t('events.career.date'), description: t('events.career.description') },
+    { key: 'graduation', title: t('events.graduation.title'), date: t('events.graduation.date'), description: t('events.graduation.description') },
   ];
 
   return (
@@ -96,7 +112,7 @@ export default async function CampusPage({ params: { locale } }: Props) {
         </div>
 
         {/* Student Organizations */}
-        <div>
+        <div className="mb-16">
           <h2 className="text-2xl font-bold text-center mb-4">{t('organizations.title')}</h2>
           <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-8">
             {t('organizations.description')}
@@ -111,6 +127,81 @@ export default async function CampusPage({ params: { locale } }: Props) {
               </Card>
             ))}
           </div>
+        </div>
+
+        {/* Student Services */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-bold text-center mb-8">{t('services.title')}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {studentServices.map((service) => (
+              <Card key={service.key} className="border-0 shadow-md">
+                <CardHeader>
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 mb-4" />
+                  <CardTitle className="text-lg">{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm">{service.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Annual Events */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-bold text-center mb-8">{t('events.title')}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {events.map((event) => (
+              <Card key={event.key} className="border shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-semibold">{event.title}</h3>
+                    <span className="text-sm text-muted-foreground">{event.date}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{event.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Safety & Security */}
+        <div className="mb-16">
+          <Card className="border-0 shadow-md bg-slate-50">
+            <CardContent className="p-8">
+              <div className="max-w-3xl mx-auto text-center">
+                <h2 className="text-2xl font-bold mb-4">{t('safety.title')}</h2>
+                <p className="text-muted-foreground mb-6">{t('safety.description')}</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="p-4 bg-white rounded-lg shadow-sm">
+                    <p className="font-medium text-sm">{t('safety.security')}</p>
+                  </div>
+                  <div className="p-4 bg-white rounded-lg shadow-sm">
+                    <p className="font-medium text-sm">{t('safety.cctv')}</p>
+                  </div>
+                  <div className="p-4 bg-white rounded-lg shadow-sm">
+                    <p className="font-medium text-sm">{t('safety.emergency')}</p>
+                  </div>
+                  <div className="p-4 bg-white rounded-lg shadow-sm">
+                    <p className="font-medium text-sm">{t('safety.access')}</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Virtual Tour CTA */}
+        <div>
+          <Card className="border-0 shadow-lg bg-primary text-primary-foreground">
+            <CardContent className="py-12 text-center">
+              <h2 className="text-2xl font-bold mb-4">{t('tour.title')}</h2>
+              <p className="mb-6 opacity-90 max-w-2xl mx-auto">{t('tour.description')}</p>
+              <Button variant="secondary" size="lg" asChild>
+                <Link href={`/${locale}/contact`}>{t('tour.cta')}</Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

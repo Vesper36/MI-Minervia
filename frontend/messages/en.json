@@ -239,6 +239,61 @@
         "cultural": "Cultural Groups",
         "sports": "Sports Teams",
         "volunteer": "Volunteer Organizations"
+      },
+      "services": {
+        "title": "Student Services",
+        "international": {
+          "title": "International Office",
+          "description": "Visa assistance, orientation programs, and support for international students."
+        },
+        "career": {
+          "title": "Career Services",
+          "description": "Job placement, internship coordination, and career counseling."
+        },
+        "counseling": {
+          "title": "Counseling Center",
+          "description": "Mental health support, academic advising, and personal counseling."
+        },
+        "health": {
+          "title": "Health Center",
+          "description": "On-campus medical clinic with general practitioners and specialists."
+        }
+      },
+      "events": {
+        "title": "Annual Events",
+        "orientation": {
+          "title": "Orientation Week",
+          "date": "September",
+          "description": "Welcome activities, campus tours, and introduction to university life."
+        },
+        "international": {
+          "title": "International Week",
+          "date": "March",
+          "description": "Cultural performances, food festivals, and academic presentations."
+        },
+        "career": {
+          "title": "Career Fair",
+          "date": "April",
+          "description": "Meet employers, explore internships, and network with industry professionals."
+        },
+        "graduation": {
+          "title": "Graduation Ceremony",
+          "date": "June",
+          "description": "Celebrate academic achievements with family and friends."
+        }
+      },
+      "safety": {
+        "title": "Safety & Security",
+        "description": "Your safety is our priority. Our campus features comprehensive security measures.",
+        "security": "24/7 Security",
+        "cctv": "CCTV Monitoring",
+        "emergency": "Emergency Response",
+        "access": "Card Access"
+      },
+      "tour": {
+        "title": "Visit Our Campus",
+        "description": "Experience Minervia Institute firsthand. Schedule a campus tour or attend an open day event.",
+        "cta": "Schedule a Visit"
       }
     },
     "news": {

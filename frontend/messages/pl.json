@@ -65,6 +65,101 @@
       "step2": "Wypełnij Aplikację Online",
       "step3": "Prześlij Dokumenty",
       "cta": "Rozpocznij Aplikację"
+    },
+    "campus": {
+      "title": "Zycie na Kampusie",
+      "description": "Doswiadcz tetniącego zyciem studenckiego w sercu Krakowa.",
+      "location": {
+        "title": "Lokalizacja",
+        "description": "Nasz kampus znajduje sie w Krakowie, jednym z najpiekniejszych i najbardziej historycznych miast Europy."
+      },
+      "facilities": {
+        "title": "Obiekty",
+        "library": {
+          "title": "Biblioteka Uniwersytecka",
+          "description": "Ponad 500 000 woluminow, zasoby cyfrowe i przestrzenie do nauki 24/7."
+        },
+        "labs": {
+          "title": "Laboratoria Badawcze",
+          "description": "Nowoczesne obiekty do badan naukowych, inzynieryjnych i medycznych."
+        },
+        "sports": {
+          "title": "Kompleks Sportowy",
+          "description": "Silownia, basen, korty tenisowe i centrum fitness."
+        },
+        "dining": {
+          "title": "Uslugi Gastronomiczne",
+          "description": "Wiele stołowek i restauracji oferujących roznorodne dania."
+        }
+      },
+      "housing": {
+        "title": "Zakwaterowanie Studenckie",
+        "description": "Nowoczesne akademiki z pokojami jedno- i wieloosobowymi.",
+        "features": "Szybki internet, Pokoje do nauki, Pralnia, Ochrona 24/7"
+      },
+      "organizations": {
+        "title": "Organizacje Studenckie",
+        "description": "Dolacz do ponad 50 kol i organizacji studenckich.",
+        "academic": "Kola Naukowe",
+        "cultural": "Grupy Kulturalne",
+        "sports": "Druzyny Sportowe",
+        "volunteer": "Organizacje Wolontariackie"
+      },
+      "services": {
+        "title": "Uslugi dla Studentow",
+        "international": {
+          "title": "Biuro Miedzynarodowe",
+          "description": "Pomoc wizowa, programy orientacyjne i wsparcie dla studentow zagranicznych."
+        },
+        "career": {
+          "title": "Biuro Karier",
+          "description": "Posrednictwo pracy, koordynacja stazy i doradztwo zawodowe."
+        },
+        "counseling": {
+          "title": "Centrum Poradnictwa",
+          "description": "Wsparcie zdrowia psychicznego, doradztwo akademickie i osobiste."
+        },
+        "health": {
+          "title": "Centrum Zdrowia",
+          "description": "Przychodnia na kampusie z lekarzami ogolnymi i specjalistami."
+        }
+      },
+      "events": {
+        "title": "Wydarzenia Roczne",
+        "orientation": {
+          "title": "Tydzien Orientacyjny",
+          "date": "Wrzesien",
+          "description": "Zajecia powitalne, wycieczki po kampusie i wprowadzenie do zycia uniwersyteckiego."
+        },
+        "international": {
+          "title": "Tydzien Miedzynarodowy",
+          "date": "Marzec",
+          "description": "Wystepy kulturalne, festiwale kulinarne i prezentacje akademickie."
+        },
+        "career": {
+          "title": "Targi Pracy",
+          "date": "Kwiecien",
+          "description": "Spotkania z pracodawcami, staze i networking z profesjonalistami."
+        },
+        "graduation": {
+          "title": "Ceremonia Ukonczenia Studiow",
+          "date": "Czerwiec",
+          "description": "Swietuj osiagniecia akademickie z rodzina i przyjaciolmi."
+        }
+      },
+      "safety": {
+        "title": "Bezpieczenstwo",
+        "description": "Twoje bezpieczenstwo jest naszym priorytetem. Nasz kampus posiada kompleksowe srodki bezpieczenstwa.",
+        "security": "Ochrona 24/7",
+        "cctv": "Monitoring CCTV",
+        "emergency": "Reagowanie Kryzysowe",
+        "access": "Dostep Kartowy"
+      },
+      "tour": {
+        "title": "Odwiedz Nasz Kampus",
+        "description": "Doswiadcz Minervia Institute osobiscie. Umow sie na wycieczke po kampusie.",
+        "cta": "Umow Wizyte"
+      }
     }
   },
   "Register": {
