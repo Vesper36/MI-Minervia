@@ -18,9 +18,9 @@ export function MarketingNavbar() {
   const navItems = [
     { href: `/${locale}`, label: t('home') },
     { href: `/${locale}/about`, label: t('about') },
-    { href: `/${locale}/faculties`, label: 'Faculties' },
+    { href: `/${locale}/faculties`, label: t('faculties') },
     { href: `/${locale}/admissions`, label: t('admissions') },
-    { href: `/${locale}/schedule`, label: 'Schedule' },
+    { href: `/${locale}/schedule`, label: t('schedule') },
     { href: `/${locale}/campus`, label: t('campus') },
     { href: `/${locale}/news`, label: t('news') },
   ];

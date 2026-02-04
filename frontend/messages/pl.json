@@ -1,10 +1,14 @@
 {
   "Marketing": {
     "nav": {
-      "home": "Strona Główna",
+      "home": "Strona Glowna",
       "about": "O Nas",
       "programs": "Kierunki",
+      "faculties": "Wydzialy",
       "admissions": "Rekrutacja",
+      "schedule": "Harmonogram",
+      "campus": "Kampus",
+      "news": "Aktualnosci",
       "login": "Logowanie Studenta",
       "admin": "Portal Administratora"
     },

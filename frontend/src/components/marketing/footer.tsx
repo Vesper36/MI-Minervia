@@ -16,13 +16,14 @@ export function MarketingFooter() {
     { href: `/${locale}/programs`, label: 'Programs' },
     { href: `/${locale}/admissions`, label: 'Admissions' },
     { href: `/${locale}/campus`, label: 'Campus' },
+    { href: `/${locale}/careers`, label: 'Careers' },
   ];
 
   const resourceLinks = [
     { href: `/${locale}/news`, label: 'News' },
     { href: `/${locale}/calendar`, label: 'Calendar' },
     { href: `/${locale}/faq`, label: 'FAQ' },
-    { href: `/${locale}/student-portal`, label: 'Student Portal' },
+    { href: `/${locale}/contact`, label: 'Contact' },
   ];
 
   return (
@@ -101,11 +102,6 @@ export function MarketingFooter() {
               <li>
                 <Link href={`/${locale}/terms`} className="text-sm text-slate-400 hover:text-white transition-colors">
                   {t('terms')}
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-slate-400 hover:text-white transition-colors">
-                  {t('accessibility')}
                 </Link>
               </li>
             </ul>

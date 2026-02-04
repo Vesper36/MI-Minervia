@@ -4,7 +4,11 @@
       "home": "首页",
       "about": "关于我们",
       "programs": "专业设置",
+      "faculties": "院系",
       "admissions": "招生信息",
+      "schedule": "课程表",
+      "campus": "校园",
+      "news": "新闻",
       "login": "学生登录",
       "admin": "管理员入口"
     },
