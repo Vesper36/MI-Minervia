@@ -26,6 +26,7 @@ build/
 # Logs
 *.log
 npm-debug.log*
+deploy.log
 
 # Test coverage
 coverage/
@@ -34,3 +35,18 @@ coverage/
 mysql_data/
 redis_data/
 elasticsearch_data/
+
+# Sensitive files
+credentials.json
+*.pem
+*.key
+*.crt
+secrets/
+
+# Claude settings
+.claude/settings.local.json
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

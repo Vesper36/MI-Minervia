@@ -47,7 +47,35 @@
       "mission": "我们的使命",
       "missionText": "为全球学生提供优质、可及的教育。",
       "vision": "我们的愿景",
-      "visionText": "成为教育创新和学生成功的全球领导者。"
+      "visionText": "成为教育创新和学生成功的全球领导者。",
+      "history": {
+        "title": "我们的历史",
+        "description": "从创立到国际认可的发展历程",
+        "1998": {
+          "title": "学院成立",
+          "description": "Minervia Institute 在克拉科夫成立，由一群富有远见的教育家创办，致力于打造国际化教育机构。"
+        },
+        "2003": {
+          "title": "首批国际学生",
+          "description": "迎来首批来自12个国家的国际学生，标志着全球化社区的开端。"
+        },
+        "2008": {
+          "title": "研究中心启用",
+          "description": "先进研究中心落成，扩展了科学技术研究能力。"
+        },
+        "2012": {
+          "title": "Erasmus+ 合作伙伴",
+          "description": "成为 Erasmus+ 项目正式合作伙伴，促进欧洲学生和教师交流。"
+        },
+        "2018": {
+          "title": "20周年庆典",
+          "description": "庆祝建校20周年，新校区设施正式启用。"
+        },
+        "2024": {
+          "title": "数字化创新",
+          "description": "推出全面数字化学习平台，扩展在线课程项目。"
+        }
+      }
     },
     "programs": {
       "title": "学术专业",
@@ -339,6 +367,16 @@
   },
   "Common": {
     "siteName": "Minervia Institute",
-    "footer": "Minervia Institute 教育平台"
+    "footer": "Minervia Institute 教育平台",
+    "notFound": {
+      "title": "页面未找到",
+      "description": "您访问的页面不存在或已被移动。",
+      "backHome": "返回首页"
+    },
+    "serverError": {
+      "title": "服务器错误",
+      "description": "服务器出现问题，请稍后重试。",
+      "retry": "重试"
+    }
   }
 }

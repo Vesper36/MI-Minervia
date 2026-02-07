@@ -47,7 +47,35 @@
       "mission": "Nasza Misja",
       "missionText": "Zapewnienie dostępnej, wysokiej jakości edukacji studentom na całym świecie.",
       "vision": "Nasza Wizja",
-      "visionText": "Być globalnym liderem w innowacjach edukacyjnych i sukcesach studentów."
+      "visionText": "Być globalnym liderem w innowacjach edukacyjnych i sukcesach studentów.",
+      "history": {
+        "title": "Nasza Historia",
+        "description": "Od skromnych początków do międzynarodowego uznania",
+        "1998": {
+          "title": "Założenie",
+          "description": "Minervia Institute zostało założone w Krakowie przez grupę wizjonerskich edukatorów zaangażowanych w tworzenie instytucji o międzynarodowym charakterze."
+        },
+        "2003": {
+          "title": "Pierwsi Studenci Międzynarodowi",
+          "description": "Powitaliśmy pierwszą grupę studentów międzynarodowych z 12 krajów, co zapoczątkowało naszą globalną społeczność."
+        },
+        "2008": {
+          "title": "Otwarcie Centrum Badawczego",
+          "description": "Inauguracja Zaawansowanego Centrum Badawczego, rozszerzającego nasze możliwości w zakresie badań naukowych i technologicznych."
+        },
+        "2012": {
+          "title": "Partnerstwo Erasmus+",
+          "description": "Staliśmy się pełnym partnerem programu Erasmus+, umożliwiając wymianę studentów i kadry w całej Europie."
+        },
+        "2018": {
+          "title": "20. Rocznica",
+          "description": "Świętowaliśmy dwie dekady doskonałości z otwarciem nowych nowoczesnych obiektów kampusu."
+        },
+        "2024": {
+          "title": "Innowacje Cyfrowe",
+          "description": "Uruchomienie kompleksowych platform uczenia cyfrowego i rozszerzenie oferty programów online."
+        }
+      }
     },
     "programs": {
       "title": "Programy Akademickie",
@@ -339,6 +367,16 @@
   },
   "Common": {
     "siteName": "Minervia Institute",
-    "footer": "Minervia Institute Platforma Edukacyjna"
+    "footer": "Minervia Institute Platforma Edukacyjna",
+    "notFound": {
+      "title": "Strona Nie Znaleziona",
+      "description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
+      "backHome": "Powrót do Strony Głównej"
+    },
+    "serverError": {
+      "title": "Błąd Serwera",
+      "description": "Coś poszło nie tak po naszej stronie. Spróbuj ponownie później.",
+      "retry": "Spróbuj Ponownie"
+    }
   }
 }
