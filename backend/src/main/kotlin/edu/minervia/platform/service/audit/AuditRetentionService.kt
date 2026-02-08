@@ -98,7 +98,7 @@ class AuditRetentionService(
                 jdbcTemplate.execute(alterSql)
                 log.info("Created partition: {}", partitionName)
             } catch (e: Exception) {
-                if (!e.message?.contains("already exists") ?: false) {
+                if (e.message?.contains("already exists") != true) {
                     throw e
                 }
             }
