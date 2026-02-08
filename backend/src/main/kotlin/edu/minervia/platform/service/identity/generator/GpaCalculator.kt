@@ -7,10 +7,12 @@ import java.math.RoundingMode
 @Component
 class GpaCalculator {
 
+    @JvmName("calculateGpaFromSemesters")
     fun calculateGpa(semesters: List<GeneratedSemester>): BigDecimal {
         return calculateGpa(semesters.flatMap { it.courses })
     }
 
+    @JvmName("calculateGpaFromCourses")
     fun calculateGpa(courses: List<GeneratedCourse>): BigDecimal {
         if (courses.isEmpty()) {
             return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)
