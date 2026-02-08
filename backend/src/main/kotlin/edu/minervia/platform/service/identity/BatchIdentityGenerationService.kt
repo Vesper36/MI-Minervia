@@ -98,7 +98,7 @@ class BatchIdentityGenerationService(
             semesterGenerator.generateSemesters(identity.enrollmentYear, majorCode)
         } else null
 
-        val gpa = semesters?.let { gpaCalculator.calculateGpa(it) }
+        val gpa = semesters?.let { gpaCalculator.calculateGpaFromSemesters(it) }
 
         val familyInfo = if (includeFamilyInfo) {
             familyInfoGenerator.generateFamilyInfo(countryCode, identity.lastName)
