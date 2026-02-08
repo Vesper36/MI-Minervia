@@ -2,10 +2,11 @@ package edu.minervia.platform.service.identity.generator
 
 import org.springframework.stereotype.Component
 import java.security.SecureRandom
+import kotlin.random.asKotlinRandom
 
 @Component
 class AddressGenerator {
-    private val random = SecureRandom()
+    private val random = SecureRandom().asKotlinRandom()
 
     private val polishCities = listOf("Warsaw", "Krakow", "Gdansk", "Wroclaw", "Poznan", "Lodz", "Katowice")
     private val polishStreets = listOf("Kwiatowa", "Sloneczna", "Polna", "Lipowa", "Mickiewicza", "Szkolna", "Kosciuszki")
