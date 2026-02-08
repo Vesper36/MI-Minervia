@@ -5,6 +5,7 @@ import edu.minervia.platform.domain.enums.ApplicationStatus
 import edu.minervia.platform.domain.repository.RegistrationApplicationRepository
 import edu.minervia.platform.domain.repository.TaskProgressRepository
 import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -19,6 +20,7 @@ import java.time.Instant
  * PBT [PBT-21]: Timeout cleanup atomicity - cleanup + re-queue succeed or fail together
  */
 @Service
+@ConditionalOnProperty(name = ["app.kafka.enabled"], havingValue = "true", matchIfMissing = true)
 class TimeoutCleanupService(
     private val applicationRepository: RegistrationApplicationRepository,
     private val taskProgressRepository: TaskProgressRepository,

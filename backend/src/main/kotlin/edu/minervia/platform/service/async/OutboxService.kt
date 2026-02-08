@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -26,6 +27,7 @@ import kotlin.random.Random
  * - Dead letter: entries with >10 retries moved to outbox_dead_letter
  */
 @Service
+@ConditionalOnProperty(name = ["app.kafka.enabled"], havingValue = "true", matchIfMissing = true)
 class OutboxService(
     private val outboxRepository: OutboxRepository,
     private val deadLetterRepository: OutboxDeadLetterRepository,

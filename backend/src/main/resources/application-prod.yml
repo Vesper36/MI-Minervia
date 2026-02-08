@@ -1,4 +1,8 @@
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+
   datasource:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
@@ -13,12 +17,19 @@ spring:
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD}
 
+management:
+  health:
+    mail:
+      enabled: false
+
 logging:
   level:
     edu.minervia: INFO
     org.springframework.security: WARN
 
 app:
+  kafka:
+    enabled: false
   jwt:
     require-secret: true
   websocket:

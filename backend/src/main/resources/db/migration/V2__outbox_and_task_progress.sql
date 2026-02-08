@@ -49,15 +49,3 @@ CREATE TABLE task_progress (
     FOREIGN KEY (application_id) REFERENCES registration_applications(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Rate limits table per CONSTRAINT [RATE-LIMIT-MYSQL-FALLBACK]
-CREATE TABLE rate_limits (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    limit_key VARCHAR(255) NOT NULL,
-    count INT NOT NULL DEFAULT 0,
-    window_start DATETIME NOT NULL,
-    window_seconds INT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    UNIQUE KEY uk_key_window (limit_key, window_start),
-    INDEX idx_rate_window (window_start, window_seconds)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

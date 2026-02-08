@@ -9,6 +9,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.math.min
@@ -21,6 +22,7 @@ import kotlin.random.Random
  * Implements CONSTRAINT [AI-STEP-TRANSACTION] with independent transactions per step.
  */
 @Service
+@ConditionalOnProperty(name = ["app.kafka.enabled"], havingValue = "true", matchIfMissing = true)
 class RegistrationTaskConsumer(
     private val applicationRepository: RegistrationApplicationRepository,
     private val stepExecutor: RegistrationStepExecutor,

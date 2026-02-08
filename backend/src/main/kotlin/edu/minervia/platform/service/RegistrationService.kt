@@ -29,7 +29,7 @@ class RegistrationService(
     private val adminRepository: AdminRepository,
     private val systemConfigRepository: SystemConfigRepository,
     private val emailService: EmailService,
-    private val taskPublisher: RegistrationTaskPublisher
+    private val taskPublisher: RegistrationTaskPublisher? = null
 ) {
     private val log = LoggerFactory.getLogger(RegistrationService::class.java)
 
@@ -154,7 +154,8 @@ class RegistrationService(
         application.status = ApplicationStatus.GENERATING
         val savedApplication = registrationApplicationRepository.save(application)
 
-        taskPublisher.publishRegistrationTask(savedApplication)
+        taskPublisher?.publishRegistrationTask(savedApplication)
+            ?: log.warn("Kafka disabled, skipping async task publishing for application: {}", savedApplication.id)
 
         return savedApplication.toDto()
     }

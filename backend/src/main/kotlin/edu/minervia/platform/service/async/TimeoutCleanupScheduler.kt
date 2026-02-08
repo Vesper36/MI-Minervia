@@ -1,6 +1,7 @@
 package edu.minervia.platform.service.async
 
 import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component
  * Runs at fixed intervals to detect and process stuck tasks.
  */
 @Component
+@ConditionalOnProperty(name = ["app.kafka.enabled"], havingValue = "true", matchIfMissing = true)
 class TimeoutCleanupScheduler(
     private val timeoutCleanupService: TimeoutCleanupService
 ) {
