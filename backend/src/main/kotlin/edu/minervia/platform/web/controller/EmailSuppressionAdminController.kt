@@ -42,8 +42,8 @@ class EmailSuppressionAdminController(
     }
 
     @DeleteMapping("/{id}")
-    fun unsuppressEmail(@PathVariable id: Long): ResponseEntity<ApiResponse<Nothing>> {
+    fun unsuppressEmail(@PathVariable id: Long): ResponseEntity<ApiResponse<Unit>> {
         emailBounceService.unsuppressById(id)
-        return ResponseEntity.ok(ApiResponse.success(null, "Email unsuppressed"))
+        return ResponseEntity.ok(ApiResponse.success(Unit, "Email unsuppressed"))
     }
 }

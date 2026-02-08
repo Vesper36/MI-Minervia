@@ -71,8 +71,3 @@ data class FamilyInfoDto(
     val motherOccupation: String,
     val address: String
 )
-
-enum class ExportFormat {
-    JSON,
-    CSV
-}

@@ -42,9 +42,9 @@ class PublicRegistrationController(
     }
 
     @PostMapping("/{id}/send-verification")
-    fun sendVerificationCode(@PathVariable id: Long): ResponseEntity<ApiResponse<Nothing>> {
+    fun sendVerificationCode(@PathVariable id: Long): ResponseEntity<ApiResponse<Unit>> {
         emailVerificationService.sendVerificationCode(id)
-        return ResponseEntity.ok(ApiResponse.success(null, "Verification code sent"))
+        return ResponseEntity.ok(ApiResponse.success(Unit, "Verification code sent"))
     }
 
     @PostMapping("/{id}/verify-email")

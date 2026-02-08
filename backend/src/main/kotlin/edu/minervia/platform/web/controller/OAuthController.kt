@@ -67,7 +67,7 @@ class OAuthController(
     ): ResponseEntity<ApiResponse<OAuthCallbackResponse>> {
         if (request.error != null) {
             return ResponseEntity.badRequest().body(
-                ApiResponse.error(request.error, request.errorDescription)
+                ApiResponse.error(request.error, request.errorDescription?.let { listOf(it) })
             )
         }
 

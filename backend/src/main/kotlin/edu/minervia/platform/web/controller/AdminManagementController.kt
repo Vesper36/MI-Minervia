@@ -47,14 +47,14 @@ class AdminManagementController(private val adminService: AdminService) {
     }
 
     @PostMapping("/{id}/deactivate")
-    fun deactivateAdmin(@PathVariable id: Long): ResponseEntity<ApiResponse<Nothing>> {
+    fun deactivateAdmin(@PathVariable id: Long): ResponseEntity<ApiResponse<Unit>> {
         adminService.deactivateAdmin(id)
-        return ResponseEntity.ok(ApiResponse.success(null, "Admin deactivated"))
+        return ResponseEntity.ok(ApiResponse.success(Unit, "Admin deactivated"))
     }
 
     @PostMapping("/{id}/activate")
-    fun activateAdmin(@PathVariable id: Long): ResponseEntity<ApiResponse<Nothing>> {
+    fun activateAdmin(@PathVariable id: Long): ResponseEntity<ApiResponse<Unit>> {
         adminService.activateAdmin(id)
-        return ResponseEntity.ok(ApiResponse.success(null, "Admin activated"))
+        return ResponseEntity.ok(ApiResponse.success(Unit, "Admin activated"))
     }
 }

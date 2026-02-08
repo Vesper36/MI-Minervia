@@ -2,10 +2,11 @@ package edu.minervia.platform.service.identity.generator
 
 import org.springframework.stereotype.Component
 import java.security.SecureRandom
+import kotlin.random.asKotlinRandom
 
 @Component
 class NameGenerator {
-    private val random = SecureRandom()
+    private val random = SecureRandom().asKotlinRandom()
 
     private val polishFirstNamesMale = listOf(
         "Jan", "Piotr", "Krzysztof", "Andrzej", "Tomasz", "Pawel", "Michal", "Marcin",

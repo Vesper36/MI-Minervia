@@ -47,11 +47,6 @@ data class AuditLogExportRequest(
     val format: ExportFormat = ExportFormat.CSV
 )
 
-enum class ExportFormat {
-    CSV,
-    JSON
-}
-
 data class AuditStatsSummary(
     val totalLogs: Long,
     val successCount: Long,
