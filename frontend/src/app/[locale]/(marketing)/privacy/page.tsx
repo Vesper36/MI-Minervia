@@ -26,7 +26,7 @@ export default function PrivacyPage({ params: { locale } }: Props) {
             </CardHeader>
             <CardContent className="prose prose-slate max-w-none">
               <p>
-                Minervia Institute ("we", "our", or "us") is committed to protecting your privacy and personal data.
+                Minervia Institute (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy and personal data.
                 This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you
                 visit our website or apply to our institution.
               </p>
