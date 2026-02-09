@@ -197,6 +197,11 @@ class StudentService(
         return studentRepository.save(student).toDto()
     }
 
+    @Transactional
+    fun updateStudentEntity(student: Student) {
+        studentRepository.save(student)
+    }
+
     fun getStudentStats(): Map<String, Long> {
         return mapOf(
             "total" to studentRepository.count(),

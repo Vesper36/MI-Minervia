@@ -90,3 +90,11 @@ data class StudentRefreshTokenResponse(
     val accessExpiresIn: Long,
     val refreshExpiresIn: Long
 )
+
+data class ChangePasswordRequest(
+    @field:NotBlank(message = "Current password is required")
+    val currentPassword: String,
+
+    @field:NotBlank(message = "New password is required")
+    val newPassword: String
+)

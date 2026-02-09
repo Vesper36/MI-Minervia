@@ -107,9 +107,9 @@ class StudentApiClient {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        if (data.success && data.data) {
-          this.setTokens(data.data.accessToken, data.data.refreshToken);
+        const result = await response.json();
+        if (result.success && result.data) {
+          this.setTokens(result.data.accessToken, result.data.refreshToken);
           return true;
         }
       }

@@ -10,6 +10,8 @@ import {
   LayoutDashboard,
   User,
   BookOpen,
+  FileText,
+  Settings,
   LogOut,
 } from 'lucide-react';
 
@@ -24,6 +26,8 @@ export function StudentSidebar() {
     { href: `/${locale}/portal/dashboard`, label: t('dashboard'), icon: LayoutDashboard },
     { href: `/${locale}/portal/profile`, label: t('profile'), icon: User },
     { href: `/${locale}/portal/courses`, label: t('courses'), icon: BookOpen },
+    { href: `/${locale}/portal/documents`, label: t('documents'), icon: FileText },
+    { href: `/${locale}/portal/settings`, label: t('settings'), icon: Settings },
   ];
 
   return (
@@ -32,7 +36,7 @@ export function StudentSidebar() {
         <h1 className="text-xl font-bold">{t('title')}</h1>
         {student && (
           <p className="text-sm text-slate-400 mt-1">
-            {student.firstName} {student.lastName}
+            {student.fullName}
           </p>
         )}
       </div>

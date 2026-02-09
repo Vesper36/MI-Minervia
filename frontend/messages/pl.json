@@ -320,6 +320,8 @@
       "dashboard": "Panel",
       "profile": "Profil",
       "courses": "Kursy",
+      "documents": "Dokumenty",
+      "settings": "Ustawienia",
       "logout": "Wyloguj"
     },
     "login": {
@@ -340,22 +342,39 @@
       "cards": {
         "profile": "Profil",
         "studentId": "Numer Studenta",
+        "email": "Email",
+        "eduEmail": "Email Edu",
         "courses": "Kursy",
         "enrolled": "Zapisane",
         "status": "Status",
         "active": "Aktywny",
-        "enrollment": "Status Zapisu"
+        "enrollment": "Status Zapisu",
+        "academic": "Informacje Akademickie",
+        "enrollmentYear": "Rok Zapisu",
+        "gpa": "Srednia Ocen",
+        "quickLinks": "Szybkie Linki",
+        "viewProfile": "Zobacz Profil",
+        "viewDocuments": "Zobacz Dokumenty",
+        "viewSettings": "Ustawienia"
       }
     },
     "profile": {
       "title": "Moj Profil",
       "subtitle": "Zobacz swoje dane osobowe.",
       "personalInfo": "Dane Osobowe",
+      "academicInfo": "Informacje Akademickie",
       "fields": {
-        "studentId": "Numer Studenta",
+        "studentNumber": "Numer Studenta",
+        "eduEmail": "Email Edu",
         "firstName": "Imie",
         "lastName": "Nazwisko",
-        "email": "Email"
+        "birthDate": "Data Urodzenia",
+        "countryCode": "Kraj",
+        "enrollmentYear": "Rok Zapisu",
+        "enrollmentDate": "Data Zapisu",
+        "admissionDate": "Data Przyjecia",
+        "gpa": "Srednia Ocen",
+        "status": "Status"
       }
     },
     "courses": {
@@ -363,6 +382,20 @@
       "subtitle": "Zobacz zapisane kursy i oceny.",
       "enrolled": "Zapisane Kursy",
       "noCourses": "Nie jestes jeszcze zapisany na zadne kursy."
+    },
+    "documents": {
+      "title": "Moje Dokumenty",
+      "subtitle": "Przegladaj i pobieraj dokumenty akademickie.",
+      "noDocuments": "Brak dostepnych dokumentow."
+    },
+    "settings": {
+      "title": "Ustawienia",
+      "subtitle": "Zarzadzaj ustawieniami konta.",
+      "changePassword": "Zmien Haslo",
+      "currentPassword": "Obecne Haslo",
+      "newPassword": "Nowe Haslo",
+      "confirmPassword": "Potwierdz Nowe Haslo",
+      "save": "Zapisz Zmiany"
     }
   },
   "Common": {

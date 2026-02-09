@@ -320,6 +320,8 @@
       "dashboard": "仪表盘",
       "profile": "个人资料",
       "courses": "课程",
+      "documents": "文档",
+      "settings": "设置",
       "logout": "退出登录"
     },
     "login": {
@@ -340,22 +342,39 @@
       "cards": {
         "profile": "个人资料",
         "studentId": "学号",
+        "email": "邮箱",
+        "eduEmail": "教育邮箱",
         "courses": "课程",
         "enrolled": "已选课程",
         "status": "状态",
         "active": "在读",
-        "enrollment": "注册状态"
+        "enrollment": "注册状态",
+        "academic": "学业信息",
+        "enrollmentYear": "入学年份",
+        "gpa": "绩点",
+        "quickLinks": "快捷链接",
+        "viewProfile": "查看资料",
+        "viewDocuments": "查看文档",
+        "viewSettings": "设置"
       }
     },
     "profile": {
       "title": "我的资料",
       "subtitle": "查看您的个人信息。",
       "personalInfo": "个人信息",
+      "academicInfo": "学业信息",
       "fields": {
-        "studentId": "学号",
+        "studentNumber": "学号",
+        "eduEmail": "教育邮箱",
         "firstName": "名",
         "lastName": "姓",
-        "email": "邮箱"
+        "birthDate": "出生日期",
+        "countryCode": "国家",
+        "enrollmentYear": "入学年份",
+        "enrollmentDate": "注册日期",
+        "admissionDate": "录取日期",
+        "gpa": "绩点",
+        "status": "状态"
       }
     },
     "courses": {
@@ -363,6 +382,20 @@
       "subtitle": "查看已选课程和成绩。",
       "enrolled": "已选课程",
       "noCourses": "您尚未选修任何课程。"
+    },
+    "documents": {
+      "title": "我的文档",
+      "subtitle": "查看和下载您的学业文档。",
+      "noDocuments": "暂无可用文档。"
+    },
+    "settings": {
+      "title": "设置",
+      "subtitle": "管理您的账户设置。",
+      "changePassword": "修改密码",
+      "currentPassword": "当前密码",
+      "newPassword": "新密码",
+      "confirmPassword": "确认新密码",
+      "save": "保存更改"
     }
   },
   "Common": {

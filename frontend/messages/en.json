@@ -569,6 +569,8 @@
       "dashboard": "Dashboard",
       "profile": "Profile",
       "courses": "Courses",
+      "documents": "Documents",
+      "settings": "Settings",
       "logout": "Sign Out"
     },
     "login": {
@@ -589,22 +591,39 @@
       "cards": {
         "profile": "Profile",
         "studentId": "Student ID",
+        "email": "Email",
+        "eduEmail": "Edu Email",
         "courses": "Courses",
         "enrolled": "Enrolled",
         "status": "Status",
         "active": "Active",
-        "enrollment": "Enrollment Status"
+        "enrollment": "Enrollment Status",
+        "academic": "Academic Info",
+        "enrollmentYear": "Enrollment Year",
+        "gpa": "GPA",
+        "quickLinks": "Quick Links",
+        "viewProfile": "View Profile",
+        "viewDocuments": "View Documents",
+        "viewSettings": "Settings"
       }
     },
     "profile": {
       "title": "My Profile",
       "subtitle": "View your personal information.",
       "personalInfo": "Personal Information",
+      "academicInfo": "Academic Information",
       "fields": {
-        "studentId": "Student ID",
+        "studentNumber": "Student Number",
+        "eduEmail": "Edu Email",
         "firstName": "First Name",
         "lastName": "Last Name",
-        "email": "Email"
+        "birthDate": "Date of Birth",
+        "countryCode": "Country",
+        "enrollmentYear": "Enrollment Year",
+        "enrollmentDate": "Enrollment Date",
+        "admissionDate": "Admission Date",
+        "gpa": "GPA",
+        "status": "Status"
       }
     },
     "courses": {
@@ -612,6 +631,20 @@
       "subtitle": "View your enrolled courses and grades.",
       "enrolled": "Enrolled Courses",
       "noCourses": "You are not enrolled in any courses yet."
+    },
+    "documents": {
+      "title": "My Documents",
+      "subtitle": "View and download your academic documents.",
+      "noDocuments": "No documents available yet."
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Manage your account settings.",
+      "changePassword": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "save": "Save Changes"
     }
   },
   "Common": {
