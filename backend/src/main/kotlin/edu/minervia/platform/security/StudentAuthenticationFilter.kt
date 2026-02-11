@@ -79,10 +79,15 @@ class StudentAuthenticationFilter(
 
             if (student != null && student.status == StudentStatus.ACTIVE) {
                 val authorities = listOf(SimpleGrantedAuthority("ROLE_STUDENT"))
-                val userDetails = StudentUserDetails(student)
+                val principal = StudentPrincipal(
+                    studentId = student.id!!,
+                    studentNumber = student.studentNumber,
+                    eduEmail = student.eduEmail,
+                    fullName = student.fullName
+                )
 
                 val authToken = UsernamePasswordAuthenticationToken(
-                    userDetails,
+                    principal,
                     null,
                     authorities
                 )
