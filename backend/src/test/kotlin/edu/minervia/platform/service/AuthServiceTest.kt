@@ -26,8 +26,7 @@ import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.anyLong
-import org.mockito.kotlin.anyString
+import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.crypto.password.PasswordEncoder
