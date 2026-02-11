@@ -68,8 +68,10 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("com.h2database:h2")
 
-    // Embedded Redis for testing
-    testImplementation("it.ozimov:embedded-redis:0.7.3")
+    // Embedded Redis for testing (exclude slf4j-simple to avoid conflict with Logback)
+    testImplementation("it.ozimov:embedded-redis:0.7.3") {
+        exclude(group = "org.slf4j", module = "slf4j-simple")
+    }
 }
 
 kotlin {
