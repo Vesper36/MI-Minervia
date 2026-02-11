@@ -32,7 +32,6 @@ class RateLimitServiceTest {
     @BeforeEach
     fun setUp() {
         service = RedisRateLimitService(redisTemplate)
-        doReturn(zSetOps).`when`(redisTemplate).opsForZSet()
     }
 
     @Test
@@ -47,6 +46,7 @@ class RateLimitServiceTest {
 
     @Test
     fun tryAcquire_denies_whenAtLimit_andRemovesMember() {
+        doReturn(zSetOps).`when`(redisTemplate).opsForZSet()
         stubExecute(listOf<Any>(0L, 5L, true, true))
 
         val allowed = service.tryAcquire("user", 5, 60)
