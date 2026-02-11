@@ -14,12 +14,12 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentCaptor
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.eq
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -52,9 +52,9 @@ class EmailBounceServiceTest {
 
         service.handleHardBounce("User@Example.com ", "Mailbox not found")
 
-        val captor = ArgumentCaptor.forClass(EmailSuppression::class.java)
+        val captor = argumentCaptor<EmailSuppression>()
         verify(emailSuppressionRepository).save(captor.capture())
-        val saved = captor.value
+        val saved = captor.firstValue
 
         assertEquals("user@example.com", saved.email)
         assertEquals(EmailSuppressionReason.HARD_BOUNCE, saved.reason)
@@ -109,9 +109,9 @@ class EmailBounceServiceTest {
 
         service.handleSpamComplaint("user@example.com")
 
-        val captor = ArgumentCaptor.forClass(EmailSuppression::class.java)
+        val captor = argumentCaptor<EmailSuppression>()
         verify(emailSuppressionRepository).save(captor.capture())
-        val saved = captor.value
+        val saved = captor.firstValue
 
         assertEquals(EmailSuppressionReason.SPAM_COMPLAINT, saved.reason)
         assertNotNull(saved.suppressedAt)
@@ -141,9 +141,9 @@ class EmailBounceServiceTest {
         assertNull(suppression.firstBounceAt)
         assertNull(suppression.lastBounceAt)
 
-        val eventCaptor = ArgumentCaptor.forClass(AuditEvent::class.java)
+        val eventCaptor = argumentCaptor<AuditEvent>()
         verify(auditLogService).logAsync(any<AuditContext>(), eventCaptor.capture())
-        assertEquals(AuditLogService.EVENT_EMAIL_UNSUPPRESSED, eventCaptor.value.eventType)
+        assertEquals(AuditLogService.EVENT_EMAIL_UNSUPPRESSED, eventCaptor.firstValue.eventType)
     }
 
     @Test
