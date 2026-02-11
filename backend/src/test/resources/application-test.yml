@@ -52,3 +52,13 @@ app:
       mailgun-signing-key: test-mailgun-key
       sendgrid-public-key: ""
       signature-tolerance-seconds: 600
+  r2:
+    enabled: false
+    endpoint: http://localhost:9000
+    bucket: test-bucket
+    region: auto
+    access-key: test-access-key
+    secret-key: test-secret-key
+    upload-url-ttl: 900
+    download-url-ttl: 3600
+    max-file-size: 10485760
