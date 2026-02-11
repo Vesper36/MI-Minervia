@@ -6,6 +6,7 @@ import edu.minervia.platform.domain.repository.EmailDeliveryRepository
 import edu.minervia.platform.service.email.EmailDeliveryMessage
 import edu.minervia.platform.service.email.EmailDeliveryService
 import edu.minervia.platform.service.email.EmailService
+import edu.minervia.platform.service.email.EmailTemplate
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
