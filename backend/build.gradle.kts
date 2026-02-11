@@ -67,6 +67,9 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter:1.20.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("com.h2database:h2")
+
+    // Embedded Redis for testing
+    testImplementation("it.ozimov:embedded-redis:0.7.3")
 }
 
 kotlin {

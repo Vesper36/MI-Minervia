@@ -1,6 +1,7 @@
 package edu.minervia.platform.integration
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import edu.minervia.platform.config.EmbeddedRedisConfig
 import edu.minervia.platform.config.TestR2Config
 import edu.minervia.platform.domain.entity.Admin
 import edu.minervia.platform.domain.enums.AdminRole
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-@Import(TestR2Config::class)
+@Import(TestR2Config::class, EmbeddedRedisConfig::class)
 abstract class BaseIntegrationTest {
 
     @Autowired

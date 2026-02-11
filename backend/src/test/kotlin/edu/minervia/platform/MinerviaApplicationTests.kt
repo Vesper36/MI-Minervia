@@ -1,5 +1,6 @@
 package edu.minervia.platform
 
+import edu.minervia.platform.config.EmbeddedRedisConfig
 import edu.minervia.platform.config.TestR2Config
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -8,7 +9,7 @@ import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Import(TestR2Config::class)
+@Import(TestR2Config::class, EmbeddedRedisConfig::class)
 class MinerviaApplicationTests {
 
     @Test
