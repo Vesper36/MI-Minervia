@@ -2,6 +2,7 @@ package edu.minervia.platform.integration
 
 import edu.minervia.platform.domain.entity.Student
 import edu.minervia.platform.domain.entity.StudentDocument
+import edu.minervia.platform.domain.enums.IdentityType
 import edu.minervia.platform.domain.enums.StudentStatus
 import edu.minervia.platform.domain.repository.StudentDocumentRepository
 import edu.minervia.platform.domain.repository.StudentRepository
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import java.time.LocalDate
 
 class DocumentUploadFlowIntegrationTest : BaseIntegrationTest() {
 
