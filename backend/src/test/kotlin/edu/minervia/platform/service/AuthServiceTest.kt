@@ -77,7 +77,7 @@ class AuthServiceTest {
             username = "user",
             passwordHash = "hash",
             failedLoginAttempts = 2,
-            lockedUntil = Instant.now().plusSeconds(60),
+            lockedUntil = Instant.now().minusSeconds(60),
             totpEnabled = false
         )
         `when`(adminRepository.findByUsername("user")).thenReturn(Optional.of(admin))
