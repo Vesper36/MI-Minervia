@@ -42,19 +42,23 @@ class EmailDeliveryConsumer(
             }
 
             // Parse params
-            val params = objectMapper.readValue(
+            val params: Map<String, Any> = objectMapper.readValue(
                 delivery.paramsJson,
                 objectMapper.typeFactory.constructMapType(
                     Map::class.java,
                     String::class.java,
-                    String::class.java
+                    Any::class.java
                 )
             )
 
+            // Convert template string to enum
+            val emailTemplate = EmailTemplate.entries.find { it.templateName == delivery.template }
+                ?: throw IllegalArgumentException("Unknown email template: ${delivery.template}")
+
             // Send email
-            emailService.sendEmail(
+            emailService.send(
                 to = delivery.recipientEmail,
-                template = delivery.template,
+                template = emailTemplate,
                 params = params,
                 locale = delivery.locale
             )
