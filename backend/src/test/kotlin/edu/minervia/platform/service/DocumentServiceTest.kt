@@ -145,7 +145,7 @@ class DocumentServiceTest {
     @Test
     fun `completeUpload should update document status to ACTIVE`() {
         // Given
-        val request = CompleteUploadRequest(success = true)
+        val request = CompleteUploadRequest(etag = "test-etag", sha256 = "test-sha256")
 
         val document = StudentDocument(
             id = documentId,
@@ -163,7 +163,7 @@ class DocumentServiceTest {
         val metadata = ObjectMetadata(
             contentType = contentType,
             contentLength = sizeBytes,
-            lastModified = LocalDateTime.now()
+            etag = "test-etag"
         )
 
         whenever(documentRepository.findByIdAndStudentId(documentId, studentId)).thenReturn(document)
@@ -189,7 +189,7 @@ class DocumentServiceTest {
     @Test
     fun `completeUpload should throw exception when document not found`() {
         // Given
-        val request = CompleteUploadRequest(success = true)
+        val request = CompleteUploadRequest(etag = "test-etag", sha256 = "test-sha256")
 
         whenever(documentRepository.findByIdAndStudentId(documentId, studentId)).thenReturn(null)
 
@@ -206,7 +206,7 @@ class DocumentServiceTest {
     @Test
     fun `completeUpload should throw exception when document status is not PENDING_UPLOAD`() {
         // Given
-        val request = CompleteUploadRequest(success = true)
+        val request = CompleteUploadRequest(etag = "test-etag", sha256 = "test-sha256")
 
         val document = StudentDocument(
             id = documentId,
@@ -236,7 +236,7 @@ class DocumentServiceTest {
     @Test
     fun `completeUpload should throw exception when content type mismatch`() {
         // Given
-        val request = CompleteUploadRequest(success = true)
+        val request = CompleteUploadRequest(etag = "test-etag", sha256 = "test-sha256")
 
         val document = StudentDocument(
             id = documentId,
@@ -254,7 +254,7 @@ class DocumentServiceTest {
         val metadata = ObjectMetadata(
             contentType = "image/jpeg", // Different content type
             contentLength = sizeBytes,
-            lastModified = LocalDateTime.now()
+            etag = "test-etag"
         )
 
         whenever(documentRepository.findByIdAndStudentId(documentId, studentId)).thenReturn(document)

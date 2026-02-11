@@ -158,7 +158,7 @@ class SendGridSmtpEmailServiceTest {
         verify(templateRenderer).renderBody(
             org.mockito.kotlin.eq(EmailTemplate.REJECTION),
             org.mockito.kotlin.argThat { params ->
-                val sanitizedReason = params["reason"] as String
+                val sanitizedReason = params["reason"] as? String ?: ""
                 !sanitizedReason.contains("<") && !sanitizedReason.contains(">")
             },
             org.mockito.kotlin.eq("en")

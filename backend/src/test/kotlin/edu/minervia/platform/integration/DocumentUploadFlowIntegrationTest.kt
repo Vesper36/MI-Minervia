@@ -40,10 +40,17 @@ class DocumentUploadFlowIntegrationTest : BaseIntegrationTest() {
 
         testStudent = studentRepository.save(
             Student(
-                email = TEST_STUDENT_EMAIL,
+                studentNumber = "2025CS0001",
+                eduEmail = TEST_STUDENT_EMAIL,
                 passwordHash = passwordEncoder.encode(TEST_STUDENT_PASSWORD),
                 firstName = "Test",
                 lastName = "Student",
+                birthDate = LocalDate.of(2000, 1, 1),
+                identityType = IdentityType.LOCAL,
+                countryCode = "USA",
+                enrollmentYear = 2025,
+                enrollmentDate = LocalDate.now(),
+                admissionDate = LocalDate.now(),
                 status = StudentStatus.ACTIVE
             )
         )
@@ -181,10 +188,17 @@ class DocumentUploadFlowIntegrationTest : BaseIntegrationTest() {
         // Create another student
         val anotherStudent = studentRepository.save(
             Student(
-                email = "another@test.com",
+                studentNumber = "2025CS0002",
+                eduEmail = "another@test.com",
                 passwordHash = passwordEncoder.encode("Password123!"),
                 firstName = "Another",
                 lastName = "Student",
+                birthDate = LocalDate.of(2000, 1, 1),
+                identityType = IdentityType.LOCAL,
+                countryCode = "USA",
+                enrollmentYear = 2025,
+                enrollmentDate = LocalDate.now(),
+                admissionDate = LocalDate.now(),
                 status = StudentStatus.ACTIVE
             )
         )

@@ -1,8 +1,8 @@
 package edu.minervia.platform.integration
 
 import edu.minervia.platform.domain.entity.AuditLog
-import edu.minervia.platform.domain.enums.AuditAction
-import edu.minervia.platform.domain.enums.AuditEntityType
+import edu.minervia.platform.domain.enums.ActorType
+import edu.minervia.platform.domain.enums.AuditResult
 import edu.minervia.platform.domain.repository.AuditLogRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -50,12 +50,14 @@ class AuditLogControllerIntegrationTest : BaseIntegrationTest() {
         createTestAuditLogs(3)
         auditLogRepository.save(
             AuditLog(
-                action = AuditAction.DELETE,
-                entityType = AuditEntityType.STUDENT,
-                entityId = "999",
+                eventType = "STUDENT_DELETED",
+                actorType = ActorType.ADMIN,
                 actorId = testAdmin.id,
                 actorUsername = testAdmin.username,
-                details = "Deleted student",
+                targetType = "STUDENT",
+                targetId = 999L,
+                action = "DELETE",
+                result = AuditResult.SUCCESS,
                 ipAddress = "127.0.0.1"
             )
         )
@@ -77,12 +79,14 @@ class AuditLogControllerIntegrationTest : BaseIntegrationTest() {
         createTestAuditLogs(2)
         auditLogRepository.save(
             AuditLog(
-                action = AuditAction.CREATE,
-                entityType = AuditEntityType.REGISTRATION_CODE,
-                entityId = "CODE-123",
+                eventType = "CODE_CREATED",
+                actorType = ActorType.ADMIN,
                 actorId = testAdmin.id,
                 actorUsername = testAdmin.username,
-                details = "Created registration code",
+                targetType = "REGISTRATION_CODE",
+                targetId = null,
+                action = "CREATE",
+                result = AuditResult.SUCCESS,
                 ipAddress = "127.0.0.1"
             )
         )
@@ -103,12 +107,14 @@ class AuditLogControllerIntegrationTest : BaseIntegrationTest() {
         createTestAuditLogs(2)
         auditLogRepository.save(
             AuditLog(
-                action = AuditAction.UPDATE,
-                entityType = AuditEntityType.STUDENT,
-                entityId = "1",
+                eventType = "STUDENT_UPDATED",
+                actorType = ActorType.ADMIN,
                 actorId = testSuperAdmin.id,
                 actorUsername = testSuperAdmin.username,
-                details = "Updated by super admin",
+                targetType = "STUDENT",
+                targetId = 1L,
+                action = "UPDATE",
+                result = AuditResult.SUCCESS,
                 ipAddress = "127.0.0.1"
             )
         )
@@ -130,12 +136,14 @@ class AuditLogControllerIntegrationTest : BaseIntegrationTest() {
 
         auditLogRepository.save(
             AuditLog(
-                action = AuditAction.CREATE,
-                entityType = AuditEntityType.STUDENT,
-                entityId = "1",
+                eventType = "STUDENT_CREATED",
+                actorType = ActorType.ADMIN,
                 actorId = testAdmin.id,
                 actorUsername = testAdmin.username,
-                details = "Recent log",
+                targetType = "STUDENT",
+                targetId = 1L,
+                action = "CREATE",
+                result = AuditResult.SUCCESS,
                 ipAddress = "127.0.0.1"
             )
         )
@@ -169,12 +177,14 @@ class AuditLogControllerIntegrationTest : BaseIntegrationTest() {
         return (1..count).map { i ->
             auditLogRepository.save(
                 AuditLog(
-                    action = AuditAction.CREATE,
-                    entityType = AuditEntityType.STUDENT,
-                    entityId = i.toString(),
+                    eventType = "STUDENT_CREATED",
+                    actorType = ActorType.ADMIN,
                     actorId = testAdmin.id,
                     actorUsername = testAdmin.username,
-                    details = "Test audit log $i",
+                    targetType = "STUDENT",
+                    targetId = i.toLong(),
+                    action = "CREATE",
+                    result = AuditResult.SUCCESS,
                     ipAddress = "127.0.0.1"
                 )
             )

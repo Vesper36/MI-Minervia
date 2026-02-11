@@ -21,9 +21,6 @@ class StudentAuthControllerIntegrationTest : BaseIntegrationTest() {
     @Autowired
     private lateinit var studentRepository: StudentRepository
 
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
-
     private lateinit var testStudent: Student
 
     companion object {

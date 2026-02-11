@@ -48,7 +48,7 @@ class RegistrationStepExecutorIntegrationTest : BaseIntegrationTest() {
         registrationCodeRepository.deleteAll()
 
         testMajor = majorRepository.findByCode("CS").orElseGet {
-            majorRepository.save(Major(code = "CS", name = "Computer Science"))
+            majorRepository.save(Major(code = "CS", nameEn = "Computer Science", namePl = "Informatyka"))
         }
 
         val registrationCode = registrationCodeRepository.save(

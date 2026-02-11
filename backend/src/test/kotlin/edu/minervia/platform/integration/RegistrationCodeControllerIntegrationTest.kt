@@ -189,7 +189,7 @@ class RegistrationCodeControllerIntegrationTest : BaseIntegrationTest() {
         val expiredCode = registrationCodeRepository.save(
             RegistrationCode(
                 code = "EXPIRED-CODE-123",
-                status = RegistrationCodeStatus.ACTIVE,
+                status = RegistrationCodeStatus.UNUSED,
                 createdBy = testAdmin,
                 expiresAt = Instant.now().minus(1, ChronoUnit.DAYS)
             )
@@ -231,7 +231,7 @@ class RegistrationCodeControllerIntegrationTest : BaseIntegrationTest() {
             registrationCodeRepository.save(
                 RegistrationCode(
                     code = "TEST-CODE-$i-${System.currentTimeMillis()}",
-                    status = RegistrationCodeStatus.ACTIVE,
+                    status = RegistrationCodeStatus.UNUSED,
                     createdBy = testAdmin,
                     expiresAt = Instant.now().plus(30, ChronoUnit.DAYS)
                 )
