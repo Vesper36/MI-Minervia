@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AdminShell } from '@/components/admin/shell';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -103,8 +102,7 @@ export default function StudentsPage() {
   };
 
   return (
-    <AdminShell>
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold">Students</h1>
@@ -209,6 +207,6 @@ export default function StudentsPage() {
           </CardContent>
         </Card>
       </div>
-    </AdminShell>
+    </div>
   );
 }

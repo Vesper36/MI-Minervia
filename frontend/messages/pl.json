@@ -25,6 +25,7 @@
       "heroTitle": "Kształtuj Swoją Przyszłość z Minervia",
       "heroDescription": "Edukacja światowej klasy dla globalnej społeczności.",
       "cta": "Aplikuj Teraz",
+      "learnMore": "Dowiedz sie wiecej",
       "features": {
         "title": "Dlaczego Minervia?",
         "1": {
@@ -38,7 +39,28 @@
         "3": {
           "title": "Nowoczesny Kampus",
           "description": "Najnowocześniejsze udogodnienia do nauki i innowacji."
+        },
+        "4": {
+          "title": "Sukces Zawodowy",
+          "description": "92% naszych absolwentow znajduje zatrudnienie w ciagu 6 miesiecy od ukonczenia studiow."
         }
+      },
+      "stats": {
+        "students": "Studenci",
+        "studentsCount": "8 500+",
+        "faculty": "Kadra Akademicka",
+        "facultyCount": "450+",
+        "programs": "Programy Akademickie",
+        "programsCount": "65+",
+        "countries": "Kraje",
+        "countriesCount": "50+"
+      },
+      "accreditation": {
+        "title": "Akredytacja i Uznanie",
+        "description": "Minervia Institute posiada pelna akredytacje Polskiej Komisji Akredytacyjnej (PKA) oraz uznanie Ministerstwa Nauki i Szkolnictwa Wyzszego.",
+        "pka": "Polska Komisja Akredytacyjna",
+        "ministry": "Ministerstwo Nauki i Szkolnictwa Wyzszego",
+        "erasmus": "Partner Programu Erasmus+"
       }
     },
     "about": {
@@ -191,6 +213,141 @@
         "title": "Odwiedz Nasz Kampus",
         "description": "Doswiadcz Minervia Institute osobiscie. Umow sie na wycieczke po kampusie.",
         "cta": "Umow Wizyte"
+      }
+    },
+    "news": {
+      "title": "Aktualnosci i Wydarzenia",
+      "description": "Badz na biezaco z najnowszymi wydarzeniami w Minervia Institute.",
+      "latest": "Najnowsze Wiadomosci",
+      "events": "Nadchodzace Wydarzenia",
+      "announcements": "Ogloszenia",
+      "readMore": "Czytaj Wiecej",
+      "viewAll": "Zobacz Wszystkie Aktualnosci",
+      "categories": {
+        "academic": "Akademickie",
+        "research": "Badania",
+        "campus": "Zycie na Kampusie",
+        "alumni": "Absolwenci"
+      },
+      "items": {
+        "1": {
+          "title": "Rejestracja na Semestr Wiosenny Otwarta",
+          "date": "15 stycznia 2026",
+          "summary": "Rejestracja na semestr wiosenny 2026 jest juz otwarta. Termin wczesnej rejestracji uplywa 15 lutego."
+        },
+        "2": {
+          "title": "Grant Badawczy dla Wydzialu Inzynierii",
+          "date": "10 stycznia 2026",
+          "summary": "Wydzial Inzynierii otrzymal grant w wysokosci 2 milionow EUR na badania nad energia odnawialna."
+        },
+        "3": {
+          "title": "Obchody Tygodnia Miedzynarodowego",
+          "date": "5 stycznia 2026",
+          "summary": "Dolacz do nas na Tydzien Miedzynarodowy z wystepami kulturalnymi, festiwalami kulinarnymi i prezentacjami akademickimi."
+        },
+        "4": {
+          "title": "Nowe Partnerstwo z Liderami Branzy Technologicznej",
+          "date": "20 grudnia 2025",
+          "summary": "Minervia Institute oglasza nowe partnerstwa stazowe z wiodacymi firmami technologicznymi."
+        }
+      }
+    },
+    "calendar": {
+      "title": "Kalendarz Akademicki",
+      "description": "Wazne daty roku akademickiego 2025-2026.",
+      "fallSemester": "Semestr Jesienny 2025",
+      "springSemester": "Semestr Wiosenny 2026",
+      "summerSession": "Sesja Letnia 2026",
+      "events": {
+        "fallStart": {
+          "date": "1 pazdziernika 2025",
+          "title": "Poczatek Semestru Jesiennego"
+        },
+        "fallBreak": {
+          "date": "1-3 listopada 2025",
+          "title": "Przerwa Jesienna (Wszystkich Swietych)"
+        },
+        "winterBreak": {
+          "date": "23 grudnia 2025 - 6 stycznia 2026",
+          "title": "Przerwa Zimowa"
+        },
+        "fallExams": {
+          "date": "20 stycznia - 7 lutego 2026",
+          "title": "Egzaminy Semestralne Jesienne"
+        },
+        "springStart": {
+          "date": "17 lutego 2026",
+          "title": "Poczatek Semestru Wiosennego"
+        },
+        "easterBreak": {
+          "date": "2-7 kwietnia 2026",
+          "title": "Przerwa Wielkanocna"
+        },
+        "springExams": {
+          "date": "8-26 czerwca 2026",
+          "title": "Egzaminy Semestralne Wiosenne"
+        },
+        "summerStart": {
+          "date": "1 lipca 2026",
+          "title": "Poczatek Sesji Letniej"
+        },
+        "summerEnd": {
+          "date": "31 sierpnia 2026",
+          "title": "Koniec Sesji Letniej"
+        }
+      },
+      "holidays": "Dni Wolne",
+      "examPeriods": "Okresy Egzaminacyjne",
+      "registration": "Okresy Rejestracji"
+    },
+    "faq": {
+      "title": "Czesto Zadawane Pytania",
+      "description": "Znajdz odpowiedzi na najczesciej zadawane pytania o Minervia Institute.",
+      "categories": {
+        "admissions": "Rekrutacja",
+        "academics": "Nauka",
+        "campus": "Zycie na Kampusie",
+        "financial": "Finanse"
+      },
+      "questions": {
+        "1": {
+          "question": "Jakie sa wymagania rekrutacyjne?",
+          "answer": "Wymagania obejmuja swiadectwo ukonczenia szkoly sredniej (lub rownowazne), certyfikat jezykowy i wypelniony formularz aplikacyjny. Poszczegolne programy moga miec dodatkowe wymagania."
+        },
+        "2": {
+          "question": "Czy zajecia sa prowadzone po angielsku czy po polsku?",
+          "answer": "Oferujemy programy zarowno w jezyku angielskim, jak i polskim. Wiekszość programow miedzynarodowych jest prowadzona calkowicie po angielsku."
+        },
+        "3": {
+          "question": "Jakie stypendia sa dostepne?",
+          "answer": "Oferujemy stypendia naukowe, pomoc finansowa oraz specjalne stypendia dla studentow miedzynarodowych. Skontaktuj sie z biurem pomocy finansowej."
+        },
+        "4": {
+          "question": "Czy dostepne jest zakwaterowanie na kampusie?",
+          "answer": "Tak, posiadamy nowoczesne akademiki z pokojami jedno- i wieloosobowymi. Wnioski o zakwaterowanie nalezy skladac wraz z aplikacja rekrutacyjna."
+        },
+        "5": {
+          "question": "Czy moge pracowac podczas studiow?",
+          "answer": "Studenci miedzynarodowi moga pracowac do 20 godzin tygodniowo w trakcie semestru. Biuro Karier pomoze znalezc oferty pracy."
+        },
+        "6": {
+          "question": "Jaki jest stosunek studentow do wykladowcow?",
+          "answer": "Nasz stosunek studentow do wykladowcow wynosi okolo 15:1, co zapewnia indywidualna uwage i mozliwosci mentoringu."
+        },
+        "7": {
+          "question": "Czy sa dostepne programy wymiany?",
+          "answer": "Tak, jako partner Erasmus+ oferujemy mozliwosci wymiany z ponad 100 uniwersytetami w Europie i poza nia."
+        },
+        "8": {
+          "question": "Jak ubiegac sie o wize studencka?",
+          "answer": "Po otrzymaniu listu akceptacyjnego nasze Biuro Miedzynarodowe zapewni wskazowki i dokumentacje do wniosku wizowego."
+        }
+      },
+      "contact": {
+        "title": "Masz jeszcze pytania?",
+        "description": "Skontaktuj sie z naszym zespolem rekrutacyjnym po indywidualna pomoc.",
+        "email": "admissions@minervia.edu.pl",
+        "phone": "+48 12 345 67 89"
       }
     }
   },

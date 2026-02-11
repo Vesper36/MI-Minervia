@@ -1,3 +1,284 @@
+# Minervia Institute - 教育平台架构文档
+
+> 最后更新：2026-02-09
+
+## 变更记录 (Changelog)
+
+### 2026-02-09
+- 初始化架构文档
+- 完成项目结构扫描（覆盖率 40%）
+- 识别核心模块：backend (Kotlin/Spring Boot)、frontend (Next.js/TypeScript)
+- 记录基础设施组件：MySQL、Redis、Kafka、Elasticsearch
+- 生成模块索引与结构图
+
+---
+
+## 项目愿景
+
+Minervia Institute 是一个全栈教育管理平台，提供学生注册、管理员管理、学生门户和多语言营销网站。
+
+**核心功能**：
+- 学生注册系统：多步骤注册流程，邮箱验证，实时状态追踪（WebSocket）
+- 管理员门户：申请审核、学生管理、注册码生成、审计日志
+- 学生门户：个人仪表板、课程查看、文档管理、个人资料
+- 营销网站：多语言支持（英语、波兰语、中文），SEO 优化
+
+---
+
+## 架构总览
+
+### 技术栈
+
+**后端（backend/）**：
+- Kotlin + Spring Boot 3.4.1
+- MySQL 8.0（数据持久化）
+- Redis 7（缓存与会话管理）
+- Kafka（异步任务队列）
+- Elasticsearch 8.11（审计日志搜索）
+- Flyway（数据库迁移）
+- WebSocket（实时通信）
+- JWT（双 Token 认证：Access Token 30min + Refresh Token 14天）
+
+**前端（frontend/）**：
+- Next.js 14（App Router）
+- TypeScript 5.7
+- Tailwind CSS 3.4
+- next-intl 3.26（国际化）
+- Radix UI（无障碍组件库）
+- Vitest + Testing Library（测试）
+
+**基础设施**：
+- Docker + Docker Compose
+- Gradle 8.x（后端构建）
+- pnpm（前端包管理）
+
+---
+
+## 模块结构图
+
+```mermaid
+graph TD
+    A["(根) Minervia Platform"] --> B["backend"];
+    A --> C["frontend"];
+    A --> D["docs"];
+    A --> E["scripts"];
+    A --> F["openspec"];
+
+    B --> B1["domain"];
+    B --> B2["service"];
+    B --> B3["web"];
+    B --> B4["security"];
+    B --> B5["config"];
+
+    C --> C1["app"];
+    C --> C2["components"];
+    C --> C3["lib"];
+    C --> C4["hooks"];
+
+    click B "./backend/CLAUDE.md" "查看 backend 模块文档"
+    click C "./frontend/CLAUDE.md" "查看 frontend 模块文档"
+```
+
+---
+
+## 模块索引
+
+| 模块 | 路径 | 语言 | 职责 | 入口文件 | 文档 |
+|------|------|------|------|----------|------|
+| **backend** | `backend/` | Kotlin | Spring Boot 后端服务 | `MinerviaApplication.kt` | [查看](./backend/CLAUDE.md) |
+| **frontend** | `frontend/` | TypeScript | Next.js 前端应用 | `src/app/layout.tsx` | [查看](./frontend/CLAUDE.md) |
+| **docs** | `docs/` | Markdown | 部署与快速开始文档 | `DEPLOYMENT.md`, `QUICKSTART.md` | - |
+| **scripts** | `scripts/` | Bash | 部署与管理脚本 | `deploy.sh`, `minervia.sh` | - |
+| **openspec** | `openspec/` | - | API 规范文档 | - | - |
+
+---
+
+## 运行与开发
+
+### Docker 部署（推荐）
+
+```bash
+# 1. 复制环境变量模板
+cp .env.example .env
+
+# 2. 配置环境变量（必须设置 JWT_SECRET、数据库密码等）
+nano .env
+
+# 3. 启动所有服务
+./scripts/deploy.sh
+
+# 4. 查看状态
+./scripts/minervia.sh status
+
+# 5. 查看日志
+./scripts/minervia.sh logs [backend|frontend|mysql|redis]
+```
+
+### 本地开发
+
+**后端**：
+```bash
+cd backend
+./gradlew bootRun
+```
+
+**前端**：
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
+
+**访问地址**：
+- 前端：http://localhost:3000
+- 后端 API：http://localhost:8080
+- API 文档：http://localhost:8080/swagger-ui.html
+- 管理员登录：http://localhost:3000/en/login
+- 学生门户：http://localhost:3000/en/portal/login
+
+---
+
+## 测试策略
+
+### 后端测试
+
+**单元测试**：
+- 框架：JUnit 5 + Mockito Kotlin
+- 位置：`backend/src/test/kotlin/edu/minervia/platform/service/`
+- 覆盖：AuthService、RegistrationCodeService、EmailBounceService、RateLimitService
+- 运行：`./gradlew test`
+
+**集成测试**：
+- 框架：Testcontainers（MySQL、Kafka）
+- 位置：`backend/src/test/kotlin/edu/minervia/platform/integration/`
+- 覆盖：AuthController、RegistrationCodeController、StudentController、AuditLogController
+- 运行：`./gradlew integrationTest`
+
+**属性测试（PBT）**：
+- 框架：jqwik
+- 位置：`backend/src/test/kotlin/edu/minervia/platform/pbt/`
+- 覆盖：CorePropertyTests、AdvancedPropertyTests、IntegrationPropertyTests、HighCompletionPropertyTests
+
+### 前端测试
+
+**组件测试**：
+- 框架：Vitest + Testing Library
+- 位置：`frontend/src/__tests__/`
+- 覆盖：Button、Progress、Stepper、Select、Marketing Components、Portal Components
+- 运行：`pnpm test`
+
+**国际化完整性测试**：
+- 位置：`frontend/src/__tests__/i18n-completeness.test.ts`
+- 验证：所有语言文件的键完整性
+
+**覆盖率报告**：
+```bash
+pnpm test:coverage
+```
+
+---
+
+## 编码规范
+
+### Kotlin 规范
+- 使用 Kotlin 惯用语法（data class、sealed class、extension functions）
+- 服务层使用 `@Service` + 构造器注入
+- 实体使用 JPA 注解 + `@Entity`
+- 异常处理：统一在 `GlobalExceptionHandler` 处理
+- 包结构：`domain`（实体+仓库）、`service`（业务逻辑）、`web`（控制器+DTO）、`security`（认证授权）、`config`（配置）
+
+### TypeScript 规范
+- 严格类型检查（`strict: true`）
+- 组件使用函数式组件 + Hooks
+- 样式使用 Tailwind CSS utility classes
+- 国际化：所有文本通过 `next-intl` 管理（`messages/` 目录）
+- 路由分组：`(admin)`、`(portal)`、`(marketing)`
+
+### 通用规范
+- 提交信息：`<type>(<scope>): <description>`
+  - type: feat, fix, docs, style, refactor, test, chore
+  - scope: backend, frontend, docs, scripts
+- 分支策略：`main` 为主分支，功能分支命名 `feature/*`
+- 代码审查：所有 PR 需要至少一人审核
+
+---
+
+## AI 使用指引
+
+### 修改代码前必读
+
+1. **调研优先**：使用 Grep/Glob 搜索相关代码，避免重复实现
+2. **理解上下文**：阅读相关模块的 `CLAUDE.md` 了解职责边界
+3. **保护调用链**：修改函数签名时同步更新所有调用点
+4. **测试覆盖**：新功能必须包含单元测试或集成测试
+
+### 常见任务
+
+**添加新 API 端点**：
+1. 在 `backend/src/main/kotlin/edu/minervia/platform/web/controller/` 创建 Controller
+2. 在 `backend/src/main/kotlin/edu/minervia/platform/service/` 创建 Service
+3. 在 `backend/src/main/kotlin/edu/minervia/platform/web/dto/` 创建 DTO
+4. 在 `backend/src/test/kotlin/edu/minervia/platform/integration/` 添加集成测试
+5. 更新 OpenAPI 文档（自动生成）
+
+**添加新前端页面**：
+1. 在 `frontend/src/app/[locale]/(group)/` 创建 `page.tsx`
+2. 在 `frontend/messages/en.json`、`pl.json`、`zh-CN.json` 添加多语言文本
+3. 更新导航组件（如需要）：`navbar.tsx` 或 `sidebar.tsx`
+4. 在 `frontend/src/__tests__/` 添加组件测试
+
+**添加数据库迁移**：
+1. 在 `backend/src/main/resources/db/migration/` 创建 `V{version}__{description}.sql`
+2. 遵循 Flyway 命名规范
+3. 测试迁移：`./gradlew flywayMigrate`
+
+### 推荐工具
+
+- **代码搜索**：`Grep` 精确匹配，`mcp__ace-tool__search_context` 语义搜索
+- **文档查询**：`mcp__context7__query-docs` 查询库文档
+- **深度推理**：`mcp__sequential-thinking__sequentialthinking` 复杂问题分析
+
+---
+
+## 相关文档
+
+- [后端模块文档](./backend/CLAUDE.md)
+- [前端模块文档](./frontend/CLAUDE.md)
+- [部署指南](./docs/DEPLOYMENT.md)
+- [快速开始](./docs/QUICKSTART.md)
+- [README](./README.md)
+
+---
+
+## 下一步建议
+
+基于当前扫描覆盖率（40%），建议优先补充：
+
+### 1. 后端服务层深度分析
+- `service/async/` - 异步任务处理（Kafka + Outbox 模式）
+- `service/audit/` - 审计日志服务（Elasticsearch 集成）
+- `service/identity/` - 身份生成服务（LLM 集成）
+- `service/email/` - 邮件服务（SendGrid SMTP）
+- `service/ratelimit/` - 限流服务（Redis + MySQL 双写）
+
+### 2. 前端组件结构
+- `components/admin/` - 管理员组件（Shell、Sidebar）
+- `components/portal/` - 学生门户组件（Shell、Sidebar）
+- `components/marketing/` - 营销网站组件（Navbar、Footer、LanguageSwitcher）
+- `components/register/` - 注册向导组件
+
+### 3. API 契约文档
+- 分析 15 个 Controller，生成 API 端点清单
+- 记录请求/响应格式（DTO）
+- 标注认证要求（JWT、Admin/Student）
+
+### 4. 数据模型详解
+- 分析 `domain/entity/` 下的实体关系
+- 记录关键字段与约束
+- 生成 ER 图
+
+---
+
 ## 一、核心原则
 
 #### 1.1 调研优先（强制）
@@ -225,7 +506,7 @@ TaskOutput(task_id="<TASK_ID>", block=True, timeout=600000)
 **图标URL**
 - Claude：https://cloud.vesper366.com/claude-ai-icon.png
 - Gemini：https://favicon.im/gemini.google.com?larger=true
-- Codex： 
+- Codex：
 - Github：https://img.icons8.com/?size=100&id=AZOZNnY73haj&format=png&color=000000
 - Docker：https://img.icons8.com/?size=100&id=cdYUlRaag9G9&format=png&color=000000
 - 完成：https://img.icons8.com/?size=100&id=70yRC8npwT3d&format=png&color=000000

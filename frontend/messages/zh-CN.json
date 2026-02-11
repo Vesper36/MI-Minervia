@@ -25,6 +25,7 @@
       "heroTitle": "与 Minervia 共塑未来",
       "heroDescription": "面向全球社区的世界级教育。",
       "cta": "立即申请",
+      "learnMore": "了解更多",
       "features": {
         "title": "为什么选择 Minervia？",
         "1": {
@@ -38,7 +39,28 @@
         "3": {
           "title": "现代化校园",
           "description": "先进的学习和创新设施。"
+        },
+        "4": {
+          "title": "就业前景",
+          "description": "92%的毕业生在毕业后6个月内成功就业。"
         }
+      },
+      "stats": {
+        "students": "在校学生",
+        "studentsCount": "8,500+",
+        "faculty": "教职人员",
+        "facultyCount": "450+",
+        "programs": "学术专业",
+        "programsCount": "65+",
+        "countries": "生源国家",
+        "countriesCount": "50+"
+      },
+      "accreditation": {
+        "title": "认证与荣誉",
+        "description": "Minervia Institute 已获得波兰认证委员会 (PKA) 的全面认证，并获得科学与高等教育部的认可。",
+        "pka": "波兰认证委员会",
+        "ministry": "科学与高等教育部",
+        "erasmus": "Erasmus+ 项目合作伙伴"
       }
     },
     "about": {
@@ -191,6 +213,141 @@
         "title": "参观校园",
         "description": "亲身体验 Minervia Institute。预约校园参观或参加开放日活动。",
         "cta": "预约参观"
+      }
+    },
+    "news": {
+      "title": "新闻与活动",
+      "description": "了解 Minervia Institute 的最新动态。",
+      "latest": "最新新闻",
+      "events": "近期活动",
+      "announcements": "公告",
+      "readMore": "阅读更多",
+      "viewAll": "查看全部新闻",
+      "categories": {
+        "academic": "学术",
+        "research": "研究",
+        "campus": "校园生活",
+        "alumni": "校友"
+      },
+      "items": {
+        "1": {
+          "title": "春季学期注册现已开放",
+          "date": "2026年1月15日",
+          "summary": "2026年春季学期注册现已开放。提前注册截止日期为2月15日。"
+        },
+        "2": {
+          "title": "工程系获得研究资助",
+          "date": "2026年1月10日",
+          "summary": "工程系获得200万欧元可再生能源研究资助。"
+        },
+        "3": {
+          "title": "国际文化周庆典",
+          "date": "2026年1月5日",
+          "summary": "欢迎参加国际文化周，包括文化表演、美食节和学术展示。"
+        },
+        "4": {
+          "title": "与科技行业领袖建立新合作",
+          "date": "2025年12月20日",
+          "summary": "Minervia Institute 宣布与领先科技公司建立新的实习合作关系。"
+        }
+      }
+    },
+    "calendar": {
+      "title": "学术日历",
+      "description": "2025-2026学年重要日期。",
+      "fallSemester": "2025年秋季学期",
+      "springSemester": "2026年春季学期",
+      "summerSession": "2026年暑期课程",
+      "events": {
+        "fallStart": {
+          "date": "2025年10月1日",
+          "title": "秋季学期开学"
+        },
+        "fallBreak": {
+          "date": "2025年11月1-3日",
+          "title": "秋季假期（万圣节）"
+        },
+        "winterBreak": {
+          "date": "2025年12月23日 - 2026年1月6日",
+          "title": "寒假"
+        },
+        "fallExams": {
+          "date": "2026年1月20日 - 2月7日",
+          "title": "秋季学期考试"
+        },
+        "springStart": {
+          "date": "2026年2月17日",
+          "title": "春季学期开学"
+        },
+        "easterBreak": {
+          "date": "2026年4月2-7日",
+          "title": "复活节假期"
+        },
+        "springExams": {
+          "date": "2026年6月8-26日",
+          "title": "春季学期考试"
+        },
+        "summerStart": {
+          "date": "2026年7月1日",
+          "title": "暑期课程开始"
+        },
+        "summerEnd": {
+          "date": "2026年8月31日",
+          "title": "暑期课程结束"
+        }
+      },
+      "holidays": "公共假期",
+      "examPeriods": "考试时间",
+      "registration": "注册时间"
+    },
+    "faq": {
+      "title": "常见问题",
+      "description": "查找关于 Minervia Institute 的常见问题解答。",
+      "categories": {
+        "admissions": "招生",
+        "academics": "学术",
+        "campus": "校园生活",
+        "financial": "财务"
+      },
+      "questions": {
+        "1": {
+          "question": "入学要求是什么？",
+          "answer": "入学要求包括高中毕业证书（或同等学历）、语言能力证书和完整的申请表。特定专业可能有额外要求。"
+        },
+        "2": {
+          "question": "授课语言是英语还是波兰语？",
+          "answer": "我们提供英语和波兰语授课的课程。大多数国际课程完全以英语授课。请查看各专业页面了解语言详情。"
+        },
+        "3": {
+          "question": "有哪些奖学金？",
+          "answer": "我们提供基于成绩的奖学金、基于需求的助学金以及国际学生专项奖学金。详情请联系财务援助办公室。"
+        },
+        "4": {
+          "question": "是否提供校内住宿？",
+          "answer": "是的，我们有现代化宿舍，提供单人间和多人间选择。住宿申请应与入学申请一同提交。"
+        },
+        "5": {
+          "question": "在读期间可以工作吗？",
+          "answer": "国际学生在学期期间每周最多可工作20小时。就业服务中心可以帮助您寻找兼职机会。"
+        },
+        "6": {
+          "question": "师生比例是多少？",
+          "answer": "我们的师生比例约为15:1，确保个性化关注和指导机会。"
+        },
+        "7": {
+          "question": "是否有交换项目？",
+          "answer": "是的，作为 Erasmus+ 合作伙伴，我们与欧洲及其他地区的100多所大学提供交换机会。"
+        },
+        "8": {
+          "question": "如何申请学生签证？",
+          "answer": "收到录取通知书后，我们的国际事务办公室将为您的签证申请提供指导和文件支持。"
+        }
+      },
+      "contact": {
+        "title": "还有其他问题？",
+        "description": "联系我们的招生团队获取个性化帮助。",
+        "email": "admissions@minervia.edu.pl",
+        "phone": "+48 12 345 67 89"
       }
     }
   },

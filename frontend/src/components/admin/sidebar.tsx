@@ -13,20 +13,35 @@ import {
   ScrollText,
   Settings,
   LogOut,
+  BarChart3,
+  UserCog,
 } from 'lucide-react';
 
-const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/students', label: 'Students', icon: Users },
-  { href: '/applications', label: 'Applications', icon: FileCheck },
-  { href: '/codes', label: 'Registration Codes', icon: KeyRound },
-  { href: '/audit', label: 'Audit Logs', icon: ScrollText },
-  { href: '/settings', label: 'Settings', icon: Settings },
+type NavItem = {
+  href: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  roles: string[];
+};
+
+const navItems: NavItem[] = [
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['AUDITOR', 'ADMIN', 'SUPER_ADMIN'] },
+  { href: '/students', label: 'Students', icon: Users, roles: ['AUDITOR', 'ADMIN', 'SUPER_ADMIN'] },
+  { href: '/applications', label: 'Applications', icon: FileCheck, roles: ['AUDITOR', 'ADMIN', 'SUPER_ADMIN'] },
+  { href: '/codes', label: 'Registration Codes', icon: KeyRound, roles: ['ADMIN', 'SUPER_ADMIN'] },
+  { href: '/audit', label: 'Audit Logs', icon: ScrollText, roles: ['AUDITOR', 'ADMIN', 'SUPER_ADMIN'] },
+  { href: '/statistics', label: 'Statistics', icon: BarChart3, roles: ['AUDITOR', 'ADMIN', 'SUPER_ADMIN'] },
+  { href: '/admins', label: 'Admin Management', icon: UserCog, roles: ['SUPER_ADMIN'] },
+  { href: '/settings', label: 'Settings', icon: Settings, roles: ['SUPER_ADMIN'] },
 ];
 
 export function AdminSidebar() {
   const pathname = usePathname();
   const { admin, logout } = useAuth();
+
+  const visibleItems = navItems.filter((item) =>
+    admin?.role && item.roles.includes(admin.role)
+  );
 
   return (
     <aside className="w-64 bg-gray-900 text-white min-h-screen flex flex-col">
@@ -40,7 +55,7 @@ export function AdminSidebar() {
       </div>
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
-          {navItems.map((item) => {
+          {visibleItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (

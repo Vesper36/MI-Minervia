@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import { LanguageSwitcher } from './language-switcher';
 
 export function MarketingNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,14 +51,15 @@ export function MarketingNavbar() {
 
         {/* Desktop Auth Links */}
         <div className="hidden lg:flex items-center space-x-4">
+          <LanguageSwitcher />
           <Link
-            href={`/${locale}/student-portal`}
+            href={`/${locale}/portal/login`}
             className="text-sm font-medium text-muted-foreground hover:text-primary"
           >
             {t('login')}
           </Link>
           <Button asChild size="sm">
-            <Link href={`/${locale}/apply`}>Apply</Link>
+            <Link href={`/${locale}/admissions`}>{t('admissions')}</Link>
           </Button>
         </div>
 
@@ -86,8 +88,11 @@ export function MarketingNavbar() {
               </Link>
             ))}
             <div className="pt-4 border-t space-y-2">
+              <div className="py-2">
+                <LanguageSwitcher />
+              </div>
               <Link
-                href={`/${locale}/student-portal`}
+                href={`/${locale}/portal/login`}
                 className="block py-2 text-sm font-medium text-muted-foreground hover:text-primary"
                 onClick={() => setIsOpen(false)}
               >

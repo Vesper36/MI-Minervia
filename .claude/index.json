@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-02-09T00:00:00Z",
+  "project": {
+    "name": "Minervia Institute Educational Platform",
+    "type": "full-stack",
+    "languages": ["Kotlin", "TypeScript", "SQL"],
+    "frameworks": ["Spring Boot", "Next.js"]
+  },
+  "modules": [
+    {
+      "name": "backend",
+      "path": "backend",
+      "type": "kotlin-spring-boot",
+      "language": "Kotlin",
+      "entry": "src/main/kotlin/edu/minervia/platform/MinerviaApplication.kt",
+      "buildTool": "Gradle",
+      "testFramework": "JUnit 5 + Testcontainers + jqwik",
+      "coverage": "high"
+    },
+    {
+      "name": "frontend",
+      "path": "frontend",
+      "type": "nextjs-app",
+      "language": "TypeScript",
+      "entry": "src/app/layout.tsx",
+      "buildTool": "pnpm",
+      "testFramework": "Vitest + Testing Library",
+      "coverage": "medium"
+    },
+    {
+      "name": "docs",
+      "path": "docs",
+      "type": "documentation",
+      "files": ["DEPLOYMENT.md", "QUICKSTART.md"]
+    },
+    {
+      "name": "scripts",
+      "path": "scripts",
+      "type": "deployment-scripts",
+      "files": ["deploy.sh", "minervia.sh"]
+    }
+  ],
+  "infrastructure": {
+    "database": "MySQL 8.0",
+    "cache": "Redis 7",
+    "messageQueue": "Kafka",
+    "search": "Elasticsearch 8.11",
+    "containerization": "Docker + Docker Compose"
+  },
+  "coverage": {
+    "totalFiles": "~500+ (excluding node_modules)",
+    "scannedFiles": 200,
+    "coveragePercent": 40,
+    "gaps": [
+      "frontend/src/components - partial scan",
+      "backend service layer - needs deeper analysis",
+      "integration tests - identified but not analyzed"
+    ]
+  },
+  "scanMetadata": {
+    "version": "1.0.0",
+    "truncated": false,
+    "nextSteps": [
+      "Deep scan backend service layer",
+      "Analyze frontend component structure",
+      "Document API contracts",
+      "Review test coverage details"
+    ]
+  }
+}
