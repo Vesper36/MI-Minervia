@@ -60,7 +60,7 @@ class EmailBounceServiceTest {
         assertEquals(EmailSuppressionReason.HARD_BOUNCE, saved.reason)
         assertEquals(1, saved.bounceCount)
         assertNotNull(saved.suppressedAt)
-        verify(auditLogService).logAsync(any(), any())
+        verify(auditLogService).logAsync(any<AuditContext>(), any<AuditEvent>())
     }
 
     @Test
@@ -79,7 +79,7 @@ class EmailBounceServiceTest {
         assertEquals(5, suppression.bounceCount)
         assertEquals(EmailSuppressionReason.SOFT_BOUNCE, suppression.reason)
         assertNotNull(suppression.suppressedAt)
-        verify(auditLogService).logAsync(any(), any())
+        verify(auditLogService).logAsync(any<AuditContext>(), any<AuditEvent>())
     }
 
     @Test
