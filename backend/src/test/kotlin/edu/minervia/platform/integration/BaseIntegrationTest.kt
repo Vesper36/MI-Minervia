@@ -1,6 +1,7 @@
 package edu.minervia.platform.integration
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import edu.minervia.platform.config.TestR2Config
 import edu.minervia.platform.domain.entity.Admin
 import edu.minervia.platform.domain.enums.AdminRole
 import edu.minervia.platform.domain.repository.AdminRepository
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
+@Import(TestR2Config::class)
 abstract class BaseIntegrationTest {
 
     @Autowired
