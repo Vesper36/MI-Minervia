@@ -22,7 +22,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
-import org.mockito.kotlin.anyString
 import org.mockito.kotlin.eq
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -57,8 +56,8 @@ class RegistrationCodeServiceTest {
         `when`(adminRepository.findById(1L)).thenReturn(Optional.of(admin))
         `when`(systemConfigRepository.findByConfigKey("registration_code_expiry_days"))
             .thenReturn(Optional.of(SystemConfig(configKey = "registration_code_expiry_days", configValue = "10")))
-        `when`(registrationCodeRepository.existsByCode(anyString())).thenReturn(false)
-        `when`(registrationCodeRepository.save(any(RegistrationCode::class.java)))
+        `when`(registrationCodeRepository.existsByCode(any<String>())).thenReturn(false)
+        `when`(registrationCodeRepository.save(any<RegistrationCode>()))
             .thenAnswer { it.arguments[0] as RegistrationCode }
 
         val start = Instant.now()

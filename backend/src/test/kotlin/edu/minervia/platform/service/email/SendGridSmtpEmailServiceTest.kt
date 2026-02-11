@@ -72,7 +72,7 @@ class SendGridSmtpEmailServiceTest {
 
         assertTrue(result.success)
         assertEquals("Email address is suppressed", result.errorMessage)
-        verify(mailSender, never()).send(any(MimeMessage::class.java))
+        verify(mailSender, never()).send(any<MimeMessage>())
     }
 
     @Test

@@ -13,7 +13,6 @@ import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
-import org.mockito.kotlin.anyString
 import org.mockito.kotlin.eq
 import org.springframework.data.redis.core.SessionCallback
 import org.springframework.data.redis.core.StringRedisTemplate
@@ -43,7 +42,7 @@ class RateLimitServiceTest {
         val allowed = service.tryAcquire("user", 5, 60)
 
         assertTrue(allowed)
-        verify(zSetOps, never()).remove(anyString(), any())
+        verify(zSetOps, never()).remove(any<String>(), any())
     }
 
     @Test
@@ -84,6 +83,6 @@ class RateLimitServiceTest {
     private fun stubExecute(result: List<Any>) {
         @Suppress("UNCHECKED_CAST")
         doReturn(result).`when`(redisTemplate)
-            .execute(any(SessionCallback::class.java) as SessionCallback<List<Any>>)
+            .execute(any<SessionCallback<List<Any>>>())
     }
 }

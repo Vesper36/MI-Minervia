@@ -46,7 +46,7 @@ class EmailBounceServiceTest {
     @Test
     fun handleHardBounce_createsSuppression_andLogsEvent() {
         `when`(emailSuppressionRepository.findByEmail("user@example.com")).thenReturn(Optional.empty())
-        `when`(emailSuppressionRepository.save(any(EmailSuppression::class.java)))
+        `when`(emailSuppressionRepository.save(any<EmailSuppression>()))
             .thenAnswer { it.arguments[0] as EmailSuppression }
 
         service.handleHardBounce("User@Example.com ", "Mailbox not found")
@@ -70,7 +70,7 @@ class EmailBounceServiceTest {
             firstBounceAt = Instant.now().minus(1, ChronoUnit.HOURS)
         )
         `when`(emailSuppressionRepository.findByEmail("user@example.com")).thenReturn(Optional.of(suppression))
-        `when`(emailSuppressionRepository.save(any(EmailSuppression::class.java)))
+        `when`(emailSuppressionRepository.save(any<EmailSuppression>()))
             .thenAnswer { it.arguments[0] as EmailSuppression }
 
         service.handleSoftBounce("user@example.com", "Temporary failure")
@@ -89,7 +89,7 @@ class EmailBounceServiceTest {
             firstBounceAt = Instant.now().minus(80, ChronoUnit.HOURS)
         )
         `when`(emailSuppressionRepository.findByEmail("user@example.com")).thenReturn(Optional.of(suppression))
-        `when`(emailSuppressionRepository.save(any(EmailSuppression::class.java)))
+        `when`(emailSuppressionRepository.save(any<EmailSuppression>()))
             .thenAnswer { it.arguments[0] as EmailSuppression }
 
         service.handleSoftBounce("user@example.com", "Temporary failure")
@@ -103,7 +103,7 @@ class EmailBounceServiceTest {
     @Test
     fun handleSpamComplaint_setsSuppression_andLogsEvent() {
         `when`(emailSuppressionRepository.findByEmail("user@example.com")).thenReturn(Optional.empty())
-        `when`(emailSuppressionRepository.save(any(EmailSuppression::class.java)))
+        `when`(emailSuppressionRepository.save(any<EmailSuppression>()))
             .thenAnswer { it.arguments[0] as EmailSuppression }
 
         service.handleSpamComplaint("user@example.com")
@@ -129,7 +129,7 @@ class EmailBounceServiceTest {
             suppressedAt = Instant.now()
         )
         `when`(emailSuppressionRepository.findByEmail("user@example.com")).thenReturn(Optional.of(suppression))
-        `when`(emailSuppressionRepository.save(any(EmailSuppression::class.java)))
+        `when`(emailSuppressionRepository.save(any<EmailSuppression>()))
             .thenAnswer { it.arguments[0] as EmailSuppression }
 
         service.unsuppressEmail("user@example.com")

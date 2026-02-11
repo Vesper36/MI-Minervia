@@ -115,7 +115,7 @@ class AuthServiceTest {
         assertTrue(response.requiresTotp)
         assertEquals("", response.accessToken)
         assertEquals("", response.refreshToken)
-        verify(jwtService, never()).generateTokenPair(anyString(), anyString(), anyLong())
+        verify(jwtService, never()).generateTokenPair(any<String>(), any<String>(), any<Long>())
         verify(adminRepository, never()).save(admin)
     }
 
