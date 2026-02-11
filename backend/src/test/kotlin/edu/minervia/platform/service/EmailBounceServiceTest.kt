@@ -3,6 +3,7 @@ package edu.minervia.platform.service
 import edu.minervia.platform.domain.entity.EmailSuppression
 import edu.minervia.platform.domain.enums.EmailSuppressionReason
 import edu.minervia.platform.domain.repository.EmailSuppressionRepository
+import edu.minervia.platform.service.audit.AuditContext
 import edu.minervia.platform.service.audit.AuditEvent
 import edu.minervia.platform.service.audit.AuditLogService
 import edu.minervia.platform.service.email.EmailBounceService
@@ -97,7 +98,7 @@ class EmailBounceServiceTest {
         assertEquals(1, suppression.bounceCount)
         assertNotNull(suppression.firstBounceAt)
         assertNull(suppression.suppressedAt)
-        verify(auditLogService).logAsync(any(), any())
+        verify(auditLogService).logAsync(any<AuditContext>(), any<AuditEvent>())
     }
 
     @Test
@@ -114,7 +115,7 @@ class EmailBounceServiceTest {
 
         assertEquals(EmailSuppressionReason.SPAM_COMPLAINT, saved.reason)
         assertNotNull(saved.suppressedAt)
-        verify(auditLogService).logAsync(any(), any())
+        verify(auditLogService).logAsync(any<AuditContext>(), any<AuditEvent>())
     }
 
     @Test
@@ -141,7 +142,7 @@ class EmailBounceServiceTest {
         assertNull(suppression.lastBounceAt)
 
         val eventCaptor = ArgumentCaptor.forClass(AuditEvent::class.java)
-        verify(auditLogService).logAsync(any(), eventCaptor.capture())
+        verify(auditLogService).logAsync(any<AuditContext>(), eventCaptor.capture())
         assertEquals(AuditLogService.EVENT_EMAIL_UNSUPPRESSED, eventCaptor.value.eventType)
     }
 
