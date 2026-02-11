@@ -64,11 +64,11 @@ class StudentAuthControllerIntegrationTest : BaseIntegrationTest() {
                 .content(toJson(request))
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.accessToken").isNotEmpty)
-            .andExpect(jsonPath("$.refreshToken").isNotEmpty)
-            .andExpect(jsonPath("$.studentNumber").value(TEST_STUDENT_NUMBER))
-            .andExpect(jsonPath("$.fullName").value("Test Student"))
-            .andExpect(jsonPath("$.eduEmail").value(TEST_STUDENT_EMAIL))
+            .andExpect(jsonPath("$.data.accessToken").isNotEmpty)
+            .andExpect(jsonPath("$.data.refreshToken").isNotEmpty)
+            .andExpect(jsonPath("$.data.studentNumber").value(TEST_STUDENT_NUMBER))
+            .andExpect(jsonPath("$.data.fullName").value("Test Student"))
+            .andExpect(jsonPath("$.data.eduEmail").value(TEST_STUDENT_EMAIL))
     }
 
     @Test
@@ -84,8 +84,8 @@ class StudentAuthControllerIntegrationTest : BaseIntegrationTest() {
                 .content(toJson(request))
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.accessToken").isNotEmpty)
-            .andExpect(jsonPath("$.studentNumber").value(TEST_STUDENT_NUMBER))
+            .andExpect(jsonPath("$.data.accessToken").isNotEmpty)
+            .andExpect(jsonPath("$.data.studentNumber").value(TEST_STUDENT_NUMBER))
     }
 
     @Test
@@ -152,7 +152,7 @@ class StudentAuthControllerIntegrationTest : BaseIntegrationTest() {
             .andReturn()
 
         val loginResponse = objectMapper.readTree(loginResult.response.contentAsString)
-        val refreshToken = loginResponse.get("refreshToken").asText()
+        val refreshToken = loginResponse.get("data").get("refreshToken").asText()
 
         val refreshRequest = StudentRefreshTokenRequest(refreshToken = refreshToken)
 
@@ -162,8 +162,8 @@ class StudentAuthControllerIntegrationTest : BaseIntegrationTest() {
                 .content(toJson(refreshRequest))
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.accessToken").isNotEmpty)
-            .andExpect(jsonPath("$.refreshToken").isNotEmpty)
+            .andExpect(jsonPath("$.data.accessToken").isNotEmpty)
+            .andExpect(jsonPath("$.data.refreshToken").isNotEmpty)
     }
 
     @Test
@@ -194,7 +194,7 @@ class StudentAuthControllerIntegrationTest : BaseIntegrationTest() {
             .andReturn()
 
         val loginResponse = objectMapper.readTree(loginResult.response.contentAsString)
-        val refreshToken = loginResponse.get("refreshToken").asText()
+        val refreshToken = loginResponse.get("data").get("refreshToken").asText()
 
         val refreshRequest = StudentRefreshTokenRequest(refreshToken = refreshToken)
         mockMvc.perform(
@@ -228,8 +228,8 @@ class StudentAuthControllerIntegrationTest : BaseIntegrationTest() {
             .andReturn()
 
         val loginResponse = objectMapper.readTree(loginResult.response.contentAsString)
-        val accessToken = loginResponse.get("accessToken").asText()
-        val refreshToken = loginResponse.get("refreshToken").asText()
+        val accessToken = loginResponse.get("data").get("accessToken").asText()
+        val refreshToken = loginResponse.get("data").get("refreshToken").asText()
 
         mockMvc.perform(
             post("/api/student/auth/logout")
@@ -256,7 +256,7 @@ class StudentAuthControllerIntegrationTest : BaseIntegrationTest() {
             .andReturn()
 
         val loginResponse = objectMapper.readTree(loginResult.response.contentAsString)
-        val accessToken = loginResponse.get("accessToken").asText()
+        val accessToken = loginResponse.get("data").get("accessToken").asText()
 
         mockMvc.perform(
             post("/api/student/auth/logout")
