@@ -94,6 +94,45 @@ services:
       - with-kafka
 
   # =============================================================================
+  # Search Engine (Optional - for audit log search)
+  # =============================================================================
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: minervia-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - indices.lifecycle.poll_interval=1m
+      - cluster.routing.allocation.disk.threshold_enabled=true
+      - cluster.routing.allocation.disk.watermark.low=85%
+      - cluster.routing.allocation.disk.watermark.high=90%
+      - index.search.slowlog.threshold.query.warn=10s
+      - index.search.slowlog.threshold.query.info=5s
+      - index.search.slowlog.threshold.fetch.warn=1s
+      - index.indexing.slowlog.threshold.index.warn=10s
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\\|yellow\"'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - minervia-internal
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+    profiles:
+      - with-elasticsearch
+
+  # =============================================================================
   # Application Services
   # =============================================================================
 
@@ -131,6 +170,10 @@ services:
       OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
       EMAIL_WEBHOOK_SIGNING_KEY: ${EMAIL_WEBHOOK_SIGNING_KEY:-}
       SENDGRID_WEBHOOK_PUBLIC_KEY: ${SENDGRID_WEBHOOK_PUBLIC_KEY:-}
+      MINERVIA_AUDIT_ELASTICSEARCH_ENABLED: ${MINERVIA_AUDIT_ELASTICSEARCH_ENABLED:-false}
+      MINERVIA_AUDIT_ELASTICSEARCH_URL: ${MINERVIA_AUDIT_ELASTICSEARCH_URL:-http://elasticsearch:9200}
+      MINERVIA_AUDIT_ELASTICSEARCH_INDEX: ${MINERVIA_AUDIT_ELASTICSEARCH_INDEX:-audit-logs}
+      WEBSOCKET_ALLOWED_ORIGINS: ${WEBSOCKET_ALLOWED_ORIGINS:-}
     ports:
       - "${BACKEND_PORT:-8080}:8080"
     healthcheck:
@@ -226,6 +269,8 @@ volumes:
   redis_data:
     driver: local
   kafka_data:
+    driver: local
+  elasticsearch_data:
     driver: local
 
 # =============================================================================
